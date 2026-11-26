@@ -1,0 +1,3719 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thầy Hiếu GenZ — Lớp văn thầy Hiếu - Lớp học hạnh phúc</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-paper: #EBF5FC;
+      --bg-paper-dark: #D8EAF8;
+      --bg-card: #FFFDF8;
+      --bg-card-tint: #F4F9FE;
+      --blue-deep: #1B4975;
+      --blue-primary: #2B72B3;
+      --blue-mid: #4592CF;
+      --blue-soft: #CFE6F8;
+      --blue-pale: #E5F2FC;
+      --teal-soft: #D9F1EE;
+      --teal-accent: #2A8C82;
+      --gold-vintage: #C48A2A;
+      --gold-soft: #FBF0D6;
+      --ink-dark: #1B3147;
+      --ink-muted: #4F6B86;
+      --border-vintage: #C8D9E8;
+      --border-blue: #8BBCE0;
+      --success-bg: #E3F1E8;
+      --success-text: #1E5E3A;
+      --warn-bg: #FDF1DA;
+      --warn-text: #8A5A00;
+      --danger-bg: #FBE4E4;
+      --danger-text: #8F2424;
+      --shadow-vintage: 0 10px 28px rgba(24, 54, 84, 0.09);
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 7px;
+      --footer-height: 44px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      background-color: var(--bg-paper);
+      background-image:
+        radial-gradient(rgba(46, 116, 181, 0.08) 1px, transparent 1px),
+        linear-gradient(180deg, #F2F9FF 0%, #DFEFFB 100%);
+      background-size: 22px 22px, 100% 100%;
+      color: var(--ink-dark);
+      min-height: 100vh;
+      line-height: 1.55;
+      padding-bottom: calc(var(--footer-height) + 18px);
+    }
+
+    .serif-title {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Modern Luxury SVG Icon Helper */
+    .lux-svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+    }
+
+    .lux-svg-sm {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+    }
+
+    /* Animated Brand Title & Slogan */
+    @keyframes vintageBlueFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes lightHeaderFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .brand-title-styled {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--blue-deep);
+      background: linear-gradient(115deg, #194A7A 0%, #2F80ED 26%, #38BDF8 48%, #D49A35 68%, #2563EB 86%, #194A7A 100%);
+      background-size: 280% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: vintageBlueFlow 4.8s ease-in-out infinite;
+      filter: drop-shadow(0 2px 6px rgba(46, 116, 181, 0.16));
+    }
+
+    .brand-slogan-styled {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 600;
+      color: var(--blue-primary);
+      background: linear-gradient(90deg, #224B75 0%, #3E7CB1 45%, #9E6E1E 75%, #224B75 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: vintageBlueFlow 9s ease-in-out infinite;
+    }
+
+    /* Logo Container */
+    .logo-frame {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #FFFFFF, #E5EDF5);
+      border: 2px solid var(--blue-primary);
+      box-shadow: 0 0 0 4px var(--bg-card), 0 0 0 5px var(--gold-vintage);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .logo-fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 30% 30%, #2E6499, #173452);
+      color: #FCF9F2;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* Vintage Frame Card */
+    .vintage-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-vintage);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-vintage);
+      position: relative;
+    }
+
+    .vintage-double-border {
+      border: 1.5px solid var(--blue-primary);
+      outline: 1px solid var(--border-vintage);
+      outline-offset: -6px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #3B86C9 0%, #26649E 100%);
+      color: #FCF9F2;
+      border-color: #142F4B;
+      box-shadow: 0 3px 10px rgba(25, 59, 94, 0.22);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(180deg, #4794D8 0%, #2C70B0 100%);
+    }
+
+    .btn-secondary {
+      background: var(--blue-pale);
+      color: var(--blue-deep);
+      border-color: var(--border-blue);
+    }
+
+    .btn-secondary:hover {
+      background: var(--blue-soft);
+    }
+
+    .btn-gold {
+      background: linear-gradient(180deg, #C79332 0%, #A4731C 100%);
+      color: #FFFDF8;
+      border-color: #8C6014;
+    }
+
+    .btn-gold:hover {
+      filter: brightness(1.05);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink-dark);
+      border-color: var(--border-vintage);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-paper-dark);
+    }
+
+    .btn-danger {
+      background: var(--danger-bg);
+      color: var(--danger-text);
+      border-color: #E3B5B5;
+    }
+
+    .btn-danger:hover {
+      background: #F6D2D2;
+    }
+
+    .btn-success {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border-color: #B4D8C1;
+    }
+
+    .btn-success:hover {
+      background: #D1E9DA;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.82rem;
+    }
+
+    /* Form Controls */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--blue-deep);
+      margin-bottom: 5px;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 10px 13px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-vintage);
+      background: #FFFDF9;
+      color: var(--ink-dark);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 0.93rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--blue-primary);
+      box-shadow: 0 0 0 3px rgba(34, 75, 117, 0.14);
+    }
+
+    /* ================= AUTH VIEW ================= */
+    .auth-wrapper {
+      min-height: calc(100vh - var(--footer-height));
+      width: 100%;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      padding: 22px clamp(16px, 3vw, 44px);
+    }
+
+    .auth-shell {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 760px;
+      padding: 36px clamp(22px, 4vw, 48px) 32px;
+      background: linear-gradient(160deg, #FFFDF8 0%, #F4F9FE 65%, #FFFDF8 100%);
+      border-top: 4px solid var(--gold-vintage);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 22px;
+      padding-bottom: 18px;
+      border-bottom: 1px dashed var(--border-vintage);
+    }
+
+    .auth-logo {
+      width: 78px;
+      height: 78px;
+      margin: 0 auto 14px;
+    }
+
+    .auth-title {
+      font-size: 1.95rem;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .auth-slogan {
+      font-size: 1.05rem;
+    }
+
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--bg-paper-dark);
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-vintage);
+      margin-bottom: 20px;
+    }
+
+    .auth-tab {
+      padding: 9px;
+      border: none;
+      background: transparent;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--ink-muted);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .auth-tab.active {
+      background: var(--blue-primary);
+      color: #FCF9F2;
+      box-shadow: 0 2px 6px rgba(24, 54, 84, 0.2);
+    }
+
+    .divider-text {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: var(--ink-muted);
+      font-size: 0.82rem;
+      margin: 16px 0;
+    }
+
+    .divider-text::before, .divider-text::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--border-vintage);
+    }
+
+    .divider-text span {
+      padding: 0 10px;
+    }
+
+    .btn-google {
+      width: 100%;
+      background: #FFFDF9;
+      color: var(--ink-dark);
+      border: 1px solid var(--border-blue);
+      font-weight: 600;
+    }
+
+    .btn-google:hover {
+      background: var(--blue-pale);
+    }
+
+    .alert-box {
+      padding: 11px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      margin-bottom: 15px;
+      border: 1px solid transparent;
+    }
+
+    .alert-error {
+      background: var(--danger-bg);
+      color: var(--danger-text);
+      border-color: #E2B3B3;
+    }
+
+    .alert-info {
+      background: var(--blue-pale);
+      color: var(--blue-deep);
+      border-color: var(--border-blue);
+    }
+
+    .alert-success {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border-color: #B2D8C0;
+    }
+
+    /* ================= MAIN APP SHELL ================= */
+    .topbar {
+      background: linear-gradient(90deg, #D5E9FA 0%, #E6F3FD 50%, #D2E7F9 100%);
+      color: var(--blue-deep);
+      border-bottom: 2.5px solid var(--blue-mid);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      box-shadow: 0 4px 16px rgba(46, 116, 181, 0.12);
+    }
+
+    .topbar-inner {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 12px clamp(18px, 3vw, 48px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .topbar-logo {
+      width: 48px;
+      height: 48px;
+    }
+
+    .topbar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.42rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      background: linear-gradient(115deg, #194A7A 0%, #2F80ED 28%, #0284C7 52%, #C28F36 74%, #194A7A 100%);
+      background-size: 260% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: lightHeaderFlow 5s ease-in-out infinite;
+    }
+
+    .topbar-slogan {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.88rem;
+      color: var(--blue-primary);
+      font-weight: 600;
+    }
+
+    .topbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.65);
+      color: var(--blue-deep);
+      border: 1px solid var(--border-blue);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .nav-btn:hover {
+      background: #FFFFFF;
+    }
+
+    .nav-btn.active {
+      background: var(--blue-primary);
+      color: #FFFFFF;
+      border-color: var(--blue-deep);
+      box-shadow: 0 2px 8px rgba(46, 116, 181, 0.22);
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--border-blue);
+      color: var(--blue-deep);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+    }
+
+    .role-badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .role-admin {
+      background: var(--gold-vintage);
+      color: #FFFDF8;
+    }
+
+    .role-student {
+      background: var(--blue-soft);
+      color: var(--blue-deep);
+    }
+
+    .main-container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 24px clamp(18px, 3vw, 48px) 16px;
+    }
+
+    /* ================= HOME VIEW ================= */
+    .hero-edu {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 18px;
+      padding: 20px 24px;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, #F8FCFF 0%, #DCEEFB 100%);
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue-pale);
+      color: var(--blue-primary);
+      border: 1px solid var(--border-blue);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      margin-bottom: 12px;
+    }
+
+    .hero-edu h1 {
+      font-size: 1.65rem;
+      color: var(--blue-deep);
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .hero-edu p {
+      color: var(--ink-muted);
+      font-size: 0.98rem;
+      margin-bottom: 18px;
+      max-width: 720px;
+    }
+
+    .quote-vintage {
+      background: var(--bg-card);
+      border-left: 4px solid var(--gold-vintage);
+      border-top: 1px solid var(--border-vintage);
+      border-right: 1px solid var(--border-vintage);
+      border-bottom: 1px solid var(--border-vintage);
+      padding: 20px 22px;
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .quote-vintage blockquote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.12rem;
+      color: var(--blue-deep);
+      margin-bottom: 12px;
+    }
+
+    .edu-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .edu-grid-4 .module-card:nth-child(1) {
+      border-top: 4px solid var(--blue-primary);
+      background: linear-gradient(180deg, #F2F9FF 0%, #FFFDF8 45%);
+    }
+
+    .edu-grid-4 .module-card:nth-child(2) {
+      border-top: 4px solid var(--gold-vintage);
+      background: linear-gradient(180deg, #FFF8E8 0%, #FFFDF8 45%);
+    }
+
+    .edu-grid-4 .module-card:nth-child(2) .module-icon {
+      background: var(--gold-soft);
+      border-color: #E5C484;
+      color: #9C6B14;
+    }
+
+    .edu-grid-4 .module-card:nth-child(3) {
+      border-top: 4px solid var(--teal-accent);
+      background: linear-gradient(180deg, #EAF7F5 0%, #FFFDF8 45%);
+    }
+
+    .edu-grid-4 .module-card:nth-child(3) .module-icon {
+      background: var(--teal-soft);
+      border-color: #9ED4CE;
+      color: var(--teal-accent);
+    }
+
+    .edu-grid-4 .module-card:nth-child(4) {
+      border-top: 4px solid #6B5B95;
+      background: linear-gradient(180deg, #F3F0FA 0%, #FFFDF8 45%);
+    }
+
+    .edu-grid-4 .module-card:nth-child(4) .module-icon {
+      background: #ECE7F8;
+      border-color: #C7BBE6;
+      color: #5A4A82;
+    }
+
+    .module-card {
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .module-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px rgba(24, 54, 84, 0.13);
+    }
+
+    .module-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      background: var(--blue-pale);
+      border: 1px solid var(--border-blue);
+      color: var(--blue-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .module-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--blue-deep);
+      margin-bottom: 8px;
+    }
+
+    .module-card p {
+      font-size: 0.89rem;
+      color: var(--ink-muted);
+      margin-bottom: 16px;
+    }
+
+    .edu-bottom-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+    }
+
+    .section-panel {
+      padding: 18px 20px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-vintage);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .panel-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.32rem;
+      color: var(--blue-deep);
+    }
+
+    .bulletin-item {
+      padding: 13px 15px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card-tint);
+      border: 1px solid var(--border-vintage);
+      margin-bottom: 12px;
+    }
+
+    .bulletin-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .bulletin-meta {
+      font-size: 0.78rem;
+      color: var(--blue-mid);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px dashed var(--border-vintage);
+      font-size: 0.91rem;
+    }
+
+    .profile-row:last-child {
+      border-bottom: none;
+    }
+
+    /* ================= ADMIN MANAGEMENT VIEW ================= */
+    .admin-layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 310px) 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .admin-sidebar {
+      padding: 20px;
+    }
+
+    .admin-sidebar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--blue-deep);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--border-vintage);
+    }
+
+    .admin-menu-btn {
+      width: 100%;
+      text-align: left;
+      padding: 11px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--ink-dark);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    .admin-menu-btn:hover {
+      background: var(--blue-pale);
+      color: var(--blue-deep);
+    }
+
+    .admin-menu-btn.active {
+      background: var(--blue-primary);
+      color: #FCF9F2;
+      border-color: var(--blue-deep);
+    }
+
+    .badge-count {
+      background: var(--gold-vintage);
+      color: #FFFDF8;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .stat-box {
+      padding: 16px 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-vintage);
+      border-radius: var(--radius-md);
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+      font-weight: 600;
+    }
+
+    .stat-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--blue-deep);
+      margin-top: 2px;
+    }
+
+    .toolbar-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border-vintage);
+      border-radius: var(--radius-md);
+      background: #FFFDF9;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--blue-pale);
+      color: var(--blue-deep);
+      font-weight: 700;
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1.5px solid var(--border-blue);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #E6DEC8;
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #F8F4EA;
+    }
+
+    .status-pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .status-approved {
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+
+    .status-pending {
+      background: var(--warn-bg);
+      color: var(--warn-text);
+    }
+
+    .status-rejected {
+      background: var(--danger-bg);
+      color: var(--danger-text);
+    }
+
+    /* Settings & Backup Cards */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .setting-card {
+      padding: 20px;
+      background: #FFFDF9;
+      border: 1px solid var(--border-vintage);
+      border-radius: var(--radius-md);
+    }
+
+    .setting-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--blue-deep);
+      margin-bottom: 8px;
+    }
+
+    .setting-card p {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      margin-bottom: 14px;
+    }
+
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 14px;
+      background: var(--blue-pale);
+      border: 1px solid var(--border-blue);
+      border-radius: var(--radius-sm);
+    }
+
+    .switch-toggle {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .switch-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .switch-slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #B4BEC9;
+      transition: .25s;
+      border-radius: 999px;
+    }
+
+    .switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .25s;
+      border-radius: 50%;
+    }
+
+    .switch-toggle input:checked + .switch-slider {
+      background-color: var(--blue-primary);
+    }
+
+    .switch-toggle input:checked + .switch-slider:before {
+      transform: translateX(24px);
+    }
+
+    /* Dropdown & Modules */
+    .nav-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      min-width: 250px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-blue);
+      border-radius: var(--radius-md);
+      box-shadow: 0 12px 28px rgba(24, 54, 84, 0.16);
+      padding: 8px;
+      z-index: 65;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+
+    .nav-drop-item {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: none;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      transition: background 0.15s;
+    }
+
+    .nav-drop-item:hover {
+      background: var(--blue-pale);
+      color: var(--blue-deep);
+    }
+
+    .nav-drop-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--blue-deep);
+    }
+
+    .hub-sections-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+      gap: 14px;
+      margin-bottom: 6px;
+    }
+
+    .hub-tile {
+      padding: 15px 17px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-vintage);
+      border-radius: var(--radius-md);
+      box-shadow: 0 6px 18px rgba(24, 54, 84, 0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      transition: transform 0.18s, border-color 0.18s;
+    }
+
+    .hub-tile:hover {
+      transform: translateY(-2px);
+      border-color: var(--blue-primary);
+    }
+
+    .hub-tile-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hub-tile-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: linear-gradient(145deg, #EEF6FE, #DCECFB);
+      border: 1px solid var(--border-blue);
+      color: var(--blue-deep);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .hub-tile h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--blue-deep);
+    }
+
+    .hub-tile p {
+      font-size: 0.84rem;
+      color: var(--ink-muted);
+      line-height: 1.45;
+    }
+
+    .module-workspace {
+      padding: 20px 22px;
+    }
+
+    .workspace-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .workspace-box {
+      padding: 15px 16px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card-tint);
+      border: 1px solid var(--border-vintage);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(16, 35, 56, 0.58);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 60;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 520px;
+      padding: 26px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* Feature Toggle List & Welcome Popup LED Styling */
+    .feature-toggle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .feature-toggle-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card-tint);
+      border: 1px solid var(--border-vintage);
+    }
+
+    .feature-toggle-item.disabled-item {
+      opacity: 0.72;
+      background: #F3F6F9;
+    }
+
+    .feature-item-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--blue-pale);
+      border: 1px solid var(--border-blue);
+      color: var(--blue-deep);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .led-board-shell {
+      background:
+        radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        radial-gradient(circle at 50% 20%, #16263A 0%, #09111C 100%);
+      background-size: 6px 6px, 100% 100%;
+      border: 2px solid #2A4563;
+      box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.75), 0 8px 22px rgba(10, 22, 38, 0.25);
+      border-radius: var(--radius-md);
+      padding: 18px 14px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .led-dot-overlay {
+      position: relative;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 100%;
+      padding: 6px 0;
+    }
+
+    .led-marquee-track {
+      display: inline-block;
+      padding-left: 100%;
+      font-family: 'Be Vietnam Pro', monospace;
+      font-weight: 800;
+      font-size: 1.32rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      animation: ledScrollLeft var(--led-duration, 11s) linear infinite;
+      will-change: transform;
+    }
+
+    @keyframes ledScrollLeft {
+      0% {
+        transform: translate3d(0%, 0, 0);
+      }
+      100% {
+        transform: translate3d(-100%, 0, 0);
+      }
+    }
+
+    .led-color-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+      align-items: center;
+    }
+
+    .led-swatch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border-vintage);
+      background: #FFFDF9;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--ink-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .led-swatch-btn.active {
+      border-color: var(--blue-deep);
+      background: var(--blue-pale);
+      box-shadow: 0 0 0 2px rgba(43, 114, 179, 0.2);
+    }
+
+    .led-dot-preview {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 1px solid rgba(0, 0, 0, 0.25);
+    }
+
+    /* Fixed Bottom Copyright Bar */
+    .fixed-copyright-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--footer-height);
+      z-index: 45;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      background: linear-gradient(90deg, rgba(213, 233, 250, 0.96) 0%, rgba(235, 245, 252, 0.98) 50%, rgba(210, 231, 249, 0.96) 100%);
+      backdrop-filter: blur(8px);
+      border-top: 1.5px solid var(--border-blue);
+      box-shadow: 0 -4px 14px rgba(27, 73, 117, 0.08);
+      color: var(--blue-deep);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      text-align: center;
+    }
+
+    .fixed-copyright-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .copyright-gold-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold-vintage);
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 1100px) {
+      .auth-shell, .hero-edu, .edu-bottom-grid, .admin-layout, .settings-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .edu-grid-4, .stats-row { grid-template-columns: 1fr; }
+      .topbar-inner, .main-container { padding: 14px; }
+      .main-container { padding-bottom: 12px; }
+      .auth-card { padding: 24px 18px; }
+      .fixed-copyright-bar { font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== 1. MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ ==================== -->
+  <section id="auth-view" class="auth-wrapper">
+    <div class="auth-shell">
+      <div class="vintage-card vintage-double-border auth-card">
+        <div class="auth-header">
+          <div class="logo-frame auth-logo">
+            <img src="logo.png" alt="Logo Thầy Hiếu GenZ" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="logo-fallback" style="display:none;">
+              <span style="font-size:1.55rem;">H</span>
+              <span style="font-size:0.62rem; letter-spacing:1px; margin-top:2px;">VĂN</span>
+            </div>
+          </div>
+          <h1 class="brand-title-styled auth-title">Thầy Hiếu GenZ</h1>
+          <p class="brand-slogan-styled auth-slogan">Lớp văn thầy Hiếu - Lớp học hạnh phúc</p>
+        </div>
+
+        <div id="auth-alert" class="alert-box hidden"></div>
+
+        <div class="auth-tabs">
+          <button type="button" id="tab-login-btn" class="auth-tab active" onclick="switchAuthTab('login')">Đăng nhập</button>
+          <button type="button" id="tab-register-btn" class="auth-tab" onclick="switchAuthTab('register')">Đăng ký học viên</button>
+        </div>
+
+        <!-- Form Đăng nhập -->
+        <form id="login-form" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label class="form-label" for="login-identity">Tên đăng nhập hoặc Email</label>
+            <input class="form-input" id="login-identity" type="text" placeholder="Nhập tài khoản của bạn..." required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-password">Mật khẩu</label>
+            <input class="form-input" id="login-password" type="password" placeholder="Nhập mật khẩu..." required />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:4px;">Vào lớp học</button>
+
+          <div class="divider-text"><span>hoặc tiếp tục với</span></div>
+
+          <button type="button" class="btn btn-google" onclick="openGoogleModal()">
+            <svg width="18" height="18" viewBox="0 0 48 48">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            Đăng ký / Đăng nhập bằng Google
+          </button>
+        </form>
+
+        <!-- Form Đăng ký thường -->
+        <form id="register-form" class="hidden" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label class="form-label" for="reg-fullname">Họ và tên học viên *</label>
+            <input class="form-input" id="reg-fullname" type="text" placeholder="Ví dụ: Nguyễn Minh Anh" required />
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="form-group">
+              <label class="form-label" for="reg-username">Tên đăng nhập *</label>
+              <input class="form-input" id="reg-username" type="text" placeholder="minhanh2k9" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-phone">Số điện thoại *</label>
+              <input class="form-input" id="reg-phone" type="tel" placeholder="09xx xxx xxx" required />
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="form-group">
+              <label class="form-label" for="reg-email">Email *</label>
+              <input class="form-input" id="reg-email" type="email" placeholder="hocvien@gmail.com" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-grade">Khối lớp / Mục tiêu *</label>
+              <select class="form-select" id="reg-grade" required>
+                <option value="">-- Chọn khối lớp --</option>
+                <option value="Lớp 9 - Ôn thi vào 10">Lớp 9 - Ôn thi vào 10</option>
+                <option value="Lớp 10 - Ngữ văn THPT">Lớp 10 - Ngữ văn THPT</option>
+                <option value="Lớp 11 - Ngữ văn THPT">Lớp 11 - Ngữ văn THPT</option>
+                <option value="Lớp 12 - Luyện thi THPT QG">Lớp 12 - Luyện thi THPT QG</option>
+                <option value="Bồi dưỡng HSG Văn">Bồi dưỡng HSG Văn</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-password">Mật khẩu *</label>
+            <input class="form-input" id="reg-password" type="password" placeholder="Tạo mật khẩu..." required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-note">Lời nhắn gửi thầy Hiếu *</label>
+            <input class="form-input" id="reg-note" type="text" placeholder="Mục tiêu điểm số hoặc mong muốn của bạn..." required />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Gửi hồ sơ đăng ký xét duyệt</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MODAL ĐĂNG KÝ GOOGLE ĐẦY ĐỦ THÔNG TIN ==================== -->
+  <div id="google-modal" class="modal-backdrop hidden">
+    <div class="vintage-card vintage-double-border modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--border-vintage);">
+        <div>
+          <h3 class="serif-title" style="color:var(--blue-deep); font-size:1.3rem;">Hoàn tất hồ sơ Google</h3>
+          <p style="font-size:0.84rem; color:var(--ink-muted);">Vui lòng điền đầy đủ thông tin để thầy Hiếu phê duyệt tài khoản</p>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeGoogleModal()">✕</button>
+      </div>
+
+      <form onsubmit="handleGoogleSubmit(event)">
+        <div class="form-group">
+          <label class="form-label" for="gg-email">Tài khoản Google (Gmail) *</label>
+          <input class="form-input" id="gg-email" type="email" placeholder="tenban@gmail.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gg-fullname">Họ và tên đầy đủ *</label>
+          <input class="form-input" id="gg-fullname" type="text" placeholder="Nhập họ và tên thật của bạn" required />
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="gg-phone">Số điện thoại liên hệ *</label>
+            <input class="form-input" id="gg-phone" type="tel" placeholder="09xx xxx xxx" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="gg-dob">Ngày sinh *</label>
+            <input class="form-input" id="gg-dob" type="date" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gg-grade">Trường & Khối lớp đang học *</label>
+          <input class="form-input" id="gg-grade" type="text" placeholder="Ví dụ: Lớp 12A1 - THPT Chuyên..." required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gg-note">Lý do tham gia lớp học *</label>
+          <textarea class="form-textarea" id="gg-note" rows="2" placeholder="Chia sẻ ngắn gọn mục tiêu học Ngữ văn của bạn..." required></textarea>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:16px;">
+          <button type="button" class="btn btn-outline" onclick="closeGoogleModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Xác nhận & Gửi phê duyệt</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL TẠO TÀI KHOẢN MỚI (ADMIN) ==================== -->
+  <div id="create-user-modal" class="modal-backdrop hidden">
+    <div class="vintage-card vintage-double-border modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--border-vintage);">
+        <div>
+          <h3 class="serif-title" style="color:var(--blue-deep); font-size:1.3rem;">Tạo tài khoản mới</h3>
+          <p style="font-size:0.84rem; color:var(--ink-muted);">Khởi tạo tài khoản học viên, kiểm duyệt viên hoặc chức vụ lớp</p>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeCreateUserModal()">✕</button>
+      </div>
+      <form onsubmit="handleAdminCreateUser(event)">
+        <div class="form-group">
+          <label class="form-label" for="new-u-fullname">Họ và tên *</label>
+          <input class="form-input" id="new-u-fullname" type="text" required />
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="new-u-username">Tên đăng nhập *</label>
+            <input class="form-input" id="new-u-username" type="text" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="new-u-password">Mật khẩu *</label>
+            <input class="form-input" id="new-u-password" type="text" value="123456" required />
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="new-u-email">Email *</label>
+            <input class="form-input" id="new-u-email" type="email" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="new-u-phone">Số điện thoại</label>
+            <input class="form-input" id="new-u-phone" type="tel" />
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="new-u-role">Vai trò / Quyền hỗ trợ *</label>
+            <select class="form-select" id="new-u-role" onchange="toggleCreateRolePosition()">
+              <option value="student">Học viên (User)</option>
+              <option value="moderator">Kiểm duyệt viên</option>
+              <option value="class_role">Chức vụ lớp (Hỗ trợ quản lý)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="new-u-grade">Khối lớp / Ghi chú</label>
+            <input class="form-input" id="new-u-grade" type="text" placeholder="Ví dụ: Lớp 12A1" />
+          </div>
+        </div>
+        <div id="new-u-position-wrap" class="form-group hidden">
+          <label class="form-label" for="new-u-position">Tên chức vụ trong lớp</label>
+          <input class="form-input" id="new-u-position" type="text" placeholder="Ví dụ: Lớp trưởng, Trưởng ban Học tập..." />
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
+          <button type="button" class="btn btn-outline" onclick="closeCreateUserModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Tạo &amp; Kích hoạt ngay</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL XEM CHI TIẾT & CẤP CHỨC VỤ (ADMIN) ==================== -->
+  <div id="user-detail-modal" class="modal-backdrop hidden">
+    <div class="vintage-card vintage-double-border modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--border-vintage);">
+        <div>
+          <h3 class="serif-title" style="color:var(--blue-deep); font-size:1.3rem;">Chi tiết hồ sơ &amp; Cấp chức vụ</h3>
+          <p style="font-size:0.84rem; color:var(--ink-muted);">Kiểm tra đầy đủ thông tin tài khoản và phân quyền hỗ trợ lớp</p>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeUserDetailModal()">✕</button>
+      </div>
+      <div id="user-detail-info" style="margin-bottom:14px;"></div>
+      <form id="user-role-form" onsubmit="saveUserRoleAssignment(event)">
+        <input type="hidden" id="detail-user-id" />
+        <div class="form-group">
+          <label class="form-label" for="detail-user-role">Cấp vai trò</label>
+          <select class="form-select" id="detail-user-role" onchange="toggleDetailPosition()">
+            <option value="student">Học viên (User)</option>
+            <option value="moderator">Kiểm duyệt viên</option>
+            <option value="class_role">Chức vụ lớp (Hỗ trợ quản lý)</option>
+          </select>
+        </div>
+        <div id="detail-position-wrap" class="form-group hidden">
+          <label class="form-label" for="detail-user-position">Tên chức vụ lớp</label>
+          <input class="form-input" id="detail-user-position" type="text" placeholder="Ví dụ: Lớp phó học tập, Thủ quỹ lớp..." />
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
+          <button type="button" class="btn btn-outline" onclick="closeUserDetailModal()">Đóng</button>
+          <button type="submit" class="btn btn-primary">Lưu phân quyền</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL POP-UP CHÀO MỪNG LỚP HỌC ==================== -->
+  <div id="welcome-popup-modal" class="modal-backdrop hidden" style="z-index:75;">
+    <div class="vintage-card vintage-double-border modal-card" style="max-width:600px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--border-vintage);">
+        <div>
+          <span class="hero-tag" style="margin-bottom:4px;">THÔNG BÁO CHÀO MỪNG</span>
+          <h3 id="welcome-popup-title" class="serif-title" style="color:var(--blue-deep); font-size:1.35rem;">Chào mừng đến với Lớp văn thầy Hiếu!</h3>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeWelcomePopup()">✕</button>
+      </div>
+
+      <div id="welcome-popup-body"></div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-top:18px; padding-top:12px; border-top:1px dashed var(--border-vintage);">
+        <label style="display:inline-flex; align-items:center; gap:7px; font-size:0.84rem; color:var(--ink-muted); cursor:pointer;">
+          <input type="checkbox" id="popup-skip-session-checkbox" />
+          <span>Không hiện lại trong phiên này</span>
+        </label>
+        <button type="button" class="btn btn-primary" onclick="closeWelcomePopup()">Vào lớp học ngay</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2. KHÔNG GIAN CHÍNH SAU KHI ĐĂNG NHẬP ==================== -->
+  <div id="app-view" class="hidden">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="topbar-brand">
+          <div class="logo-frame topbar-logo">
+            <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="logo-fallback" style="display:none;">
+              <span style="font-size:1.1rem;">H</span>
+            </div>
+          </div>
+          <div>
+            <div class="topbar-title">Thầy Hiếu GenZ</div>
+            <div class="topbar-slogan">Lớp văn thầy Hiếu - Lớp học hạnh phúc</div>
+          </div>
+        </div>
+
+        <nav class="topbar-nav">
+          <button type="button" id="nav-home" class="nav-btn active" onclick="switchMainView('home')">
+            <svg class="lux-svg-sm" viewBox="0 0 24 24">
+              <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5z"/>
+            </svg>
+            <span>Trang chủ</span>
+          </button>
+          <div id="nav-more-wrap" class="nav-dropdown">
+            <button type="button" id="nav-more-btn" class="nav-btn" onclick="toggleMoreMenu(event)">
+              <svg class="lux-svg-sm" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+              </svg>
+              <span>Chuyên mục lớp ▾</span>
+            </button>
+            <div id="nav-more-menu" class="nav-dropdown-menu hidden"></div>
+          </div>
+          <!-- Mục Quản lý chung hiển thị cho Quản trị viên hoặc nhân sự được cấp quyền -->
+          <button type="button" id="nav-admin" class="nav-btn hidden" onclick="switchMainView('admin')">
+            <svg class="lux-svg-sm" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <span>Quản lý chung</span>
+            <span id="nav-pending-badge" class="badge-count hidden">0</span>
+          </button>
+
+          <div class="user-chip">
+            <span id="topbar-username" style="font-weight:600;">Học viên</span>
+            <span id="topbar-role" class="role-badge role-student">Học viên</span>
+          </div>
+
+          <button type="button" class="btn btn-gold btn-sm" onclick="handleLogout()">Đăng xuất</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-container">
+      <!-- ===== TRANG CHỦ GIÁO DỤC ===== -->
+      <section id="view-home">
+        <div class="vintage-card vintage-double-border hero-edu">
+          <div>
+            <span class="hero-tag">
+              <svg class="lux-svg-sm" viewBox="0 0 24 24">
+                <path d="M12 3l1.9 4.2L18 9.1l-4.1 1.9L12 15.2l-1.9-4.2L6 9.1l4.1-1.9L12 3z"/>
+                <path d="M19 15l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9.9-2z"/>
+              </svg>
+              <span>KHÔNG GIAN HỌC TẬP NGỮ VĂN • NIÊN KHÓA 2026</span>
+            </span>
+            <h1>Chào mừng <span id="welcome-name" style="color:var(--blue-primary);">bạn</span> đến với Lớp văn thầy Hiếu</h1>
+            <p>
+              Nơi mỗi trang văn không chỉ là những dòng chữ trên giấy thi, mà là hành trình thấu cảm cuộc sống, rèn tư duy phản biện sắc bén và nuôi dưỡng tâm hồn hạnh phúc theo cách gần gũi của thế hệ GenZ.
+            </p>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-primary" onclick="openModuleView('references')">
+                Khám phá kho học liệu
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="openModuleView('assignments')">
+                Lộ trình luyện viết
+              </button>
+            </div>
+          </div>
+
+          <div class="quote-vintage">
+            <blockquote>
+              “Văn học là nhân học. Khi viết bằng sự chân thành và tư duy mạch lạc, mỗi bài làm của các em đều mang một thanh âm không thể trộn lẫn.”
+            </blockquote>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.86rem; color:var(--ink-muted);">
+              <span>— <strong>Thầy Hiếu GenZ</strong></span>
+              <span style="color:var(--gold-vintage); font-weight:600;">Lớp học hạnh phúc</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trung tâm điều hướng nhanh các chuyên mục lớp học -->
+        <div id="home-hub-panel" class="vintage-card section-panel" style="margin-bottom:18px;">
+          <div class="panel-header" style="margin-bottom:12px;">
+            <div>
+              <h2>Trung tâm tổng hợp &amp; Điều hướng chuyên mục</h2>
+              <p style="font-size:0.84rem; color:var(--ink-muted);">Chọn nhanh phân khu học tập, rèn luyện và quản lý lớp học bên dưới</p>
+            </div>
+            <span class="hero-tag" style="margin-bottom:0;">10 CHUYÊN MỤC MỞ RỘNG</span>
+          </div>
+          <div id="home-hub-grid" class="hub-sections-grid"></div>
+        </div>
+
+        <!-- 4 Chuyên mục giáo dục đặc trưng -->
+        <div class="edu-grid-4">
+          <div class="vintage-card module-card">
+            <div>
+              <div class="module-icon">
+                <svg class="lux-svg" viewBox="0 0 24 24">
+                  <path d="M12 6.5C9.6 4.8 6.4 4.8 3.5 6v12.5c2.9-1.2 6.1-1.2 8.5.5 2.4-1.7 5.6-1.7 8.5-.5V6c-2.9-1.2-6.1-1.2-8.5.5z"/>
+                  <line x1="12" y1="6.5" x2="12" y2="19"/>
+                </svg>
+              </div>
+              <h3>Đọc hiểu & Cảm thụ văn học</h3>
+              <p>Phân tích chuyên sâu các tác phẩm thơ, truyện hiện đại và trung đại theo sơ đồ tư duy trực quan, dễ nhớ.</p>
+            </div>
+            <span style="font-size:0.8rem; font-weight:700; color:var(--blue-primary);">Chuyên đề nền tảng →</span>
+          </div>
+
+          <div class="vintage-card module-card">
+            <div>
+              <div class="module-icon">
+                <svg class="lux-svg" viewBox="0 0 24 24">
+                  <path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                  <line x1="14.5" y1="5.5" x2="18.5" y2="9.5"/>
+                </svg>
+              </div>
+              <h3>Nghị luận xã hội GenZ</h3>
+              <p>Hệ thống dẫn chứng thời sự mới mẻ, cách mở bài ấn tượng và lập luận sắc sảo cho mọi vấn đề đời sống.</p>
+            </div>
+            <span style="font-size:0.8rem; font-weight:700; color:var(--blue-primary);">Kỹ năng viết sâu →</span>
+          </div>
+
+          <div class="vintage-card module-card">
+            <div>
+              <div class="module-icon">
+                <svg class="lux-svg" viewBox="0 0 24 24">
+                  <path d="M3 9l9-5 9 5"/>
+                  <line x1="5" y1="10" x2="5" y2="18"/>
+                  <line x1="9.5" y1="10" x2="9.5" y2="18"/>
+                  <line x1="14.5" y1="10" x2="14.5" y2="18"/>
+                  <line x1="19" y1="10" x2="19" y2="18"/>
+                  <line x1="3" y1="18" x2="21" y2="18"/>
+                  <line x1="2" y1="21" x2="22" y2="21"/>
+                </svg>
+              </div>
+              <h3>Phòng luyện đề & Chấm chữa</h3>
+              <p>Kho đề thi thử chuẩn cấu trúc mới, kèm nhận xét chi tiết từng luận điểm và diễn đạt từ thầy Hiếu.</p>
+            </div>
+            <span style="font-size:0.8rem; font-weight:700; color:var(--blue-primary);">Thực chiến phòng thi →</span>
+          </div>
+
+          <div class="vintage-card module-card">
+            <div>
+              <div class="module-icon">
+                <svg class="lux-svg" viewBox="0 0 24 24">
+                  <path d="M12 21c-4.5-3.4-8-6.4-8-10.3A4.2 4.2 0 0 1 8.2 6.5c1.6 0 3 .7 3.8 1.9.8-1.2 2.2-1.9 3.8-1.9A4.2 4.2 0 0 1 20 10.7c0 3.9-3.5 6.9-8 10.3z"/>
+                </svg>
+              </div>
+              <h3>Góc Sách hay & Tâm tình</h3>
+              <p>Không gian chia sẻ những cuốn sách đẹp, câu chuyện truyền cảm hứng để giữ lửa yêu văn mỗi ngày.</p>
+            </div>
+            <span style="font-size:0.8rem; font-weight:700; color:var(--blue-primary);">Lớp học hạnh phúc →</span>
+          </div>
+        </div>
+
+        <!-- Bảng tin lớp học & Thẻ hồ sơ học viên -->
+        <div class="edu-bottom-grid">
+          <div id="home-bulletin-panel" class="vintage-card section-panel">
+            <div class="panel-header">
+              <h2>Bảng tin Lớp văn thầy Hiếu</h2>
+              <span style="font-size:0.82rem; color:var(--ink-muted);">Cập nhật mới nhất</span>
+            </div>
+
+            <div class="bulletin-item">
+              <div class="bulletin-meta">THÔNG BÁO KHAI GIẢNG • HỆ THỐNG LỚP HỌC</div>
+              <div style="font-weight:600; color:var(--blue-deep); margin-bottom:4px;">Hoàn thiện cổng xác thực thành viên & hồ sơ lớp học</div>
+              <p style="font-size:0.88rem; color:var(--ink-muted);">
+                Chào mừng các bạn học viên đã đăng ký tài khoản. Các chuyên mục bài giảng video, tài liệu PDF và nộp bài chấm chữa sẽ lần lượt được thầy cập nhật ngay sau giai đoạn ổn định danh sách lớp.
+              </p>
+            </div>
+
+            <div class="bulletin-item">
+              <div class="bulletin-meta">GÓC DẶN DÒ • PHƯƠNG PHÁP HỌC VĂN</div>
+              <div style="font-weight:600; color:var(--blue-deep); margin-bottom:4px;">Chuẩn bị một cuốn sổ tay ghi chép ý tưởng & dẫn chứng</div>
+              <p style="font-size:0.88rem; color:var(--ink-muted);">
+                Mỗi tuần thầy sẽ gửi một chủ đề nghị luận mở để cả lớp cùng trao đổi quan điểm, rèn thói quen viết ngắn gọn mà giàu sức gợi.
+              </p>
+            </div>
+          </div>
+
+          <div id="home-profile-panel" class="vintage-card section-panel">
+            <div class="panel-header">
+              <h2>Thông tin cá nhân</h2>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <span class="status-pill status-approved">Đã kích hoạt</span>
+                <button type="button" id="btn-edit-profile" class="btn btn-secondary btn-sm" onclick="toggleEditProfile(true)">Chỉnh sửa</button>
+              </div>
+            </div>
+            <div id="member-profile-card"></div>
+            <form id="member-profile-edit-form" class="hidden" onsubmit="saveOwnProfile(event)" style="margin-top:6px;">
+              <div class="form-group" style="margin-bottom:10px;">
+                <label class="form-label" for="prof-fullname">Họ và tên</label>
+                <input class="form-input" id="prof-fullname" type="text" required />
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div class="form-group" style="margin-bottom:10px;">
+                  <label class="form-label" for="prof-phone">Số điện thoại</label>
+                  <input class="form-input" id="prof-phone" type="tel" />
+                </div>
+                <div class="form-group" style="margin-bottom:10px;">
+                  <label class="form-label" for="prof-grade">Khối lớp / Mục tiêu</label>
+                  <input class="form-input" id="prof-grade" type="text" />
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom:10px;">
+                <label class="form-label" for="prof-note">Giới thiệu / Mục tiêu học tập</label>
+                <input class="form-input" id="prof-note" type="text" />
+              </div>
+              <div style="display:flex; justify-content:flex-end; gap:8px;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="toggleEditProfile(false)">Hủy</button>
+                <button type="submit" class="btn btn-primary btn-sm">Lưu thông tin</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== KHU VỰC CHUYÊN MỤC MỞ RỘNG ===== -->
+      <section id="view-module" class="hidden">
+        <div class="vintage-card module-workspace">
+          <div class="panel-header">
+            <div>
+              <span id="mod-badge" class="hero-tag" style="margin-bottom:6px;">CHUYÊN MỤC LỚP HỌC</span>
+              <h2 id="mod-title" style="display:inline-flex; align-items:center; gap:10px;"></h2>
+              <p id="mod-desc" style="font-size:0.88rem; color:var(--ink-muted); margin-top:4px;"></p>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="switchMainView('home')">← Về Trang chủ</button>
+          </div>
+
+          <div id="mod-interactive-area" style="margin-bottom:16px;"></div>
+          <div id="mod-items-grid" class="workspace-list"></div>
+        </div>
+      </section>
+
+      <!-- ===== KHU VỰC QUẢN LÝ CHUNG ===== -->
+      <section id="view-admin" class="hidden">
+        <div class="admin-layout">
+          <!-- Sidebar Quản lý chung -->
+          <aside class="vintage-card admin-sidebar">
+            <div class="admin-sidebar-title">Quản lý chung</div>
+            <button type="button" id="subtab-users-btn" class="admin-menu-btn active" onclick="switchAdminSubtab('users')">
+              <span>Quản trị tài khoản</span>
+              <span id="sidebar-pending-count" class="badge-count">0</span>
+            </button>
+            <button type="button" id="subtab-features-btn" class="admin-menu-btn hidden" onclick="switchAdminSubtab('features')">
+              <span>Bật / tắt chức năng</span>
+            </button>
+            <button type="button" id="subtab-settings-btn" class="admin-menu-btn" onclick="switchAdminSubtab('settings')">
+              <span>Cài đặt & Đồng bộ dữ liệu</span>
+            </button>
+
+            <div style="margin-top:18px; padding-top:14px; border-top:1px dashed var(--border-vintage); font-size:0.82rem; color:var(--ink-muted);">
+              <div><strong>Trạng thái lưu:</strong> <span id="autosave-status-text" style="color:var(--success-text); font-weight:600;">Đang bật tự động</span></div>
+              <div style="margin-top:4px;"><strong>Sẵn sàng đồng bộ:</strong> Cấu trúc chuẩn bị cho Supabase</div>
+            </div>
+          </aside>
+
+          <!-- Nội dung Quản lý chung -->
+          <div>
+            <!-- SUBTAB 1: QUẢN TRỊ TÀI KHOẢN -->
+            <div id="admin-subtab-users" class="vintage-card section-panel">
+              <div class="panel-header">
+                <div>
+                  <h2>Quản trị tài khoản &amp; Phân công lớp</h2>
+                  <p style="font-size:0.86rem; color:var(--ink-muted);">Xem hồ sơ chi tiết, phê duyệt tài khoản, cấp chức vụ/kiểm duyệt viên hoặc tạo tài khoản mới</p>
+                </div>
+                <button type="button" id="btn-open-create-user" class="btn btn-primary btn-sm hidden" onclick="openCreateUserModal()">+ Tạo tài khoản mới</button>
+              </div>
+
+              <div class="stats-row" id="admin-stats-row"></div>
+
+              <div class="toolbar-row">
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <button type="button" class="btn btn-sm btn-secondary filter-btn" data-filter="all" onclick="setUserFilter('all')">Tất cả</button>
+                  <button type="button" class="btn btn-sm btn-outline filter-btn" data-filter="pending" onclick="setUserFilter('pending')">Chờ phê duyệt</button>
+                  <button type="button" class="btn btn-sm btn-outline filter-btn" data-filter="approved" onclick="setUserFilter('approved')">Đã duyệt</button>
+                  <button type="button" class="btn btn-sm btn-outline filter-btn" data-filter="rejected" onclick="setUserFilter('rejected')">Từ chối / Khóa</button>
+                </div>
+                <input type="text" id="user-search-input" class="form-input" style="max-width:290px;" placeholder="Tìm tên, email, SĐT, lớp..." oninput="renderUsersTable()" />
+              </div>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Thành viên</th>
+                      <th>Liên hệ &amp; Lớp</th>
+                      <th>Chức vụ / Vai trò</th>
+                      <th>Trạng thái</th>
+                      <th>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="users-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- SUBTAB 1B: BẬT / TẮT CHỨC NĂNG & CẤU HÌNH POP-UP CHÀO MỪNG -->
+            <div id="admin-subtab-features" class="vintage-card section-panel hidden">
+              <div class="panel-header">
+                <div>
+                  <h2>Bật / tắt chức năng &amp; Pop-up chào mừng</h2>
+                  <p style="font-size:0.86rem; color:var(--ink-muted);">Điều khiển trạng thái hoạt động của từng chức năng/chuyên mục và tùy chỉnh Pop-up chào mừng khi đăng nhập</p>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="previewWelcomePopup()">Xem trước Pop-up</button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="savePopupAndFeaturesConfig()">Lưu cài đặt chức năng &amp; Pop-up</button>
+                </div>
+              </div>
+
+              <div id="features-feedback" class="alert-box hidden"></div>
+
+              <!-- Cấu hình Pop-up chào mừng -->
+              <div class="setting-card" style="margin-bottom:20px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px;">
+                  <div>
+                    <h3 style="margin-bottom:3px;">Cấu hình Pop-up chào mừng</h3>
+                    <p style="margin-bottom:0;">Hiển thị tự động khi người dùng vào lớp học (hỗ trợ Bảng chữ LED chạy hoặc Hình ảnh)</p>
+                  </div>
+                  <label class="switch-toggle" title="Bật / Tắt Pop-up chào mừng">
+                    <input type="checkbox" id="popup-enabled-switch" onchange="onPopupEnabledToggle(this.checked)" />
+                    <span class="switch-slider"></span>
+                  </label>
+                </div>
+
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px;">
+                  <div class="form-group">
+                    <label class="form-label" for="popup-type-select">Loại Pop-up chào mừng</label>
+                    <select class="form-select" id="popup-type-select" onchange="onPopupTypeChange()">
+                      <option value="led">Bảng chữ LED chạy</option>
+                      <option value="image">Hình ảnh</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="popup-title-input">Tiêu đề pop-up</label>
+                    <input class="form-input" id="popup-title-input" type="text" placeholder="Ví dụ: Chào mừng bạn đến với Lớp văn thầy Hiếu!" oninput="syncPopupFormToState()" />
+                  </div>
+                </div>
+
+                <!-- Cấu hình khi chọn BẢNG CHỮ LED CHẠY -->
+                <div id="popup-led-config" style="background:var(--bg-card-tint); border:1px solid var(--border-vintage); border-radius:var(--radius-md); padding:14px; margin-bottom:12px;">
+                  <div style="display:grid; grid-template-columns:1.6fr 1fr; gap:12px;">
+                    <div class="form-group" style="margin-bottom:10px;">
+                      <label class="form-label" for="popup-led-text">Nội dung chữ LED chạy</label>
+                      <input class="form-input" id="popup-led-text" type="text" placeholder="Ví dụ: LỚP VĂN THẦY HIẾU • LỚP HỌC HẠNH PHÚC • VIẾT BẰNG TRÁI TIM & TƯ DUY SÁNG TẠO!" oninput="syncPopupFormToState()" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:10px;">
+                      <label class="form-label" for="popup-led-speed">Tốc độ chạy</label>
+                      <select class="form-select" id="popup-led-speed" onchange="syncPopupFormToState()">
+                        <option value="16s">Chậm</option>
+                        <option value="11s" selected>Vừa</option>
+                        <option value="6.5s">Nhanh</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group" style="margin-bottom:12px;">
+                    <label class="form-label">Lựa chọn màu sắc đèn LED</label>
+                    <div class="led-color-swatches" id="led-color-swatches">
+                      <button type="button" class="led-swatch-btn active" data-color="#00F5D4" onclick="selectLedColor('#00F5D4')">
+                        <span class="led-dot-preview" style="background:#00F5D4; box-shadow:0 0 6px #00F5D4;"></span> Xanh ngọc LED
+                      </button>
+                      <button type="button" class="led-swatch-btn" data-color="#FFB800" onclick="selectLedColor('#FFB800')">
+                        <span class="led-dot-preview" style="background:#FFB800; box-shadow:0 0 6px #FFB800;"></span> Vàng hổ phách LED
+                      </button>
+                      <button type="button" class="led-swatch-btn" data-color="#FF3B30" onclick="selectLedColor('#FF3B30')">
+                        <span class="led-dot-preview" style="background:#FF3B30; box-shadow:0 0 6px #FF3B30;"></span> Đỏ rực LED
+                      </button>
+                      <button type="button" class="led-swatch-btn" data-color="#38BDF8" onclick="selectLedColor('#38BDF8')">
+                        <span class="led-dot-preview" style="background:#38BDF8; box-shadow:0 0 6px #38BDF8;"></span> Xanh dương LED
+                      </button>
+                      <button type="button" class="led-swatch-btn" data-color="#F8FAFC" onclick="selectLedColor('#F8FAFC')">
+                        <span class="led-dot-preview" style="background:#F8FAFC; box-shadow:0 0 6px #F8FAFC;"></span> Trắng sáng LED
+                      </button>
+                      <button type="button" class="led-swatch-btn" data-color="#E879F9" onclick="selectLedColor('#E879F9')">
+                        <span class="led-dot-preview" style="background:#E879F9; box-shadow:0 0 6px #E879F9;"></span> Tím neon LED
+                      </button>
+                      <input type="color" id="popup-led-custom-color" value="#00F5D4" title="Chọn màu LED tùy chỉnh" onchange="selectLedColor(this.value)" style="width:36px; height:32px; border:none; background:transparent; cursor:pointer;" />
+                    </div>
+                  </div>
+
+                  <div id="led-live-preview-box"></div>
+                </div>
+
+                <!-- Cấu hình khi chọn HÌNH ẢNH -->
+                <div id="popup-image-config" class="hidden" style="background:var(--bg-card-tint); border:1px solid var(--border-vintage); border-radius:var(--radius-md); padding:14px; margin-bottom:12px;">
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="form-group" style="margin-bottom:10px;">
+                      <label class="form-label" for="popup-image-url">URL hình ảnh</label>
+                      <input class="form-input" id="popup-image-url" type="text" placeholder="https://... hoặc tải ảnh từ máy bên cạnh" oninput="syncPopupFormToState()" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:10px;">
+                      <label class="form-label" for="popup-image-file">Hoặc tải ảnh từ máy</label>
+                      <input class="form-input" id="popup-image-file" type="file" accept="image/*" onchange="handlePopupImageUpload(event)" />
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom:8px;">
+                    <label class="form-label" for="popup-image-caption">Lời chú thích ngắn bên dưới ảnh</label>
+                    <input class="form-input" id="popup-image-caption" type="text" placeholder="Chúc các em có những giờ học văn thật vui, sâu sắc và tràn đầy năng lượng!" oninput="syncPopupFormToState()" />
+                  </div>
+                  <div id="image-live-preview-box"></div>
+                </div>
+              </div>
+
+              <!-- Bật / tắt các chức năng & chuyên mục -->
+              <div class="setting-card">
+                <h3>Bật / tắt từng chức năng &amp; chuyên mục hệ thống</h3>
+                <p>Khi tắt chức năng nào, chức năng đó sẽ được ẩn khỏi giao diện người dùng và ngăn truy cập trực tiếp.</p>
+                <div id="feature-flags-list" class="feature-toggle-grid"></div>
+              </div>
+            </div>
+
+            <!-- SUBTAB 2: CÀI ĐẶT, SAO LƯU, XUẤT/NHẬP FILE & ĐỒNG BỘ SUPABASE -->
+            <div id="admin-subtab-settings" class="vintage-card section-panel hidden">
+              <div class="panel-header">
+                <div>
+                  <h2>Cài đặt hệ thống & Sao lưu dữ liệu</h2>
+                  <p style="font-size:0.86rem; color:var(--ink-muted);">Quản lý tệp sao lưu cục bộ, xuất/nhập dữ liệu và cấu hình tự động lưu chuẩn bị kết nối Supabase</p>
+                </div>
+              </div>
+
+              <div id="settings-feedback" class="alert-box hidden"></div>
+
+              <div class="settings-grid">
+                <!-- Tự động lưu & Chuẩn bị Supabase -->
+                <div class="setting-card">
+                  <h3>Tự động lưu & Chuẩn bị đồng bộ Supabase</h3>
+                  <p>
+                    Khi bật chế độ này, mọi thay đổi về tài khoản, trạng thái phê duyệt và cấu hình lớp học sẽ tự động lưu tức thì vào bộ nhớ trình duyệt theo cấu trúc bảng <code>profiles</code> chuẩn bị sẵn cho Supabase.
+                  </p>
+                  <div class="switch-row">
+                    <div>
+                      <div style="font-weight:700; color:var(--blue-deep); font-size:0.92rem;">Bật lưu file & dữ liệu tự động</div>
+                      <div id="last-saved-label" style="font-size:0.8rem; color:var(--ink-muted);">Lần lưu gần nhất: Vừa xong</div>
+                    </div>
+                    <label class="switch-toggle">
+                      <input type="checkbox" id="autosave-checkbox" checked onchange="toggleAutoSave(this.checked)" />
+                      <span class="switch-slider"></span>
+                    </label>
+                  </div>
+                  <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="manualSaveNow()">Lưu thủ công ngay</button>
+                  </div>
+                </div>
+
+                <!-- Sao lưu nhanh Snapshot -->
+                <div class="setting-card">
+                  <h3>Điểm sao lưu phục hồi (Snapshot)</h3>
+                  <p>
+                    Tạo bản sao lưu nội bộ ngay trên trình duyệt trước khi thực hiện các đợt duyệt danh sách lớn hoặc chỉnh sửa dữ liệu.
+                  </p>
+                  <div style="background:var(--bg-card-tint); border:1px solid var(--border-vintage); padding:11px 13px; border-radius:var(--radius-sm); font-size:0.85rem; margin-bottom:14px;">
+                    <div><strong>Bản sao lưu gần nhất:</strong> <span id="snapshot-time">Chưa có bản sao lưu thủ công</span></div>
+                    <div style="margin-top:3px;"><strong>Số lượng hồ sơ:</strong> <span id="snapshot-count">0</span> tài khoản</div>
+                  </div>
+                  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="createInternalBackup()">Tạo bản sao lưu ngay</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="restoreInternalBackup()">Khôi phục bản sao lưu</button>
+                  </div>
+                </div>
+
+                <!-- Xuất file dữ liệu -->
+                <div class="setting-card">
+                  <h3>Xuất file dữ liệu (Export)</h3>
+                  <p>
+                    Tải toàn bộ dữ liệu tài khoản & cấu hình hệ thống về máy tính dưới dạng tệp <strong>JSON</strong> (để khôi phục/import lên Supabase) hoặc <strong>CSV</strong> (mở bằng Excel).
+                  </p>
+                  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="exportJSONFile()">Xuất file sao lưu (.JSON)</button>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="exportCSVFile()">Xuất danh sách (.CSV)</button>
+                  </div>
+                </div>
+
+                <!-- Nhập file khôi phục -->
+                <div class="setting-card">
+                  <h3>Nhập file dữ liệu (Import)</h3>
+                  <p>
+                    Chọn tệp sao lưu <code>.json</code> đã xuất trước đó từ hệ thống <strong>Thầy Hiếu GenZ</strong> để nạp và đồng bộ lại toàn bộ danh sách tài khoản.
+                  </p>
+                  <input type="file" id="import-json-input" accept=".json,application/json" class="hidden" onchange="handleImportJSON(event)" />
+                  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button type="button" class="btn btn-gold btn-sm" onclick="document.getElementById('import-json-input').click()">Chọn tệp .JSON để nhập</button>
+                  </div>
+                </div>
+
+                <!-- Cấu hình & Đồng bộ Supabase -->
+                <div class="setting-card" style="grid-column: 1 / -1;">
+                  <h3>Cấu hình kết nối &amp; Đồng bộ Supabase (Chuẩn bị Deploy)</h3>
+                  <p>
+                    Nhập <strong>Supabase Project URL</strong> và <strong>Anon Public Key</strong> để lưu cấu hình đồng bộ cho bảng <code>profiles</code>, kiểm tra trạng thái kết nối thực tế tới REST endpoint của Supabase và sao chép mã SQL khởi tạo bảng ngay trước khi deploy.
+                  </p>
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:12px; margin-bottom:12px;">
+                    <div class="form-group" style="margin-bottom:0;">
+                      <label class="form-label" for="sb-url">Supabase Project URL</label>
+                      <input class="form-input" id="sb-url" type="url" placeholder="https://xxxxxxxxxxxx.supabase.co" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                      <label class="form-label" for="sb-key">Supabase Anon Key</label>
+                      <input class="form-input" id="sb-key" type="password" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." />
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                      <label class="form-label" for="sb-table">Tên bảng đồng bộ</label>
+                      <input class="form-input" id="sb-table" type="text" value="profiles" />
+                    </div>
+                  </div>
+
+                  <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px;">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="saveSupabaseConfig()">Lưu cấu hình Supabase</button>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="testSupabaseConnection()">Kiểm tra kết nối Supabase</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="syncUsersToSupabase()">Đẩy danh sách hồ sơ lên Supabase</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="copySupabaseSQL()">Sao chép SQL tạo bảng</button>
+                    <span id="sb-status-badge" class="status-pill status-pending">Chưa cấu hình</span>
+                  </div>
+
+                  <details style="background:var(--bg-card-tint); border:1px solid var(--border-vintage); border-radius:var(--radius-sm); padding:10px 14px;">
+                    <summary style="cursor:pointer; font-weight:700; color:var(--blue-deep); font-size:0.88rem;">Xem mẫu SQL khởi tạo bảng profiles trên Supabase</summary>
+                    <pre id="supabase-sql-code" style="margin-top:10px; font-size:0.8rem; overflow-x:auto; color:var(--ink-dark); line-height:1.45;">create table if not exists public.profiles (
+  id text primary key,
+  username text unique not null,
+  full_name text not null,
+  email text unique not null,
+  phone text,
+  grade text,
+  dob text,
+  note text,
+  provider text default 'form',
+  role text default 'student',
+  status text default 'pending',
+  reject_reason text default '',
+  created_at text
+);</pre>
+                  </details>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ==================== THANH BẢN QUYỀN CỐ ĐỊNH PHÍA DƯỚI ==================== -->
+  <footer class="fixed-copyright-bar" role="contentinfo" aria-label="Bản quyền ứng dụng">
+    <div class="fixed-copyright-inner">
+      <span class="copyright-gold-dot"></span>
+      <span>Ứng dụng dạy học số Thầy Hiếu GenZ | 2025</span>
+      <span class="copyright-gold-dot"></span>
+    </div>
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'thayhieugenz_edu_db_v1';
+    const BACKUP_KEY = 'thayhieugenz_edu_backup_v1';
+
+    const ADMIN_ACCOUNT = {
+      id: 'admin-thayhieugenz',
+      username: 'thayhieugenz',
+      password: '240815',
+      fullName: 'Thầy Hiếu GenZ',
+      email: 'admin@thayhieugenz.edu.vn',
+      phone: '0900 240 815',
+      grade: 'Quản trị viên & Giảng viên Ngữ văn',
+      dob: '1998-08-24',
+      note: 'Người sáng lập Lớp văn thầy Hiếu - Lớp học hạnh phúc',
+      provider: 'system',
+      role: 'admin',
+      status: 'approved',
+      createdAt: '2026-01-01 08:00'
+    };
+
+    /* Modern minimalist SVG line-art icons for modules and features */
+    function renderLuxuryIcon(iconKey, sizeClass = 'lux-svg') {
+      const icons = {
+        'teaching-tools': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
+        'class-management': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+        'games': `<svg class="${sizeClass}" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="6" y1="12" x2="10" y2="12"/><circle cx="15.5" cy="11" r="1"/><circle cx="18" cy="13" r="1"/></svg>`,
+        'assignments': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>`,
+        'tests': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
+        'lit-kingdom': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M3 18l1.5-10L9 12l3-6 3 6 4.5-4L21 18H3z"/><line x1="3" y1="21" x2="21" y2="21"/></svg>`,
+        'references': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
+        'exam-bank': `<svg class="${sizeClass}" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="5" rx="1.5"/><rect x="3" y="11" width="18" height="9" rx="1.5"/><line x1="10" y1="15.5" x2="14" y2="15.5"/></svg>`,
+        'lit-blog': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
+        'reading': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M2 6c3.2-1.5 6.8-1.5 10 0 3.2-1.5 6.8-1.5 10 0v12.5c-3.2-1.5-6.8-1.5-10 0-3.2-1.5-6.8-1.5-10 0V6z"/><line x1="12" y1="6" x2="12" y2="18.5"/></svg>`,
+        'welcomePopup': `<svg class="${sizeClass}" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2.5"/><line x1="6" y1="12" x2="18" y2="12"/><circle cx="6" cy="9" r="0.8"/><circle cx="18" cy="9" r="0.8"/></svg>`,
+        'homeHubGrid': `<svg class="${sizeClass}" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>`,
+        'moreMenuDropdown': `<svg class="${sizeClass}" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="14" y2="17"/></svg>`,
+        'coreTopicsGrid': `<svg class="${sizeClass}" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.5 22 9.3 17 14.1 18.2 21 12 17.6 5.8 21 7 14.1 2 9.3 8.9 8.5 12 2"/></svg>`,
+        'bulletinBoard': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
+        'personalProfile': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+        'editPersonalProfile': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`
+      };
+      return icons[iconKey] || `<svg class="${sizeClass}" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>`;
+    }
+
+    const CLASS_MODULES = [
+      {
+        id: 'teaching-tools',
+        title: 'Công cụ dạy học',
+        shortDesc: 'Bộ công cụ hỗ trợ giảng dạy, lập dàn ý nhanh, đồng hồ bấm giờ & trình chiếu ý chính.',
+        tag: 'GIẢNG DẠY & HỖ TRỢ',
+        items: [
+          { name: 'Khung lập dàn ý Nghị luận 3 bước', detail: 'Gợi ý mở bài - triển khai luận điểm - liên hệ thực tiễn GenZ chuẩn cấu trúc.' },
+          { name: 'Đồng hồ bấm giờ luyện viết', detail: 'Thiết lập mốc thời gian 15 phút (NLXH) hoặc 45 phút (NLVH) sát giờ thi thật.' },
+          { name: 'Kho thẻ từ khóa & Biện pháp tu từ', detail: 'Tra cứu nhanh giá trị biểu cảm của ẩn dụ, điệp ngữ, tương phản trong tác phẩm.' }
+        ]
+      },
+      {
+        id: 'class-management',
+        title: 'Quản lý lớp học',
+        shortDesc: 'Theo dõi sĩ số, chuyên cần, phân công ban cán sự và tiến độ học tập từng tổ.',
+        tag: 'ĐIỀU HÀNH LỚP',
+        items: [
+          { name: 'Sổ theo dõi chuyên cần & tham gia phát biểu', detail: 'Ghi nhận mức độ tương tác trên lớp và hoàn thành nhiệm vụ hàng tuần.' },
+          { name: 'Phân công Ban cán sự & Kiểm duyệt viên', detail: 'Hỗ trợ thầy Hiếu nhắc nhở bài tập, tổng hợp danh sách và duyệt hồ sơ học viên.' },
+          { name: 'Kế hoạch sinh hoạt lớp hàng tuần', detail: 'Lịch sinh hoạt chuyên đề, đọc sách chung và giải đáp thắc mắc cuối tuần.' }
+        ]
+      },
+      {
+        id: 'games',
+        title: 'Trò chơi',
+        shortDesc: 'Trò chơi ô chữ văn học, đuổi hình bắt chữ tác phẩm và thử thách phản xạ dẫn chứng.',
+        tag: 'HỌC VUI CÙNG GENZ',
+        items: [
+          { name: 'Giải mã câu thơ & Nhân vật', detail: 'Đoán tên tác phẩm và thông điệp cốt lõi qua các gợi ý ngắn gọn.' },
+          { name: 'Thử thách 60 giây tìm dẫn chứng', detail: 'Nối nhanh sự kiện đời sống hoặc nhân vật văn học phù hợp với chủ đề.' },
+          { name: 'Vòng quay từ vựng đắt giá', detail: 'Bốc thăm tính từ, động từ giàu sắc thái để làm mới câu văn nghị luận.' }
+        ]
+      },
+      {
+        id: 'assignments',
+        title: 'Bài tập',
+        shortDesc: 'Bài tập rèn kỹ năng đọc hiểu, viết đoạn văn và củng cố kiến thức sau mỗi buổi học.',
+        tag: 'LUYỆN TẬP THƯỜNG XUYÊN',
+        items: [
+          { name: 'Bài tập Đọc hiểu theo mức độ nhận thức', detail: 'Phân tầng câu hỏi nhận biết, thông hiểu và vận dụng sát đề minh họa.' },
+          { name: 'Viết đoạn văn 200 chữ mỗi ngày', detail: 'Rèn độ dài chuẩn, câu chủ đề rõ ràng và lập luận chặt chẽ.' },
+          { name: 'Phiếu củng cố kiến thức cuối bài', detail: 'Hệ thống lại ý chính ngay sau khi học xong từng chuyên đề.' }
+        ]
+      },
+      {
+        id: 'tests',
+        title: 'Bài kiểm tra',
+        shortDesc: 'Các bài kiểm tra định kỳ 15 phút, 45 phút và đánh giá năng lực theo từng giai đoạn.',
+        tag: 'ĐÁNH GIÁ NĂNG LỰC',
+        items: [
+          { name: 'Kiểm tra 15 phút chuyên đề Đọc hiểu', detail: 'Đánh giá tốc độ đọc hiểu ngữ liệu và độ chính xác khi trả lời câu hỏi.' },
+          { name: 'Bài kiểm tra 45 phút tổng hợp', detail: 'Kiểm tra toàn diện kỹ năng đọc hiểu kết hợp viết bài nghị luận.' },
+          { name: 'Phiếu tự đánh giá & rút kinh nghiệm', detail: 'Ghi lại lỗi diễn đạt, lỗi lập luận cần khắc phục sau mỗi bài kiểm tra.' }
+        ]
+      },
+      {
+        id: 'lit-kingdom',
+        title: 'Vương quốc Văn học',
+        shortDesc: 'Bản đồ các thời kỳ văn học, các vùng đất tác phẩm và chân dung nhà văn tiêu biểu.',
+        tag: 'KHÁM PHÁ VĂN CHƯƠNG',
+        items: [
+          { name: 'Vùng đất Văn học dân gian & Trung đại', detail: 'Khám phá ca dao, truyện truyền kỳ và vẻ đẹp chiều sâu truyền thống.' },
+          { name: 'Xứ sở Văn học hiện đại & Đương đại', detail: 'Cảm nhận nhịp thở thời đại, thân phận con người và khát vọng sống.' },
+          { name: 'Thư viện chân dung tác giả', detail: 'Phong cách nghệ thuật, hoàn cảnh sáng tác và những câu nói để đời.' }
+        ]
+      },
+      {
+        id: 'references',
+        title: 'Tài liệu tham khảo',
+        shortDesc: 'Sổ tay lý luận văn học, tuyển tập bài mẫu tham khảo và bảng hệ thống kiến thức.',
+        tag: 'KHO TƯ LIỆU',
+        items: [
+          { name: 'Sổ tay Lý luận văn học cô đọng', detail: 'Khái niệm thể loại, giá trị nhân đạo, phong cách và tiếp nhận văn học.' },
+          { name: 'Tuyển tập đoạn văn & bài viết tham khảo', detail: 'Tham khảo cách triển khai ý tưởng hay để học hỏi cấu trúc và giọng văn.' },
+          { name: 'Bảng đối chiếu tác phẩm cùng đề tài', detail: 'Dễ dàng so sánh, mở rộng liên tưởng khi làm bài nghị luận văn học.' }
+        ]
+      },
+      {
+        id: 'exam-bank',
+        title: 'Kho đề kiểm tra',
+        shortDesc: 'Tổng hợp đề thi thử, đề kiểm tra các năm kèm gợi ý định hướng làm bài chi tiết.',
+        tag: 'NGÂN HÀNG ĐỀ',
+        items: [
+          { name: 'Bộ đề luyện thi vào 10 & THPT', detail: 'Cập nhật cấu trúc đề mới, đa dạng ngữ liệu thơ, truyện và văn bản thông tin.' },
+          { name: 'Đề chuyên & Bồi dưỡng học sinh giỏi', detail: 'Các câu hỏi nâng cao đòi hỏi tư duy phản biện và chiều sâu cảm thụ.' },
+          { name: 'Gợi ý hướng dẫn chấm & thang điểm', detail: 'Giúp học viên tự đối chiếu bài làm và nhận diện tiêu chí ăn điểm.' }
+        ]
+      },
+      {
+        id: 'lit-blog',
+        title: 'Blog văn chương',
+        shortDesc: 'Góc tản văn, cảm nhận cá nhân, góc nhìn GenZ về cuộc sống và những dòng nhật ký học văn.',
+        tag: 'GÓC VIẾT & CHIA SẺ',
+        items: [
+          { name: 'Tản văn: Một ngày sống chậm lại', detail: 'Những trang viết nhỏ ghi lại cảm xúc chân thật từ đời sống quanh ta.' },
+          { name: 'Góc nhìn GenZ: Đọc văn giữa kỷ nguyên số', detail: 'Trò chuyện về cách giữ sự tập trung và rung cảm trước cái đẹp.' },
+          { name: 'Góc bài viết nổi bật của học viên', detail: 'Nơi lan tỏa những đoạn văn hay, sáng tạo của thành viên lớp thầy Hiếu.' }
+        ]
+      },
+      {
+        id: 'reading',
+        title: 'Đọc sách',
+        shortDesc: 'Tủ sách gợi ý theo chủ đề, tóm tắt sách hay và nhật ký đọc sách cùng lớp.',
+        tag: 'VĂN HÓA ĐỌC',
+        items: [
+          { name: 'Tủ sách nuôi dưỡng tâm hồn & tư duy', detail: 'Gợi ý sách văn học, kỹ năng đọc hiểu và sách truyền cảm hứng sống đẹp.' },
+          { name: 'Ghi chép sau mỗi trang sách', detail: 'Mẫu ghi chép 3 ý tâm đắc + 1 câu trích dẫn đáng nhớ cho từng cuốn sách.' },
+          { name: 'Thử thách đọc sách tháng cùng lớp', detail: 'Cùng nhau đọc một đầu sách mỗi tháng và trao đổi cảm nhận.' }
+        ]
+      }
+    ];
+
+    const FEATURE_DEFINITIONS = [
+      { key: 'welcomePopup', label: 'Pop-up chào mừng khi đăng nhập', desc: 'Hiển thị thông báo chào mừng bằng bảng chữ LED chạy hoặc hình ảnh' },
+      { key: 'homeHubGrid', label: 'Lưới chuyên mục trên Trang chủ', desc: 'Hiển thị các thẻ điều hướng nhanh 10 chuyên mục trên Trang chủ' },
+      { key: 'moreMenuDropdown', label: 'Menu thả xuống Chuyên mục lớp', desc: 'Hiển thị nút & menu điều hướng nhanh các chuyên mục trên thanh trên' },
+      { key: 'coreTopicsGrid', label: '4 Chuyên mục giáo dục đặc trưng', desc: 'Đọc hiểu, Nghị luận xã hội, Phòng luyện đề & Góc Sách hay' },
+      { key: 'bulletinBoard', label: 'Bảng tin lớp học', desc: 'Hiển thị thông báo & dặn dò từ thầy Hiếu trên Trang chủ' },
+      { key: 'personalProfile', label: 'Thông tin cá nhân', desc: 'Hiển thị thẻ thông tin thành viên trên Trang chủ' },
+      { key: 'editPersonalProfile', label: 'Chức năng chỉnh sửa hồ sơ cá nhân', desc: 'Cho phép người dùng tự chỉnh sửa thông tin cá nhân của mình' },
+      ...CLASS_MODULES.map(m => ({ key: m.id, label: `Chuyên mục: ${m.title}`, desc: m.shortDesc }))
+    ];
+
+    const DEFAULT_STATE = {
+      settings: {
+        autoSave: true,
+        lastSavedAt: new Date().toLocaleString('vi-VN'),
+        supabaseReadySchema: 'public.profiles',
+        supabase: {
+          url: '',
+          anonKey: '',
+          table: 'profiles',
+          lastSyncAt: ''
+        },
+        welcomePopup: {
+          enabled: true,
+          type: 'led',
+          title: 'Chào mừng bạn đến với Lớp văn thầy Hiếu!',
+          ledText: 'LỚP VĂN THẦY HIẾU • LỚP HỌC HẠNH PHÚC • VIẾT BẰNG TRÁI TIM & TƯ DUY SÁNG TẠO!',
+          ledColor: '#00F5D4',
+          ledSpeed: '11s',
+          imageUrl: 'https://placehold.co/800x420/DCEEFB/1B4975?text=Lop+Van+Thay+Hieu+%E2%80%A2+Lop+Hoc+Hanh+Phuc',
+          imageCaption: 'Chúc các em có những giờ học văn thật vui, sâu sắc và tràn đầy năng lượng!'
+        },
+        featureFlags: {
+          welcomePopup: true,
+          homeHubGrid: true,
+          moreMenuDropdown: true,
+          coreTopicsGrid: true,
+          bulletinBoard: true,
+          personalProfile: true,
+          editPersonalProfile: true,
+          'teaching-tools': true,
+          'class-management': true,
+          'games': true,
+          'assignments': true,
+          'tests': true,
+          'lit-kingdom': true,
+          'references': true,
+          'exam-bank': true,
+          'lit-blog': true,
+          'reading': true
+        }
+      },
+      users: [
+        {
+          id: 'u-101',
+          username: 'minhanh2k9',
+          password: '123456',
+          fullName: 'Nguyễn Minh Anh',
+          email: 'minhanh.2k9@gmail.com',
+          phone: '0912 345 678',
+          grade: 'Lớp 12 - Luyện thi THPT QG',
+          dob: '2009-05-14',
+          note: 'Em muốn cải thiện phần Nghị luận văn học và đạt 8.5+ môn Văn ạ.',
+          provider: 'google',
+          role: 'student',
+          classPosition: '',
+          status: 'pending',
+          rejectReason: '',
+          createdAt: '2026-11-26 20:15'
+        },
+        {
+          id: 'u-102',
+          username: 'hoangnam_van',
+          password: '123456',
+          fullName: 'Trần Hoàng Nam',
+          email: 'hoangnam.study@gmail.com',
+          phone: '0987 654 321',
+          grade: 'Lớp 9 - Ôn thi vào 10',
+          dob: '2012-03-22',
+          note: 'Em đăng ký theo học lớp Văn hạnh phúc của thầy để thi chuyên Văn.',
+          provider: 'form',
+          role: 'student',
+          classPosition: '',
+          status: 'approved',
+          rejectReason: '',
+          createdAt: '2026-11-25 14:30'
+        }
+      ]
+    };
+
+    let appState = loadInitialState();
+    let currentUser = null;
+    let currentUserFilter = 'all';
+    let activeModuleId = null;
+    let skipPopupInSession = false;
+
+    function loadInitialState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.users)) {
+            const mergedFlags = {
+              ...DEFAULT_STATE.settings.featureFlags,
+              ...((parsed.settings && parsed.settings.featureFlags) || {})
+            };
+            const mergedPopup = {
+              ...DEFAULT_STATE.settings.welcomePopup,
+              ...((parsed.settings && parsed.settings.welcomePopup) || {})
+            };
+            if (typeof mergedPopup.enabled === 'boolean') {
+              mergedFlags.welcomePopup = mergedPopup.enabled;
+            } else {
+              mergedPopup.enabled = mergedFlags.welcomePopup !== false;
+            }
+            return {
+              settings: {
+                ...DEFAULT_STATE.settings,
+                ...(parsed.settings || {}),
+                supabase: {
+                  ...DEFAULT_STATE.settings.supabase,
+                  ...((parsed.settings && parsed.settings.supabase) || {})
+                },
+                welcomePopup: mergedPopup,
+                featureFlags: mergedFlags
+              },
+              users: parsed.users
+            };
+          }
+        }
+      } catch (e) {
+        console.warn('Không thể đọc dữ liệu lưu trữ:', e);
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_STATE));
+      return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
+
+    function persistState(force = false) {
+      if (!appState.settings.autoSave && !force) return;
+      appState.settings.lastSavedAt = new Date().toLocaleString('vi-VN');
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      updateAutoSaveUI();
+    }
+
+    function updateAutoSaveUI() {
+      const cb = document.getElementById('autosave-checkbox');
+      const statusText = document.getElementById('autosave-status-text');
+      const lastSavedLabel = document.getElementById('last-saved-label');
+      if (cb) cb.checked = !!appState.settings.autoSave;
+      if (statusText) {
+        statusText.textContent = appState.settings.autoSave ? 'Đang bật tự động' : 'Đang tạm tắt';
+        statusText.style.color = appState.settings.autoSave ? 'var(--success-text)' : 'var(--warn-text)';
+      }
+      if (lastSavedLabel) {
+        lastSavedLabel.textContent = 'Lần lưu gần nhất: ' + (appState.settings.lastSavedAt || 'Vừa xong');
+      }
+      updateSnapshotInfoUI();
+    }
+
+    function showAuthAlert(message, type = 'error') {
+      const el = document.getElementById('auth-alert');
+      el.className = 'alert-box ' + (type === 'success' ? 'alert-success' : type === 'info' ? 'alert-info' : 'alert-error');
+      el.textContent = message;
+      el.classList.remove('hidden');
+    }
+
+    function clearAuthAlert() {
+      document.getElementById('auth-alert').classList.add('hidden');
+    }
+
+    function switchAuthTab(tab) {
+      clearAuthAlert();
+      const loginForm = document.getElementById('login-form');
+      const regForm = document.getElementById('register-form');
+      const tabLogin = document.getElementById('tab-login-btn');
+      const tabReg = document.getElementById('tab-register-btn');
+
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        tabLogin.classList.add('active');
+        tabReg.classList.remove('active');
+      } else {
+        loginForm.classList.add('hidden');
+        regForm.classList.remove('hidden');
+        tabLogin.classList.remove('active');
+        tabReg.classList.add('active');
+      }
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      clearAuthAlert();
+      const identity = document.getElementById('login-identity').value.trim().toLowerCase();
+      const password = document.getElementById('login-password').value;
+
+      if (identity === ADMIN_ACCOUNT.username && password === ADMIN_ACCOUNT.password) {
+        enterApp(ADMIN_ACCOUNT);
+        return;
+      }
+
+      const found = appState.users.find(
+        u => (u.username.toLowerCase() === identity || u.email.toLowerCase() === identity) && u.password === password
+      );
+
+      if (!found) {
+        showAuthAlert('Tên đăng nhập/Email hoặc mật khẩu không chính xác.', 'error');
+        return;
+      }
+
+      if (found.status === 'pending') {
+        showAuthAlert('Tài khoản của bạn đang chờ thầy Hiếu phê duyệt. Vui lòng quay lại sau nhé!', 'info');
+        return;
+      }
+
+      if (found.status === 'rejected') {
+        const reason = found.rejectReason ? ' Lý do: ' + found.rejectReason : '';
+        showAuthAlert('Tài khoản của bạn chưa được duyệt hoặc đang tạm khóa.' + reason, 'error');
+        return;
+      }
+
+      enterApp(found);
+    }
+
+    function handleRegister(event) {
+      event.preventDefault();
+      clearAuthAlert();
+
+      const fullName = document.getElementById('reg-fullname').value.trim();
+      const username = document.getElementById('reg-username').value.trim();
+      const phone = document.getElementById('reg-phone').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const grade = document.getElementById('reg-grade').value;
+      const password = document.getElementById('reg-password').value;
+      const note = document.getElementById('reg-note').value.trim();
+
+      if (username.toLowerCase() === ADMIN_ACCOUNT.username) {
+        showAuthAlert('Tên đăng nhập này đã được hệ thống sử dụng.', 'error');
+        return;
+      }
+
+      const duplicate = appState.users.some(
+        u => u.username.toLowerCase() === username.toLowerCase() || u.email.toLowerCase() === email.toLowerCase()
+      );
+      if (duplicate) {
+        showAuthAlert('Tên đăng nhập hoặc Email này đã tồn tại trong danh sách.', 'error');
+        return;
+      }
+
+      appState.users.unshift({
+        id: 'u-' + Date.now(),
+        username,
+        password,
+        fullName,
+        email,
+        phone,
+        grade,
+        dob: '',
+        note,
+        provider: 'form',
+        role: 'student',
+        classPosition: '',
+        status: 'pending',
+        rejectReason: '',
+        createdAt: new Date().toLocaleString('vi-VN')
+      });
+
+      persistState();
+      event.target.reset();
+      switchAuthTab('login');
+      showAuthAlert('Đăng ký thành công! Hồ sơ của bạn đã được gửi tới thầy Hiếu để phê duyệt.', 'success');
+    }
+
+    function openGoogleModal() {
+      clearAuthAlert();
+      document.getElementById('google-modal').classList.remove('hidden');
+    }
+
+    function closeGoogleModal() {
+      document.getElementById('google-modal').classList.add('hidden');
+    }
+
+    function handleGoogleSubmit(event) {
+      event.preventDefault();
+      const email = document.getElementById('gg-email').value.trim();
+      const fullName = document.getElementById('gg-fullname').value.trim();
+      const phone = document.getElementById('gg-phone').value.trim();
+      const dob = document.getElementById('gg-dob').value;
+      const grade = document.getElementById('gg-grade').value.trim();
+      const note = document.getElementById('gg-note').value.trim();
+
+      const existing = appState.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+      if (existing) {
+        closeGoogleModal();
+        if (existing.status === 'approved') {
+          enterApp(existing);
+        } else if (existing.status === 'pending') {
+          showAuthAlert('Tài khoản Google này đã gửi hồ sơ và đang chờ thầy Hiếu phê duyệt.', 'info');
+        } else {
+          showAuthAlert('Tài khoản Google này hiện đang bị từ chối hoặc tạm khóa.', 'error');
+        }
+        return;
+      }
+
+      const baseUsername = email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '') + '_' + Math.floor(100 + Math.random() * 900);
+
+      appState.users.unshift({
+        id: 'gg-' + Date.now(),
+        username: baseUsername,
+        password: 'google-oauth-user',
+        fullName,
+        email,
+        phone,
+        grade,
+        dob,
+        note,
+        provider: 'google',
+        role: 'student',
+        classPosition: '',
+        status: 'pending',
+        rejectReason: '',
+        createdAt: new Date().toLocaleString('vi-VN')
+      });
+
+      persistState();
+      event.target.reset();
+      closeGoogleModal();
+      showAuthAlert('Đã ghi nhận đăng ký bằng Google! Quản trị viên sẽ xem xét thông tin và phê duyệt tài khoản của bạn.', 'success');
+    }
+
+    function enterApp(user) {
+      currentUser = user;
+      document.getElementById('auth-view').classList.add('hidden');
+      document.getElementById('app-view').classList.remove('hidden');
+
+      document.getElementById('topbar-username').textContent = user.fullName;
+      document.getElementById('welcome-name').textContent = user.fullName;
+
+      const roleBadge = document.getElementById('topbar-role');
+      const navAdmin = document.getElementById('nav-admin');
+      const btnSettingsSub = document.getElementById('subtab-settings-btn');
+      const btnFeaturesSub = document.getElementById('subtab-features-btn');
+
+      if (btnSettingsSub) {
+        if (user.role === 'admin') btnSettingsSub.classList.remove('hidden');
+        else btnSettingsSub.classList.add('hidden');
+      }
+      if (btnFeaturesSub) {
+        if (user.role === 'admin') btnFeaturesSub.classList.remove('hidden');
+        else btnFeaturesSub.classList.add('hidden');
+      }
+
+      if (user.role === 'admin') {
+        roleBadge.textContent = 'Quản trị viên';
+        roleBadge.className = 'role-badge role-admin';
+        navAdmin.classList.remove('hidden');
+      } else if (user.role === 'moderator' || user.role === 'class_role') {
+        roleBadge.textContent = user.role === 'moderator' ? 'Kiểm duyệt viên' : (user.classPosition || 'Chức vụ lớp');
+        roleBadge.className = 'role-badge role-student';
+        navAdmin.classList.remove('hidden');
+      } else {
+        roleBadge.textContent = 'Học viên';
+        roleBadge.className = 'role-badge role-student';
+        navAdmin.classList.add('hidden');
+      }
+
+      applyFeatureVisibility();
+      renderClassModulesUI();
+      renderMemberProfile();
+      refreshAdminViews();
+      switchMainView('home');
+      maybeShowWelcomePopup();
+    }
+
+    function handleLogout() {
+      currentUser = null;
+      skipPopupInSession = false;
+      closeWelcomePopup();
+      document.getElementById('login-form').reset();
+      clearAuthAlert();
+      document.getElementById('app-view').classList.add('hidden');
+      document.getElementById('auth-view').classList.remove('hidden');
+    }
+
+    function switchMainView(view) {
+      const homeSec = document.getElementById('view-home');
+      const adminSec = document.getElementById('view-admin');
+      const modSec = document.getElementById('view-module');
+      const navHome = document.getElementById('nav-home');
+      const navAdmin = document.getElementById('nav-admin');
+      const navMore = document.getElementById('nav-more-btn');
+
+      if (modSec) modSec.classList.add('hidden');
+      if (navMore) navMore.classList.remove('active');
+
+      if (view === 'admin' && currentUser && ['admin', 'moderator', 'class_role'].includes(currentUser.role)) {
+        homeSec.classList.add('hidden');
+        adminSec.classList.remove('hidden');
+        navHome.classList.remove('active');
+        navAdmin.classList.add('active');
+        refreshAdminViews();
+      } else {
+        adminSec.classList.add('hidden');
+        homeSec.classList.remove('hidden');
+        navAdmin.classList.remove('active');
+        navHome.classList.add('active');
+      }
+    }
+
+    function isFeatureEnabled(key) {
+      const flags = appState.settings?.featureFlags || DEFAULT_STATE.settings.featureFlags;
+      return flags[key] !== false;
+    }
+
+    function applyFeatureVisibility() {
+      const hubPanel = document.getElementById('home-hub-panel');
+      const moreWrap = document.getElementById('nav-more-wrap');
+      const coreGrid = document.querySelector('.edu-grid-4');
+      const bulletinPanel = document.getElementById('home-bulletin-panel');
+      const profilePanel = document.getElementById('home-profile-panel');
+      const editBtn = document.getElementById('btn-edit-profile');
+
+      if (hubPanel) hubPanel.classList.toggle('hidden', !isFeatureEnabled('homeHubGrid'));
+      if (moreWrap) moreWrap.classList.toggle('hidden', !isFeatureEnabled('moreMenuDropdown'));
+      if (coreGrid) coreGrid.classList.toggle('hidden', !isFeatureEnabled('coreTopicsGrid'));
+      if (bulletinPanel) bulletinPanel.classList.toggle('hidden', !isFeatureEnabled('bulletinBoard'));
+      if (profilePanel) profilePanel.classList.toggle('hidden', !isFeatureEnabled('personalProfile'));
+      if (!isFeatureEnabled('editPersonalProfile')) {
+        toggleEditProfile(false);
+        if (editBtn) editBtn.classList.add('hidden');
+      } else if (editBtn) {
+        editBtn.classList.remove('hidden');
+      }
+    }
+
+    function renderMemberProfile() {
+      if (!currentUser) return;
+      const box = document.getElementById('member-profile-card');
+      box.innerHTML = `
+        <div class="profile-row"><span>Họ và tên</span><strong>${escapeHtml(currentUser.fullName)}</strong></div>
+        <div class="profile-row"><span>Tên đăng nhập</span><strong>${escapeHtml(currentUser.username)}</strong></div>
+        <div class="profile-row"><span>Email</span><strong>${escapeHtml(currentUser.email)}</strong></div>
+        <div class="profile-row"><span>Số điện thoại</span><strong>${escapeHtml(currentUser.phone || 'Chưa cập nhật')}</strong></div>
+        <div class="profile-row"><span>Khối lớp / Vai trò</span><strong>${escapeHtml(currentUser.grade || 'Thành viên')}</strong></div>
+        <div class="profile-row"><span>Mục tiêu / Ghi chú</span><strong>${escapeHtml(currentUser.note || 'Chưa cập nhật')}</strong></div>
+        <div class="profile-row"><span>Hình thức đăng ký</span><strong>${currentUser.provider === 'google' ? 'Tài khoản Google' : currentUser.provider === 'system' ? 'Quản trị hệ thống' : 'Biểu mẫu lớp học'}</strong></div>
+      `;
+    }
+
+    function toggleEditProfile(editing) {
+      if (editing && !isFeatureEnabled('editPersonalProfile')) return;
+      const card = document.getElementById('member-profile-card');
+      const form = document.getElementById('member-profile-edit-form');
+      const btn = document.getElementById('btn-edit-profile');
+      if (!card || !form || !currentUser) return;
+      if (editing) {
+        document.getElementById('prof-fullname').value = currentUser.fullName || '';
+        document.getElementById('prof-phone').value = currentUser.phone || '';
+        document.getElementById('prof-grade').value = currentUser.grade || '';
+        document.getElementById('prof-note').value = currentUser.note || '';
+        card.classList.add('hidden');
+        form.classList.remove('hidden');
+        if (btn) btn.classList.add('hidden');
+      } else {
+        form.classList.add('hidden');
+        card.classList.remove('hidden');
+        if (btn && isFeatureEnabled('editPersonalProfile')) btn.classList.remove('hidden');
+      }
+    }
+
+    function saveOwnProfile(event) {
+      event.preventDefault();
+      if (!currentUser || !isFeatureEnabled('editPersonalProfile')) return;
+      const fullName = document.getElementById('prof-fullname').value.trim();
+      const phone = document.getElementById('prof-phone').value.trim();
+      const grade = document.getElementById('prof-grade').value.trim();
+      const note = document.getElementById('prof-note').value.trim();
+
+      currentUser.fullName = fullName;
+      currentUser.phone = phone;
+      currentUser.grade = grade;
+      currentUser.note = note;
+
+      const idx = appState.users.findIndex(u => u.id === currentUser.id);
+      if (idx !== -1) {
+        appState.users[idx] = { ...appState.users[idx], fullName, phone, grade, note };
+      } else if (currentUser.role === 'admin') {
+        ADMIN_ACCOUNT.fullName = fullName;
+        ADMIN_ACCOUNT.phone = phone;
+        ADMIN_ACCOUNT.grade = grade;
+        ADMIN_ACCOUNT.note = note;
+      }
+
+      document.getElementById('topbar-username').textContent = fullName;
+      document.getElementById('welcome-name').textContent = fullName;
+      persistState();
+      renderClassModulesUI();
+      renderMemberProfile();
+      refreshAdminViews();
+      toggleEditProfile(false);
+    }
+
+    /* ================= ADMIN MANAGEMENT ================= */
+    function switchAdminSubtab(subtab) {
+      if ((subtab === 'settings' || subtab === 'features') && (!currentUser || currentUser.role !== 'admin')) {
+        subtab = 'users';
+      }
+      const usersTab = document.getElementById('admin-subtab-users');
+      const featuresTab = document.getElementById('admin-subtab-features');
+      const settingsTab = document.getElementById('admin-subtab-settings');
+      const btnUsers = document.getElementById('subtab-users-btn');
+      const btnFeatures = document.getElementById('subtab-features-btn');
+      const btnSettings = document.getElementById('subtab-settings-btn');
+
+      usersTab.classList.add('hidden');
+      featuresTab.classList.add('hidden');
+      settingsTab.classList.add('hidden');
+      btnUsers.classList.remove('active');
+      btnFeatures.classList.remove('active');
+      btnSettings.classList.remove('active');
+
+      if (subtab === 'settings') {
+        settingsTab.classList.remove('hidden');
+        btnSettings.classList.add('active');
+        updateAutoSaveUI();
+        loadSupabaseConfigUI();
+      } else if (subtab === 'features') {
+        featuresTab.classList.remove('hidden');
+        btnFeatures.classList.add('active');
+        renderFeaturesTabUI();
+      } else {
+        usersTab.classList.remove('hidden');
+        btnUsers.classList.add('active');
+        refreshAdminViews();
+      }
+    }
+
+    function refreshAdminViews() {
+      const total = appState.users.length;
+      const pending = appState.users.filter(u => u.status === 'pending').length;
+      const approved = appState.users.filter(u => u.status === 'approved').length;
+      const rejected = appState.users.filter(u => u.status === 'rejected').length;
+
+      const btnFeaturesSub = document.getElementById('subtab-features-btn');
+      if (btnFeaturesSub) {
+        if (currentUser && currentUser.role === 'admin') btnFeaturesSub.classList.remove('hidden');
+        else btnFeaturesSub.classList.add('hidden');
+      }
+
+      const createBtn = document.getElementById('btn-open-create-user');
+      if (createBtn) {
+        if (currentUser && currentUser.role === 'admin') createBtn.classList.remove('hidden');
+        else createBtn.classList.add('hidden');
+      }
+
+      const navBadge = document.getElementById('nav-pending-badge');
+      const sideBadge = document.getElementById('sidebar-pending-count');
+      if (pending > 0) {
+        navBadge.textContent = pending;
+        navBadge.classList.remove('hidden');
+      } else {
+        navBadge.classList.add('hidden');
+      }
+      if (sideBadge) sideBadge.textContent = pending;
+
+      const statsRow = document.getElementById('admin-stats-row');
+      if (statsRow) {
+        statsRow.innerHTML = `
+          <div class="stat-box"><div class="stat-label">Tổng hồ sơ</div><div class="stat-val">${total}</div></div>
+          <div class="stat-box"><div class="stat-label">Chờ phê duyệt</div><div class="stat-val" style="color:var(--warn-text);">${pending}</div></div>
+          <div class="stat-box"><div class="stat-label">Đã kích hoạt</div><div class="stat-val" style="color:var(--success-text);">${approved}</div></div>
+          <div class="stat-box"><div class="stat-label">Từ chối / Khóa</div><div class="stat-val" style="color:var(--danger-text);">${rejected}</div></div>
+        `;
+      }
+
+      renderUsersTable();
+      updateAutoSaveUI();
+    }
+
+    function setUserFilter(filter) {
+      currentUserFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.dataset.filter === filter) {
+          btn.classList.remove('btn-outline');
+          btn.classList.add('btn-secondary');
+        } else {
+          btn.classList.remove('btn-secondary');
+          btn.classList.add('btn-outline');
+        }
+      });
+      renderUsersTable();
+    }
+
+    function renderUsersTable() {
+      const tbody = document.getElementById('users-table-body');
+      if (!tbody) return;
+      const keyword = (document.getElementById('user-search-input')?.value || '').trim().toLowerCase();
+
+      const filtered = appState.users.filter(u => {
+        const matchStatus = currentUserFilter === 'all' || u.status === currentUserFilter;
+        const matchText =
+          !keyword ||
+          u.fullName.toLowerCase().includes(keyword) ||
+          u.email.toLowerCase().includes(keyword) ||
+          u.username.toLowerCase().includes(keyword) ||
+          (u.phone && u.phone.toLowerCase().includes(keyword)) ||
+          (u.grade && u.grade.toLowerCase().includes(keyword));
+        return matchStatus && matchText;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:24px; color:var(--ink-muted);">Không có hồ sơ học viên nào phù hợp.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(u => {
+        const statusHtml =
+          u.status === 'approved'
+            ? '<span class="status-pill status-approved">Đã duyệt</span>'
+            : u.status === 'pending'
+            ? '<span class="status-pill status-pending">Chờ duyệt</span>'
+            : '<span class="status-pill status-rejected">Từ chối / Khóa</span>';
+
+        const roleBadgeText =
+          u.role === 'moderator'
+            ? 'Kiểm duyệt viên'
+            : u.role === 'class_role'
+            ? (u.classPosition || 'Chức vụ lớp')
+            : 'Học viên';
+        const isAdminUser = currentUser && currentUser.role === 'admin';
+
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:700; color:var(--blue-deep);">${escapeHtml(u.fullName)}</div>
+              <div style="font-size:0.8rem; color:var(--ink-muted);">@${escapeHtml(u.username)} • ${escapeHtml(u.createdAt || '')}</div>
+              ${u.rejectReason ? `<div style="font-size:0.78rem; color:var(--danger-text); margin-top:2px;">Lý do: ${escapeHtml(u.rejectReason)}</div>` : ''}
+            </td>
+            <td>
+              <div>${escapeHtml(u.email)}</div>
+              <div style="font-size:0.82rem; color:var(--ink-muted);">${escapeHtml(u.phone || '—')} • <strong>${escapeHtml(u.grade || '—')}</strong></div>
+            </td>
+            <td><span style="font-size:0.82rem; font-weight:700; color:var(--blue-primary);">${escapeHtml(roleBadgeText)}</span></td>
+            <td>${statusHtml}</td>
+            <td>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                ${isAdminUser ? `<button type="button" class="btn btn-secondary btn-sm" onclick="openUserDetailModal('${u.id}')">Chi tiết &amp; Chức vụ</button>` : ''}
+                ${u.status !== 'approved' ? `<button type="button" class="btn btn-success btn-sm" onclick="approveUser('${u.id}')">Duyệt</button>` : ''}
+                ${u.status !== 'rejected' ? `<button type="button" class="btn btn-outline btn-sm" onclick="rejectUser('${u.id}')">Từ chối / Khóa</button>` : ''}
+                ${isAdminUser ? `<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">Xóa</button>` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function approveUser(id) {
+      const user = appState.users.find(u => u.id === id);
+      if (!user) return;
+      user.status = 'approved';
+      user.rejectReason = '';
+      persistState();
+      refreshAdminViews();
+    }
+
+    function rejectUser(id) {
+      const user = appState.users.find(u => u.id === id);
+      if (!user) return;
+      const reason = prompt('Nhập lý do từ chối hoặc khóa tài khoản (có thể để trống):', user.rejectReason || '');
+      if (reason === null) return;
+      user.status = 'rejected';
+      user.rejectReason = reason.trim();
+      persistState();
+      refreshAdminViews();
+    }
+
+    function deleteUser(id) {
+      if (!confirm('Bạn có chắc muốn xóa vĩnh viễn hồ sơ tài khoản này không?')) return;
+      appState.users = appState.users.filter(u => u.id !== id);
+      persistState();
+      refreshAdminViews();
+    }
+
+    function openCreateUserModal() {
+      if (!currentUser || currentUser.role !== 'admin') return;
+      toggleCreateRolePosition();
+      document.getElementById('create-user-modal').classList.remove('hidden');
+    }
+
+    function closeCreateUserModal() {
+      document.getElementById('create-user-modal').classList.add('hidden');
+    }
+
+    function toggleCreateRolePosition() {
+      const role = document.getElementById('new-u-role')?.value;
+      const wrap = document.getElementById('new-u-position-wrap');
+      if (wrap) {
+        if (role === 'class_role') wrap.classList.remove('hidden');
+        else wrap.classList.add('hidden');
+      }
+    }
+
+    function handleAdminCreateUser(event) {
+      event.preventDefault();
+      if (!currentUser || currentUser.role !== 'admin') return;
+      const fullName = document.getElementById('new-u-fullname').value.trim();
+      const username = document.getElementById('new-u-username').value.trim();
+      const password = document.getElementById('new-u-password').value;
+      const email = document.getElementById('new-u-email').value.trim();
+      const phone = document.getElementById('new-u-phone').value.trim();
+      const role = document.getElementById('new-u-role').value;
+      const grade = document.getElementById('new-u-grade').value.trim() || 'Thành viên lớp học';
+      const classPosition = role === 'class_role' ? (document.getElementById('new-u-position').value.trim() || 'Ban cán sự lớp') : '';
+
+      if (username.toLowerCase() === ADMIN_ACCOUNT.username || appState.users.some(u => u.username.toLowerCase() === username.toLowerCase() || u.email.toLowerCase() === email.toLowerCase())) {
+        alert('Tên đăng nhập hoặc Email đã tồn tại.');
+        return;
+      }
+
+      appState.users.unshift({
+        id: 'u-' + Date.now(),
+        username,
+        password,
+        fullName,
+        email,
+        phone,
+        grade,
+        dob: '',
+        note: 'Tài khoản do Quản trị viên khởi tạo trực tiếp.',
+        provider: 'admin-created',
+        role,
+        classPosition,
+        status: 'approved',
+        rejectReason: '',
+        createdAt: new Date().toLocaleString('vi-VN')
+      });
+
+      persistState();
+      event.target.reset();
+      closeCreateUserModal();
+      refreshAdminViews();
+    }
+
+    function openUserDetailModal(userId) {
+      const u = appState.users.find(item => item.id === userId);
+      if (!u) return;
+      document.getElementById('detail-user-id').value = u.id;
+      document.getElementById('user-detail-info').innerHTML = `
+        <div class="profile-row"><span>Họ và tên</span><strong>${escapeHtml(u.fullName)}</strong></div>
+        <div class="profile-row"><span>Tên đăng nhập</span><strong>${escapeHtml(u.username)}</strong></div>
+        <div class="profile-row"><span>Email</span><strong>${escapeHtml(u.email)}</strong></div>
+        <div class="profile-row"><span>Số điện thoại</span><strong>${escapeHtml(u.phone || '—')}</strong></div>
+        <div class="profile-row"><span>Khối lớp</span><strong>${escapeHtml(u.grade || '—')}</strong></div>
+        <div class="profile-row"><span>Ngày sinh</span><strong>${escapeHtml(u.dob || '—')}</strong></div>
+        <div class="profile-row"><span>Lời nhắn / Mục tiêu</span><strong>${escapeHtml(u.note || '—')}</strong></div>
+      `;
+      const roleSelect = document.getElementById('detail-user-role');
+      const posInput = document.getElementById('detail-user-position');
+      if (roleSelect) roleSelect.value = u.role || 'student';
+      if (posInput) posInput.value = u.classPosition || '';
+      toggleDetailPosition();
+      document.getElementById('user-detail-modal').classList.remove('hidden');
+    }
+
+    function closeUserDetailModal() {
+      document.getElementById('user-detail-modal').classList.add('hidden');
+    }
+
+    function toggleDetailPosition() {
+      const role = document.getElementById('detail-user-role')?.value;
+      const wrap = document.getElementById('detail-position-wrap');
+      if (wrap) {
+        if (role === 'class_role') wrap.classList.remove('hidden');
+        else wrap.classList.add('hidden');
+      }
+    }
+
+    function saveUserRoleAssignment(event) {
+      event.preventDefault();
+      if (!currentUser || currentUser.role !== 'admin') return;
+      const userId = document.getElementById('detail-user-id').value;
+      const role = document.getElementById('detail-user-role').value;
+      const classPosition = role === 'class_role' ? (document.getElementById('detail-user-position').value.trim() || 'Ban cán sự lớp') : '';
+      const u = appState.users.find(item => item.id === userId);
+      if (!u) return;
+      u.role = role;
+      u.classPosition = classPosition;
+      u.status = 'approved';
+      persistState();
+      closeUserDetailModal();
+      refreshAdminViews();
+    }
+
+    /* ================= BẬT / TẮT CHỨC NĂNG & POP-UP CHÀO MỪNG ================= */
+    function renderFeaturesTabUI() {
+      const popup = appState.settings.welcomePopup || DEFAULT_STATE.settings.welcomePopup;
+      const isEnabled = isFeatureEnabled('welcomePopup');
+      popup.enabled = isEnabled;
+
+      const enabledSwitch = document.getElementById('popup-enabled-switch');
+      const typeSelect = document.getElementById('popup-type-select');
+      const titleInput = document.getElementById('popup-title-input');
+      const ledTextInput = document.getElementById('popup-led-text');
+      const ledSpeedSelect = document.getElementById('popup-led-speed');
+      const customColorInput = document.getElementById('popup-led-custom-color');
+      const imgUrlInput = document.getElementById('popup-image-url');
+      const imgCaptionInput = document.getElementById('popup-image-caption');
+
+      if (enabledSwitch) enabledSwitch.checked = isEnabled;
+      if (typeSelect) typeSelect.value = popup.type || 'led';
+      if (titleInput) titleInput.value = popup.title || '';
+      if (ledTextInput) ledTextInput.value = popup.ledText || '';
+      if (ledSpeedSelect) ledSpeedSelect.value = popup.ledSpeed || '11s';
+      if (customColorInput) customColorInput.value = /^#[0-9A-Fa-f]{6}$/.test(popup.ledColor || '') ? popup.ledColor : '#00F5D4';
+      if (imgUrlInput) imgUrlInput.value = popup.imageUrl || '';
+      if (imgCaptionInput) imgCaptionInput.value = popup.imageCaption || '';
+
+      highlightLedSwatch(popup.ledColor || '#00F5D4');
+      onPopupTypeChange();
+      renderLivePopupPreviews();
+      renderFeatureFlagsList();
+    }
+
+    function highlightLedSwatch(color) {
+      const norm = (color || '').toUpperCase();
+      document.querySelectorAll('#led-color-swatches .led-swatch-btn').forEach(btn => {
+        if ((btn.dataset.color || '').toUpperCase() === norm) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    function selectLedColor(color) {
+      const popup = appState.settings.welcomePopup;
+      popup.ledColor = color;
+      const customColorInput = document.getElementById('popup-led-custom-color');
+      if (customColorInput && /^#[0-9A-Fa-f]{6}$/.test(color)) {
+        customColorInput.value = color;
+      }
+      highlightLedSwatch(color);
+      renderLivePopupPreviews();
+    }
+
+    function onPopupEnabledToggle(checked) {
+      appState.settings.featureFlags.welcomePopup = !!checked;
+      appState.settings.welcomePopup.enabled = !!checked;
+      if (checked) {
+        skipPopupInSession = false;
+      }
+      persistState();
+      renderFeatureFlagsList();
+      showFeaturesFeedback(checked ? 'Đã BẬT Pop-up chào mừng.' : 'Đã TẮT Pop-up chào mừng.', 'info');
+    }
+
+    function onPopupTypeChange() {
+      const type = document.getElementById('popup-type-select')?.value || 'led';
+      appState.settings.welcomePopup.type = type;
+      const ledBox = document.getElementById('popup-led-config');
+      const imgBox = document.getElementById('popup-image-config');
+      if (type === 'image') {
+        ledBox?.classList.add('hidden');
+        imgBox?.classList.remove('hidden');
+      } else {
+        imgBox?.classList.add('hidden');
+        ledBox?.classList.remove('hidden');
+      }
+      renderLivePopupPreviews();
+    }
+
+    function syncPopupFormToState() {
+      const popup = appState.settings.welcomePopup;
+      popup.title = document.getElementById('popup-title-input')?.value || '';
+      popup.ledText = document.getElementById('popup-led-text')?.value || '';
+      popup.ledSpeed = document.getElementById('popup-led-speed')?.value || '11s';
+      popup.imageUrl = document.getElementById('popup-image-url')?.value || '';
+      popup.imageCaption = document.getElementById('popup-image-caption')?.value || '';
+      renderLivePopupPreviews();
+    }
+
+    function handlePopupImageUpload(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const dataUrl = String(e.target?.result || '');
+        appState.settings.welcomePopup.imageUrl = dataUrl;
+        const urlInput = document.getElementById('popup-image-url');
+        if (urlInput) urlInput.value = dataUrl;
+        renderLivePopupPreviews();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function buildLedBoardHTML(popup) {
+      const color = popup.ledColor || '#00F5D4';
+      const duration = popup.ledSpeed || '11s';
+      const text = popup.ledText || 'LỚP VĂN THẦY HIẾU • LỚP HỌC HẠNH PHÚC';
+      return `
+        <div class="led-board-shell">
+          <div class="led-dot-overlay">
+            <div class="led-marquee-track" style="color:${escapeHtml(color)}; text-shadow:0 0 10px ${escapeHtml(color)}, 0 0 22px ${escapeHtml(color)}88; --led-duration:${escapeHtml(duration)};">
+              ${escapeHtml(text)}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderLivePopupPreviews() {
+      const popup = appState.settings.welcomePopup || DEFAULT_STATE.settings.welcomePopup;
+      const ledPreview = document.getElementById('led-live-preview-box');
+      const imgPreview = document.getElementById('image-live-preview-box');
+      if (ledPreview) {
+        ledPreview.innerHTML = `<div style="font-size:0.78rem; font-weight:700; color:var(--ink-muted); margin-bottom:6px;">Xem trước bảng chữ LED:</div>${buildLedBoardHTML(popup)}`;
+      }
+      if (imgPreview) {
+        const safeUrl = escapeHtml(popup.imageUrl || 'https://placehold.co/800x420/DCEEFB/1B4975?text=Lop+Van+Thay+Hieu');
+        const safeCap = escapeHtml(popup.imageCaption || '');
+        imgPreview.innerHTML = `
+          <div style="font-size:0.78rem; font-weight:700; color:var(--ink-muted); margin-bottom:6px;">Xem trước hình ảnh Pop-up:</div>
+          <div style="border:1px solid var(--border-vintage); border-radius:var(--radius-sm); overflow:hidden; background:#FFFDF8;">
+            <img src="${safeUrl}" alt="Xem trước Pop-up" onerror="this.src='https://placehold.co/800x420/DCEEFB/1B4975?text=Khong+tai+duoc+anh'" style="width:100%; max-height:220px; object-fit:cover; display:block;" />
+            ${safeCap ? `<div style="padding:10px 12px; font-size:0.88rem; color:var(--blue-deep); font-weight:600;">${safeCap}</div>` : ''}
+          </div>
+        `;
+      }
+    }
+
+    function renderFeatureFlagsList() {
+      const container = document.getElementById('feature-flags-list');
+      if (!container) return;
+      container.innerHTML = FEATURE_DEFINITIONS.map(f => {
+        const checked = isFeatureEnabled(f.key);
+        return `
+          <div class="feature-toggle-item ${checked ? '' : 'disabled-item'}">
+            <div style="display:flex; align-items:flex-start; gap:10px; min-width:0;">
+              <div class="feature-item-icon">${renderLuxuryIcon(f.key, 'lux-svg-sm')}</div>
+              <div style="min-width:0;">
+                <div style="font-weight:700; font-size:0.9rem; color:var(--blue-deep);">${escapeHtml(f.label)}</div>
+                <div style="font-size:0.78rem; color:var(--ink-muted);">${escapeHtml(f.desc)}</div>
+              </div>
+            </div>
+            <label class="switch-toggle">
+              <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleFeatureFlag('${f.key}', this.checked)" />
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleFeatureFlag(key, enabled) {
+      appState.settings.featureFlags[key] = !!enabled;
+      if (key === 'welcomePopup') {
+        appState.settings.welcomePopup.enabled = !!enabled;
+        if (enabled) skipPopupInSession = false;
+        const sw = document.getElementById('popup-enabled-switch');
+        if (sw) sw.checked = !!enabled;
+      }
+      persistState();
+      applyFeatureVisibility();
+      renderClassModulesUI();
+      renderFeatureFlagsList();
+      if (!enabled && activeModuleId === key) {
+        switchMainView('home');
+      }
+      showFeaturesFeedback(`Đã ${enabled ? 'BẬT' : 'TẮT'} chức năng thành công.`, 'success');
+    }
+
+    function savePopupAndFeaturesConfig() {
+      syncPopupFormToState();
+      const enabled = !!document.getElementById('popup-enabled-switch')?.checked;
+      appState.settings.featureFlags.welcomePopup = enabled;
+      appState.settings.welcomePopup.enabled = enabled;
+      if (enabled) skipPopupInSession = false;
+      persistState(true);
+      applyFeatureVisibility();
+      renderClassModulesUI();
+      renderFeatureFlagsList();
+      showFeaturesFeedback('Đã lưu cài đặt chức năng & Pop-up chào mừng thành công!', 'success');
+    }
+
+    function showFeaturesFeedback(msg, type = 'success') {
+      const el = document.getElementById('features-feedback');
+      if (!el) return;
+      el.className = 'alert-box ' + (type === 'error' ? 'alert-error' : type === 'info' ? 'alert-info' : 'alert-success');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 4500);
+    }
+
+    function maybeShowWelcomePopup() {
+      if (skipPopupInSession) return;
+      if (!isFeatureEnabled('welcomePopup')) return;
+      const popup = appState.settings.welcomePopup || DEFAULT_STATE.settings.welcomePopup;
+      if (popup.enabled === false) return;
+      openWelcomePopupModal(popup);
+    }
+
+    function previewWelcomePopup() {
+      syncPopupFormToState();
+      openWelcomePopupModal(appState.settings.welcomePopup || DEFAULT_STATE.settings.welcomePopup);
+    }
+
+    function openWelcomePopupModal(popup) {
+      const modal = document.getElementById('welcome-popup-modal');
+      const titleEl = document.getElementById('welcome-popup-title');
+      const bodyEl = document.getElementById('welcome-popup-body');
+      const skipCb = document.getElementById('popup-skip-session-checkbox');
+      if (!modal || !titleEl || !bodyEl) return;
+
+      if (skipCb) skipCb.checked = false;
+      titleEl.textContent = popup.title || 'Chào mừng bạn đến với Lớp văn thầy Hiếu!';
+
+      if (popup.type === 'image') {
+        const safeUrl = escapeHtml(popup.imageUrl || 'https://placehold.co/800x420/DCEEFB/1B4975?text=Lop+Van+Thay+Hieu');
+        const safeCap = escapeHtml(popup.imageCaption || '');
+        bodyEl.innerHTML = `
+          <div style="border:1px solid var(--border-vintage); border-radius:var(--radius-md); overflow:hidden; background:#FFFDF8;">
+            <img src="${safeUrl}" alt="${escapeHtml(popup.title || 'Pop-up chào mừng')}" onerror="this.src='https://placehold.co/800x420/DCEEFB/1B4975?text=Lop+Van+Thay+Hieu'" style="width:100%; max-height:320px; object-fit:cover; display:block;" />
+            ${safeCap ? `<p style="padding:14px 16px; font-size:0.95rem; color:var(--ink-dark); font-weight:500;">${safeCap}</p>` : ''}
+          </div>
+        `;
+      } else {
+        bodyEl.innerHTML = `
+          ${buildLedBoardHTML(popup)}
+          <p style="margin-top:12px; font-size:0.84rem; color:var(--ink-muted);">
+            Màu sắc đèn LED: <strong style="color:var(--blue-deep);">${escapeHtml(popup.ledColor || '#00F5D4')}</strong> • Tốc độ: <strong>${escapeHtml(popup.ledSpeed || '11s')}</strong>
+          </p>
+        `;
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closeWelcomePopup() {
+      const skipCb = document.getElementById('popup-skip-session-checkbox');
+      if (skipCb && skipCb.checked) {
+        skipPopupInSession = true;
+      }
+      document.getElementById('welcome-popup-modal')?.classList.add('hidden');
+    }
+
+    /* ================= CHUYÊN MỤC LỚP HỌC ================= */
+    function renderClassModulesUI() {
+      const hubGrid = document.getElementById('home-hub-grid');
+      const moreMenu = document.getElementById('nav-more-menu');
+      const enabledModules = CLASS_MODULES.filter(m => isFeatureEnabled(m.id));
+
+      if (hubGrid) {
+        if (enabledModules.length === 0) {
+          hubGrid.innerHTML = `<div class="alert-box alert-info" style="grid-column:1/-1; margin-bottom:0;">Hiện tại tất cả chuyên mục mở rộng đang được Quản trị viên tạm ẩn.</div>`;
+        } else {
+          hubGrid.innerHTML = enabledModules.map(m => `
+            <div class="hub-tile">
+              <div>
+                <div class="hub-tile-top">
+                  <div class="hub-tile-icon">${renderLuxuryIcon(m.id, 'lux-svg')}</div>
+                  <h4>${escapeHtml(m.title)}</h4>
+                </div>
+                <p style="margin-top:8px;">${escapeHtml(m.shortDesc)}</p>
+              </div>
+              <div>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="openModuleView('${m.id}')">Mở chuyên mục →</button>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+
+      if (moreMenu) {
+        if (enabledModules.length === 0) {
+          moreMenu.innerHTML = `<div style="padding:8px 12px; font-size:0.84rem; color:var(--ink-muted);">Không có chuyên mục đang bật</div>`;
+        } else {
+          moreMenu.innerHTML = enabledModules.map(m => `
+            <button type="button" class="nav-drop-item" onclick="openModuleView('${m.id}')">
+              <span class="nav-drop-left">${renderLuxuryIcon(m.id, 'lux-svg-sm')}<span>${escapeHtml(m.title)}</span></span>
+              <span style="font-size:0.75rem; color:var(--blue-primary);">→</span>
+            </button>
+          `).join('');
+        }
+      }
+    }
+
+    function toggleMoreMenu(event) {
+      event?.stopPropagation();
+      if (!isFeatureEnabled('moreMenuDropdown')) return;
+      const menu = document.getElementById('nav-more-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', () => {
+      const menu = document.getElementById('nav-more-menu');
+      if (menu && !menu.classList.contains('hidden')) {
+        menu.classList.add('hidden');
+      }
+    });
+
+    function openModuleView(moduleId) {
+      const mod = CLASS_MODULES.find(m => m.id === moduleId);
+      if (!mod || !isFeatureEnabled(moduleId)) {
+        switchMainView('home');
+        return;
+      }
+      activeModuleId = moduleId;
+
+      document.getElementById('view-home').classList.add('hidden');
+      document.getElementById('view-admin').classList.add('hidden');
+      document.getElementById('view-module').classList.remove('hidden');
+
+      document.getElementById('nav-home').classList.remove('active');
+      document.getElementById('nav-admin').classList.remove('active');
+      document.getElementById('nav-more-btn').classList.add('active');
+      document.getElementById('nav-more-menu')?.classList.add('hidden');
+
+      document.getElementById('mod-badge').textContent = mod.tag;
+      document.getElementById('mod-title').innerHTML = `
+        <span class="hub-tile-icon" style="width:38px; height:38px;">${renderLuxuryIcon(mod.id, 'lux-svg')}</span>
+        <span>${escapeHtml(mod.title)}</span>
+      `;
+      document.getElementById('mod-desc').textContent = mod.shortDesc;
+
+      const interactiveArea = document.getElementById('mod-interactive-area');
+      if (moduleId === 'class-management' && currentUser && ['admin', 'moderator', 'class_role'].includes(currentUser.role)) {
+        interactiveArea.innerHTML = `
+          <div class="alert-box alert-info" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:0;">
+            <span>Bạn có quyền điều hành lớp học. Mở nhanh bảng quản trị tài khoản &amp; phân công chức vụ:</span>
+            <button type="button" class="btn btn-primary btn-sm" onclick="switchMainView('admin')">Mở Quản lý tài khoản &amp; Phân công</button>
+          </div>
+        `;
+      } else {
+        interactiveArea.innerHTML = `
+          <div class="alert-box alert-info" style="margin-bottom:0;">
+            Chuyên mục <strong>${escapeHtml(mod.title)}</strong> đã được kích hoạt trên Trang chủ tổng hợp. Thầy Hiếu có thể bổ sung học liệu, đề bài và hoạt động chi tiết vào từng mục ở các bước tiếp theo.
+          </div>
+        `;
+      }
+
+      const itemsGrid = document.getElementById('mod-items-grid');
+      itemsGrid.innerHTML = mod.items.map((it, idx) => `
+        <div class="workspace-box">
+          <div style="font-size:0.76rem; font-weight:700; color:var(--blue-primary); margin-bottom:4px;">MỤC ${idx + 1}</div>
+          <div style="font-weight:700; color:var(--blue-deep); margin-bottom:5px;">${escapeHtml(it.name)}</div>
+          <p style="font-size:0.86rem; color:var(--ink-muted);">${escapeHtml(it.detail)}</p>
+        </div>
+      `).join('');
+    }
+
+    /* ================= SETTINGS, BACKUP, EXPORT & IMPORT ================= */
+    function showSettingsFeedback(msg, type = 'success') {
+      const el = document.getElementById('settings-feedback');
+      el.className = 'alert-box ' + (type === 'error' ? 'alert-error' : type === 'info' ? 'alert-info' : 'alert-success');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 5000);
+    }
+
+    function toggleAutoSave(enabled) {
+      appState.settings.autoSave = enabled;
+      if (enabled) {
+        persistState(true);
+        showSettingsFeedback('Đã bật chế độ tự động lưu dữ liệu lớp học.', 'success');
+      } else {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        updateAutoSaveUI();
+        showSettingsFeedback('Đã tạm tắt tự động lưu. Hãy nhớ nhấn "Lưu thủ công ngay" hoặc xuất file khi cần.', 'info');
+      }
+    }
+
+    function manualSaveNow() {
+      persistState(true);
+      showSettingsFeedback('Đã lưu toàn bộ dữ liệu hiện tại thành công!', 'success');
+    }
+
+    function updateSnapshotInfoUI() {
+      const timeEl = document.getElementById('snapshot-time');
+      const countEl = document.getElementById('snapshot-count');
+      if (!timeEl || !countEl) return;
+      try {
+        const raw = localStorage.getItem(BACKUP_KEY);
+        if (!raw) {
+          timeEl.textContent = 'Chưa có bản sao lưu thủ công';
+          countEl.textContent = appState.users.length;
+          return;
+        }
+        const snap = JSON.parse(raw);
+        timeEl.textContent = snap.backedUpAt || 'Không rõ';
+        countEl.textContent = Array.isArray(snap.data?.users) ? snap.data.users.length : 0;
+      } catch (e) {
+        timeEl.textContent = 'Lỗi đọc bản sao lưu';
+      }
+    }
+
+    function createInternalBackup() {
+      const payload = {
+        backedUpAt: new Date().toLocaleString('vi-VN'),
+        data: appState
+      };
+      localStorage.setItem(BACKUP_KEY, JSON.stringify(payload));
+      updateSnapshotInfoUI();
+      showSettingsFeedback('Đã tạo điểm sao lưu phục hồi nội bộ thành công!', 'success');
+    }
+
+    function restoreInternalBackup() {
+      const raw = localStorage.getItem(BACKUP_KEY);
+      if (!raw) {
+        showSettingsFeedback('Chưa có bản sao lưu nội bộ nào để khôi phục.', 'error');
+        return;
+      }
+      if (!confirm('Khôi phục dữ liệu từ bản sao lưu gần nhất sẽ ghi đè danh sách hiện tại. Tiếp tục?')) return;
+      try {
+        const snap = JSON.parse(raw);
+        if (snap && snap.data && Array.isArray(snap.data.users)) {
+          appState = snap.data;
+          persistState(true);
+          applyFeatureVisibility();
+          renderClassModulesUI();
+          refreshAdminViews();
+          showSettingsFeedback('Đã khôi phục dữ liệu từ điểm sao lưu thành công!', 'success');
+        }
+      } catch (e) {
+        showSettingsFeedback('Không thể khôi phục bản sao lưu này.', 'error');
+      }
+    }
+
+    function exportJSONFile() {
+      const exportPayload = {
+        app: 'ThayHieuGenZ - Lop van thay Hieu',
+        exportedAt: new Date().toISOString(),
+        schemaVersion: '1.0-supabase-ready',
+        settings: appState.settings,
+        profiles: appState.users
+      };
+      const blob = new Blob([JSON.stringify(exportPayload, null, 2)], { type: 'application/json;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `thayhieugenz-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showSettingsFeedback('Đã xuất tệp sao lưu .JSON thành công!', 'success');
+    }
+
+    function exportCSVFile() {
+      const headers = ['ID', 'HoTen', 'TenDangNhap', 'Email', 'SoDienThoai', 'KhoiLop', 'NgaySinh', 'NguonDangKy', 'TrangThai', 'GhiChu', 'NgayTao'];
+      const rows = appState.users.map(u => [
+        u.id, u.fullName, u.username, u.email, u.phone || '', u.grade || '', u.dob || '',
+        u.provider, u.status, (u.note || '').replace(/"/g, '""'), u.createdAt || ''
+      ]);
+      const csvContent = '\uFEFF' + [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `danh-sach-hoc-vien-thayhieugenz-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showSettingsFeedback('Đã xuất danh sách học viên ra tệp .CSV thành công!', 'success');
+    }
+
+    function handleImportJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          const importedUsers = Array.isArray(parsed.profiles) ? parsed.profiles : Array.isArray(parsed.users) ? parsed.users : null;
+          if (!importedUsers) {
+            showSettingsFeedback('Tệp JSON không đúng định dạng dữ liệu của hệ thống Thầy Hiếu GenZ.', 'error');
+            return;
+          }
+          appState.users = importedUsers;
+          if (parsed.settings) {
+            appState.settings = {
+              ...appState.settings,
+              ...parsed.settings,
+              welcomePopup: { ...appState.settings.welcomePopup, ...(parsed.settings.welcomePopup || {}) },
+              featureFlags: { ...appState.settings.featureFlags, ...(parsed.settings.featureFlags || {}) }
+            };
+          }
+          persistState(true);
+          applyFeatureVisibility();
+          renderClassModulesUI();
+          refreshAdminViews();
+          showSettingsFeedback(`Đã nhập thành công ${importedUsers.length} hồ sơ tài khoản từ tệp sao lưu!`, 'success');
+        } catch (err) {
+          showSettingsFeedback('Lỗi đọc tệp JSON. Vui lòng kiểm tra lại tệp đã chọn.', 'error');
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function loadSupabaseConfigUI() {
+      const sb = appState.settings.supabase || {};
+      const urlEl = document.getElementById('sb-url');
+      const keyEl = document.getElementById('sb-key');
+      const tblEl = document.getElementById('sb-table');
+      const badge = document.getElementById('sb-status-badge');
+      if (urlEl) urlEl.value = sb.url || '';
+      if (keyEl) keyEl.value = sb.anonKey || '';
+      if (tblEl) tblEl.value = sb.table || 'profiles';
+      if (badge) {
+        if (sb.url && sb.anonKey) {
+          badge.textContent = sb.lastSyncAt ? `Đã đồng bộ (${sb.lastSyncAt})` : 'Đã lưu cấu hình';
+          badge.className = 'status-pill status-approved';
+        } else {
+          badge.textContent = 'Chưa cấu hình';
+          badge.className = 'status-pill status-pending';
+        }
+      }
+    }
+
+    function saveSupabaseConfig() {
+      const url = (document.getElementById('sb-url')?.value || '').trim().replace(/\/+$/, '');
+      const anonKey = (document.getElementById('sb-key')?.value || '').trim();
+      const table = (document.getElementById('sb-table')?.value || 'profiles').trim() || 'profiles';
+      appState.settings.supabase = {
+        ...(appState.settings.supabase || {}),
+        url,
+        anonKey,
+        table
+      };
+      persistState(true);
+      loadSupabaseConfigUI();
+      showSettingsFeedback('Đã lưu cấu hình Supabase thành công!', 'success');
+    }
+
+    async function testSupabaseConnection() {
+      saveSupabaseConfig();
+      const { url, anonKey, table } = appState.settings.supabase || {};
+      if (!url || !anonKey) {
+        showSettingsFeedback('Vui lòng nhập đầy đủ Supabase Project URL và Anon Key trước khi kiểm tra.', 'error');
+        return;
+      }
+      try {
+        const res = await fetch(`${url}/rest/v1/${encodeURIComponent(table)}?select=id&limit=1`, {
+          headers: {
+            apikey: anonKey,
+            Authorization: `Bearer ${anonKey}`
+          }
+        });
+        if (res.ok) {
+          showSettingsFeedback(`Kết nối thành công tới bảng "${table}" trên Supabase!`, 'success');
+        } else {
+          const errText = await res.text();
+          showSettingsFeedback(`Phản hồi từ Supabase (${res.status}): ${errText || 'Kiểm tra lại tên bảng hoặc chính sách RLS.'}`, 'info');
+        }
+      } catch (e) {
+        showSettingsFeedback('Không thể kết nối tới Supabase (kiểm tra lại URL hoặc mạng).', 'error');
+      }
+    }
+
+    async function syncUsersToSupabase() {
+      saveSupabaseConfig();
+      const { url, anonKey, table } = appState.settings.supabase || {};
+      if (!url || !anonKey) {
+        showSettingsFeedback('Vui lòng cấu hình Supabase Project URL và Anon Key trước khi đồng bộ.', 'error');
+        return;
+      }
+      const payload = appState.users.map(u => ({
+        id: u.id,
+        username: u.username,
+        full_name: u.fullName,
+        email: u.email,
+        phone: u.phone || '',
+        grade: u.grade || '',
+        dob: u.dob || '',
+        note: u.note || '',
+        provider: u.provider || 'form',
+        role: u.role || 'student',
+        status: u.status || 'pending',
+        reject_reason: u.rejectReason || '',
+        created_at: u.createdAt || new Date().toLocaleString('vi-VN')
+      }));
+
+      try {
+        const res = await fetch(`${url}/rest/v1/${encodeURIComponent(table)}?on_conflict=id`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: anonKey,
+            Authorization: `Bearer ${anonKey}`,
+            Prefer: 'resolution=merge-duplicates,return=minimal'
+          },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          appState.settings.supabase.lastSyncAt = new Date().toLocaleString('vi-VN');
+          persistState(true);
+          loadSupabaseConfigUI();
+          showSettingsFeedback(`Đã đồng bộ ${payload.length} hồ sơ lên bảng "${table}" trên Supabase!`, 'success');
+        } else {
+          const errText = await res.text();
+          showSettingsFeedback(`Đồng bộ chưa thành công (${res.status}): ${errText}`, 'error');
+        }
+      } catch (e) {
+        showSettingsFeedback('Lỗi mạng khi gửi dữ liệu lên Supabase.', 'error');
+      }
+    }
+
+    function copySupabaseSQL() {
+      const sql = document.getElementById('supabase-sql-code')?.textContent || '';
+      navigator.clipboard?.writeText(sql).then(() => {
+        showSettingsFeedback('Đã sao chép câu lệnh SQL tạo bảng profiles cho Supabase!', 'success');
+      }).catch(() => {
+        showSettingsFeedback('Hãy bôi đen và sao chép đoạn SQL bên dưới.', 'info');
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+  </script>
+</body>
+</html>
