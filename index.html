@@ -533,6 +533,36 @@
 
     #prof-pass-wrap.hidden { display: none !important; }
 
+
+    /* ===== THẺ THÀNH VIÊN ===== */
+    .member-card {
+      position: relative; overflow: hidden; width: 100%; max-width: 460px; margin: 4px auto 6px;
+      aspect-ratio: 1.75 / 1; min-height: 230px; border-radius: 18px; padding: 18px 22px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      color: #FFFDF8; background: linear-gradient(135deg, #1B4975 0%, #2B72B3 58%, #4592CF 100%);
+      border: 1.5px solid var(--gold-vintage);
+      box-shadow: 0 14px 30px rgba(24, 54, 84, 0.28), inset 0 0 0 4px rgba(255, 255, 255, 0.07);
+    }
+    .member-card::before {
+      content: ''; position: absolute; right: -60px; top: -70px; width: 220px; height: 220px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 70%);
+    }
+    .member-card::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 6px;
+      background: linear-gradient(90deg, var(--gold-vintage), #F0CD7E, var(--gold-vintage));
+    }
+    .mc-top { position: relative; display: flex; align-items: center; gap: 12px; }
+    .mc-logo { width: 52px; height: 52px; box-shadow: 0 0 0 2px rgba(255,255,255,0.25), 0 0 0 3px var(--gold-vintage); }
+    .mc-site { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.05rem; line-height: 1.15; }
+    .mc-slogan { font-size: 0.7rem; opacity: 0.85; margin-top: 2px; }
+    .mc-tag { margin-left: auto; align-self: flex-start; font-size: 0.62rem; font-weight: 800; letter-spacing: 1.6px; color: #F6DFA3; border: 1px solid rgba(246, 223, 163, 0.6); border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+    .mc-body { position: relative; padding-bottom: 6px; }
+    .mc-label { font-size: 0.64rem; letter-spacing: 1.2px; text-transform: uppercase; opacity: 0.72; margin-bottom: 2px; }
+    .mc-name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.6rem; line-height: 1.15; margin-bottom: 12px; word-break: break-word; }
+    .mc-row { display: flex; gap: 28px; flex-wrap: wrap; }
+    .mc-val { font-weight: 700; font-size: 0.98rem; }
+    @media (max-width: 480px) { .member-card { padding: 14px 16px; } .mc-name { font-size: 1.3rem; } .mc-tag { display: none; } }
+
     .role-badge {
       padding: 2px 8px;
       border-radius: 999px;
@@ -1809,10 +1839,10 @@
 
           <div id="home-profile-panel" class="vintage-card section-panel">
             <div class="panel-header">
-              <h2>Thông tin cá nhân</h2>
+              <h2>Thẻ thành viên</h2>
               <div style="display:flex; gap:8px; align-items:center;">
                 <span class="status-pill status-approved">Đã kích hoạt</span>
-                <button type="button" id="btn-edit-profile" class="btn btn-secondary btn-sm" onclick="toggleEditProfile(true)">Chỉnh sửa</button>
+                <button type="button" id="btn-edit-profile" class="btn btn-secondary btn-sm" onclick="toggleEditProfile(true)">Chỉnh sửa thông tin</button>
               </div>
             </div>
             <div id="member-profile-card"></div>
@@ -2523,7 +2553,7 @@ grant select, insert, update, delete on public.app_backups to anon;
       { key: 'moreMenuDropdown', label: 'Menu thả xuống Chuyên mục lớp', desc: 'Hiển thị nút & menu điều hướng nhanh các chuyên mục trên thanh trên' },
       { key: 'coreTopicsGrid', label: '4 Chuyên mục giáo dục đặc trưng', desc: 'Đọc hiểu, Nghị luận xã hội, Phòng luyện đề & Góc Sách hay' },
       { key: 'bulletinBoard', label: 'Bảng tin lớp học', desc: 'Hiển thị thông báo & dặn dò từ thầy Hiếu trên Trang chủ' },
-      { key: 'personalProfile', label: 'Thông tin cá nhân', desc: 'Hiển thị thẻ thông tin thành viên trên Trang chủ' },
+      { key: 'personalProfile', label: 'Thẻ thành viên', desc: 'Hiển thị thẻ thành viên (họ tên, chức vụ, lớp) trên Trang chủ' },
       { key: 'editPersonalProfile', label: 'Chức năng chỉnh sửa hồ sơ cá nhân', desc: 'Cho phép người dùng tự chỉnh sửa thông tin cá nhân của mình' },
       ...CLASS_MODULES.map(m => ({ key: m.id, label: `Chuyên mục: ${m.title}`, desc: m.shortDesc }))
     ];
@@ -3022,17 +3052,29 @@ grant select, insert, update, delete on public.app_backups to anon;
     function renderMemberProfile() {
       if (!currentUser) return;
       const box = document.getElementById('member-profile-card');
+      const isStudent = rankOf(currentUser) === 0;
       box.innerHTML = `
-        <div class="profile-row"><span>Họ và tên</span><strong>${escapeHtml(currentUser.fullName)}</strong></div>
-        <div class="profile-row"><span>Tên đăng nhập</span><strong>${escapeHtml(currentUser.username)}</strong></div>
-        <div class="profile-row"><span>Email</span><strong>${escapeHtml(currentUser.email)}</strong></div>
-        <div class="profile-row"><span>Số điện thoại</span><strong>${escapeHtml(currentUser.phone || 'Chưa cập nhật')}</strong></div>
-        <div class="profile-row"><span>Ngày sinh</span><strong>${escapeHtml(currentUser.dob ? currentUser.dob.split('-').reverse().join('/') : 'Chưa cập nhật')}</strong></div>
-        <div class="profile-row"><span>Chức vụ</span><strong>${escapeHtml(roleLabelOf(currentUser))}</strong></div>
-        <div class="profile-row"><span>Lớp</span><strong>${escapeHtml(currentUser.grade || 'Chưa xếp lớp')}</strong></div>
-        <div class="profile-row"><span>Mục tiêu / Ghi chú</span><strong>${escapeHtml(currentUser.note || 'Chưa cập nhật')}</strong></div>
-        <div class="profile-row"><span>Hình thức đăng ký</span><strong>${currentUser.provider === 'google' ? 'Tài khoản Google' : currentUser.provider === 'system' ? 'Quản trị hệ thống' : 'Biểu mẫu lớp học'}</strong></div>
-      `;
+        <div class="member-card">
+          <div class="mc-top">
+            <div class="logo-frame mc-logo">
+              <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+              <div class="logo-fallback" style="display:none;"><span style="font-size:1.1rem;">H</span></div>
+            </div>
+            <div>
+              <div class="mc-site">Thầy Hiếu GenZ</div>
+              <div class="mc-slogan">Lớp văn thầy Hiếu - Lớp học hạnh phúc</div>
+            </div>
+            <div class="mc-tag">THẺ THÀNH VIÊN</div>
+          </div>
+          <div class="mc-body">
+            <div class="mc-label">Họ và tên</div>
+            <div class="mc-name">${escapeHtml(currentUser.fullName)}</div>
+            <div class="mc-row">
+              <div><div class="mc-label">Chức vụ</div><div class="mc-val">${escapeHtml(roleLabelOf(currentUser))}</div></div>
+              ${isStudent ? `<div><div class="mc-label">Lớp</div><div class="mc-val">${escapeHtml(currentUser.grade || 'Chưa xếp lớp')}</div></div>` : ''}
+            </div>
+          </div>
+        </div>`;
     }
 
     function toggleEditProfile(editing) {
@@ -3059,7 +3101,6 @@ grant select, insert, update, delete on public.app_backups to anon;
         document.getElementById('prof-curpass').value = '';
         document.getElementById('prof-newpass').value = '';
         document.getElementById('prof-pass-wrap').classList.toggle('hidden', !canChangeOwnPassword());
-        card.classList.add('hidden');
         form.classList.remove('hidden');
         if (btn) btn.classList.add('hidden');
       } else {
@@ -3370,7 +3411,7 @@ grant select, insert, update, delete on public.app_backups to anon;
       document.getElementById('detail-modal-title').textContent = editInfo ? 'Xem & chỉnh sửa tài khoản' : 'Xem thông tin tài khoản';
       document.getElementById('detail-modal-sub').textContent = roleLabelOf(u) + ' • tạo lúc ' + (u.createdAt || '—');
       let note = '';
-      if (isSysAdmin) note = 'Tài khoản Quản trị viên hệ thống: chỉ xem. Quản trị viên tự chỉnh trong mục Thông tin cá nhân.';
+      if (isSysAdmin) note = 'Tài khoản Quản trị viên hệ thống: chỉ xem. Quản trị viên tự chỉnh ở nút Chỉnh sửa trên Thẻ thành viên.';
       else if (!editInfo) note = 'Kiểm duyệt viên chỉ được xem, không chỉnh sửa thông tin.';
       else if (!editSens) note = 'Bạn chỉnh được thông tin chung, nhưng không đổi được chức vụ, trạng thái hay mật khẩu của tài khoản cùng cấp hoặc cao hơn.';
       else if (u.provider === 'google') note = 'Tài khoản đăng nhập bằng Google nên không có mật khẩu.';
