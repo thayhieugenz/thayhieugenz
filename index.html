@@ -2101,8 +2101,9 @@
                   </div>
 
                   <details style="background:var(--bg-card-tint); border:1px solid var(--border-vintage); border-radius:var(--radius-sm); padding:10px 14px;">
-                    <summary style="cursor:pointer; font-weight:700; color:var(--blue-deep); font-size:0.88rem;">Xem mẫu SQL khởi tạo bảng profiles trên Supabase</summary>
-                    <pre id="supabase-sql-code" style="margin-top:10px; font-size:0.8rem; overflow-x:auto; color:var(--ink-dark); line-height:1.45;">create table if not exists public.profiles (
+                    <summary style="cursor:pointer; font-weight:700; color:var(--blue-deep); font-size:0.88rem;">Xem mẫu SQL khởi tạo bảng trên Supabase (profiles + app_backups)</summary>
+                    <pre id="supabase-sql-code" style="margin-top:10px; font-size:0.8rem; overflow-x:auto; color:var(--ink-dark); line-height:1.45;">-- Bảng 1: danh sách hồ sơ (xem nhanh trên Supabase)
+create table if not exists public.profiles (
   id text primary key,
   username text unique not null,
   full_name text not null,
@@ -2113,11 +2114,59 @@
   note text,
   provider text default 'form',
   role text default 'student',
+  class_position text default '',
   status text default 'pending',
   reject_reason text default '',
   created_at text
-);</pre>
+);
+
+-- Bảng 2: sao lưu TOÀN BỘ dữ liệu (tài khoản + cài đặt + pop-up + bật/tắt chức năng)
+create table if not exists public.app_backups (
+  id text primary key,            -- 'main' = bản mới nhất; 'hist-...' = bản lịch sử
+  data jsonb not null,
+  user_count int default 0,
+  device text default '',
+  updated_at timestamptz default now()
+);
+
+alter table public.profiles enable row level security;
+alter table public.app_backups enable row level security;
+
+-- Ứng dụng dùng anon key nên cần cho phép anon đọc/ghi 2 bảng này
+create policy "anon_all_profiles" on public.profiles
+  for all to anon using (true) with check (true);
+create policy "anon_all_app_backups" on public.app_backups
+  for all to anon using (true) with check (true);
+</pre>
                   </details>
+                </div>
+
+                <!-- Sao lưu & đồng bộ toàn bộ dữ liệu lên Supabase -->
+                <div class="setting-card" style="grid-column: 1 / -1;">
+                  <h3>Sao lưu &amp; đồng bộ toàn bộ dữ liệu lên Supabase</h3>
+                  <p>
+                    Lưu <strong>toàn bộ</strong> dữ liệu (tài khoản, cài đặt, pop-up chào mừng, bật/tắt chức năng) vào bảng <code>app_backups</code>. Có thể đẩy lên, kéo về máy khác và khôi phục từ các bản lịch sử. Cần chạy SQL ở khung phía trên trước khi dùng.
+                  </p>
+                  <div style="background:var(--bg-card-tint); border:1px solid var(--border-vintage); padding:11px 13px; border-radius:var(--radius-sm); font-size:0.85rem; margin-bottom:14px;">
+                    <div><strong>Bản trên đám mây:</strong> <span id="cloud-last-info">Chưa kiểm tra</span></div>
+                    <div style="margin-top:3px; color:var(--ink-muted);">Lưu ý: bản sao lưu có chứa mật khẩu tài khoản. Hãy giữ kín Anon Key và không chia sẻ công khai.</div>
+                  </div>
+                  <div class="switch-row" style="margin-bottom:12px;">
+                    <div>
+                      <div style="font-weight:700; color:var(--blue-deep); font-size:0.92rem;">Tự động đẩy lên Supabase khi có thay đổi</div>
+                      <div style="font-size:0.8rem; color:var(--ink-muted);">Chỉ chạy khi quản trị viên đang đăng nhập, sau khoảng 5 giây kể từ lần chỉnh sửa cuối</div>
+                    </div>
+                    <label class="switch-toggle">
+                      <input type="checkbox" id="cloud-autosync-checkbox" onchange="toggleCloudAutoSync(this.checked)" />
+                      <span class="switch-slider"></span>
+                    </label>
+                  </div>
+                  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="pushBackupToCloud({ history: true })">Sao lưu lên Supabase ngay</button>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="pullBackupFromCloud('main')">Kéo bản mới nhất về máy</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="loadCloudHistory()">Xem các bản lịch sử</button>
+                  </div>
+                  <div id="cloud-history-list" style="display:grid; gap:8px;"></div>
                 </div>
               </div>
             </div>
@@ -2313,7 +2362,9 @@
           url: '',
           anonKey: '',
           table: 'profiles',
-          lastSyncAt: ''
+          lastSyncAt: '',
+          autoSync: false,
+          lastCloudAt: ''
         },
         welcomePopup: {
           enabled: true,
@@ -2435,6 +2486,7 @@
       appState.settings.lastSavedAt = new Date().toLocaleString('vi-VN');
       localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
       updateAutoSaveUI();
+      scheduleAutoCloudSync();
     }
 
     function updateAutoSaveUI() {
@@ -2625,6 +2677,7 @@
 
     function enterApp(user) {
       currentUser = user;
+      if (user.role === 'admin') setTimeout(checkCloudNewer, 1500);
       document.getElementById('auth-view').classList.add('hidden');
       document.getElementById('app-view').classList.remove('hidden');
 
@@ -3592,6 +3645,10 @@
 
     function loadSupabaseConfigUI() {
       const sb = appState.settings.supabase || {};
+      const asEl = document.getElementById('cloud-autosync-checkbox');
+      if (asEl) asEl.checked = !!sb.autoSync;
+      const infoEl = document.getElementById('cloud-last-info');
+      if (infoEl && sb.lastCloudAt) infoEl.textContent = 'Lần đồng bộ gần nhất: ' + new Date(sb.lastCloudAt).toLocaleString('vi-VN');
       const urlEl = document.getElementById('sb-url');
       const keyEl = document.getElementById('sb-key');
       const tblEl = document.getElementById('sb-table');
@@ -3668,6 +3725,7 @@
         note: u.note || '',
         provider: u.provider || 'form',
         role: u.role || 'student',
+        class_position: u.classPosition || '',
         status: u.status || 'pending',
         reject_reason: u.rejectReason || '',
         created_at: u.createdAt || new Date().toLocaleString('vi-VN')
@@ -3705,6 +3763,186 @@
       }).catch(() => {
         showSettingsFeedback('Hãy bôi đen và sao chép đoạn SQL bên dưới.', 'info');
       });
+    }
+
+    /* ================= SAO LƯU & ĐỒNG BỘ TOÀN BỘ LÊN SUPABASE (app_backups) ================= */
+    let cloudBusy = false;
+    let cloudTimer = null;
+    const CLOUD_TABLE = 'app_backups';
+    const CLOUD_HISTORY_KEEP = 10;
+
+    function cloudCfg() {
+      const sb = appState.settings.supabase || {};
+      if (!sb.url || !sb.anonKey) return null;
+      return sb;
+    }
+
+    function cloudHeaders(sb, extra = {}) {
+      return { 'Content-Type': 'application/json', apikey: sb.anonKey, Authorization: `Bearer ${sb.anonKey}`, ...extra };
+    }
+
+    function buildCloudPayload() {
+      // Không đưa khóa kết nối Supabase vào bản sao lưu
+      const settings = JSON.parse(JSON.stringify(appState.settings));
+      delete settings.supabase;
+      return { schemaVersion: 2, settings, users: JSON.parse(JSON.stringify(appState.users)) };
+    }
+
+    function setCloudInfo(text) {
+      const el = document.getElementById('cloud-last-info');
+      if (el) el.textContent = text;
+    }
+
+    function deviceLabel() {
+      return (navigator.userAgentData?.platform || navigator.platform || 'thiết bị') + ' • ' + (currentUser?.username || '');
+    }
+
+    async function fetchCloudMeta(sb) {
+      const res = await fetch(`${sb.url}/rest/v1/${CLOUD_TABLE}?id=eq.main&select=id,updated_at,user_count,device`, { headers: cloudHeaders(sb) });
+      if (!res.ok) throw new Error(`${res.status}: ${await res.text()}`);
+      const rows = await res.json();
+      return rows[0] || null;
+    }
+
+    async function pushBackupToCloud(opts = {}) {
+      const sb = cloudCfg();
+      if (!sb) { if (!opts.silent) showSettingsFeedback('Hãy nhập và lưu Supabase URL + Anon Key trước.', 'error'); return false; }
+      if (cloudBusy) return false;
+      cloudBusy = true;
+      try {
+        // Chặn ghi đè nếu bản trên đám mây mới hơn bản máy này đã biết
+        const meta = await fetchCloudMeta(sb);
+        if (meta && sb.lastCloudAt && new Date(meta.updated_at) > new Date(sb.lastCloudAt) && !opts.force) {
+          if (opts.silent) { setCloudInfo('Đám mây có bản mới hơn — hãy kéo về hoặc bấm "Sao lưu lên Supabase ngay" để quyết định.'); return false; }
+          if (!confirm(`Trên Supabase có bản mới hơn (${new Date(meta.updated_at).toLocaleString('vi-VN')}, ${meta.user_count} hồ sơ) do thiết bị khác lưu.\nGhi đè bằng dữ liệu của máy này?`)) return false;
+        }
+        const now = new Date().toISOString();
+        const body = [{ id: 'main', data: buildCloudPayload(), user_count: appState.users.length, device: deviceLabel(), updated_at: now }];
+        if (opts.history) body.push({ id: 'hist-' + now, data: body[0].data, user_count: appState.users.length, device: body[0].device, updated_at: now });
+        const res = await fetch(`${sb.url}/rest/v1/${CLOUD_TABLE}?on_conflict=id`, {
+          method: 'POST',
+          headers: cloudHeaders(sb, { Prefer: 'resolution=merge-duplicates,return=minimal' }),
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) throw new Error(`${res.status}: ${await res.text()}`);
+        appState.settings.supabase.lastCloudAt = now;
+        persistState(true);
+        loadSupabaseConfigUI();
+        if (opts.history) pruneCloudHistory(sb);
+        if (!opts.silent) showSettingsFeedback(`Đã sao lưu ${appState.users.length} hồ sơ + toàn bộ cài đặt lên Supabase!`, 'success');
+        return true;
+      } catch (e) {
+        const msg = String(e.message || e);
+        const hint = /42P01|does not exist|404/.test(msg) ? ' (chưa tạo bảng app_backups — hãy chạy SQL mẫu)' : /401|403|42501|row-level/i.test(msg) ? ' (kiểm tra Anon Key và chính sách RLS)' : '';
+        if (!opts.silent) showSettingsFeedback('Sao lưu lên Supabase chưa thành công: ' + msg + hint, 'error');
+        else setCloudInfo('Tự động đồng bộ lỗi: ' + msg);
+        return false;
+      } finally {
+        cloudBusy = false;
+      }
+    }
+
+    async function pruneCloudHistory(sb) {
+      try {
+        const res = await fetch(`${sb.url}/rest/v1/${CLOUD_TABLE}?id=like.hist-*&select=id&order=id.desc`, { headers: cloudHeaders(sb) });
+        if (!res.ok) return;
+        const rows = await res.json();
+        const old = rows.slice(CLOUD_HISTORY_KEEP).map(r => r.id);
+        for (const id of old) {
+          await fetch(`${sb.url}/rest/v1/${CLOUD_TABLE}?id=eq.${encodeURIComponent(id)}`, { method: 'DELETE', headers: cloudHeaders(sb) });
+        }
+      } catch (e) { /* bỏ qua */ }
+    }
+
+    async function pullBackupFromCloud(id) {
+      const sb = cloudCfg();
+      if (!sb) { showSettingsFeedback('Hãy nhập và lưu Supabase URL + Anon Key trước.', 'error'); return; }
+      try {
+        const res = await fetch(`${sb.url}/rest/v1/${CLOUD_TABLE}?id=eq.${encodeURIComponent(id)}&select=*`, { headers: cloudHeaders(sb) });
+        if (!res.ok) throw new Error(`${res.status}: ${await res.text()}`);
+        const rows = await res.json();
+        if (!rows.length) { showSettingsFeedback('Chưa có bản sao lưu nào trên Supabase.', 'info'); return; }
+        const row = rows[0];
+        const when = new Date(row.updated_at).toLocaleString('vi-VN');
+        if (!confirm(`Khôi phục bản sao lưu ${when} (${row.user_count} hồ sơ)?\nDữ liệu hiện tại trên máy sẽ được thay thế (tự tạo điểm sao lưu nội bộ trước).`)) return;
+        createInternalBackup();
+        const d = row.data || {};
+        if (!Array.isArray(d.users)) throw new Error('Dữ liệu sao lưu không hợp lệ');
+        const keepSb = appState.settings.supabase;
+        appState.users = d.users;
+        appState.settings = {
+          ...appState.settings,
+          ...(d.settings || {}),
+          welcomePopup: { ...appState.settings.welcomePopup, ...((d.settings || {}).welcomePopup || {}) },
+          featureFlags: { ...appState.settings.featureFlags, ...((d.settings || {}).featureFlags || {}) },
+          supabase: { ...keepSb, lastCloudAt: id === 'main' ? row.updated_at : keepSb.lastCloudAt }
+        };
+        cloudBusy = true;
+        persistState(true);
+        cloudBusy = false;
+        applyFeatureVisibility();
+        renderClassModulesUI();
+        refreshAdminViews();
+        loadSupabaseConfigUI();
+        showSettingsFeedback(`Đã khôi phục ${appState.users.length} hồ sơ và toàn bộ cài đặt từ Supabase!`, 'success');
+      } catch (e) {
+        cloudBusy = false;
+        showSettingsFeedback('Không thể kéo dữ liệu từ Supabase: ' + (e.message || e), 'error');
+      }
+    }
+
+    async function loadCloudHistory() {
+      const sb = cloudCfg();
+      const box = document.getElementById('cloud-history-list');
+      if (!sb) { showSettingsFeedback('Hãy nhập và lưu Supabase URL + Anon Key trước.', 'error'); return; }
+      try {
+        const res = await fetch(`${sb.url}/rest/v1/${CLOUD_TABLE}?id=like.hist-*&select=id,updated_at,user_count,device&order=id.desc&limit=${CLOUD_HISTORY_KEEP}`, { headers: cloudHeaders(sb) });
+        if (!res.ok) throw new Error(`${res.status}: ${await res.text()}`);
+        const rows = await res.json();
+        if (!rows.length) { box.innerHTML = '<div style="font-size:0.85rem; color:var(--ink-muted);">Chưa có bản lịch sử nào. Bấm "Sao lưu lên Supabase ngay" để tạo.</div>'; return; }
+        box.innerHTML = rows.map(r => `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; background:var(--bg-card-tint); border:1px solid var(--border-vintage); border-radius:var(--radius-sm); padding:8px 12px; font-size:0.85rem;">
+            <span><strong>${escapeHtml(new Date(r.updated_at).toLocaleString('vi-VN'))}</strong> • ${r.user_count} hồ sơ • ${escapeHtml(r.device || '')}</span>
+            <button type="button" class="btn btn-outline btn-sm" onclick="pullBackupFromCloud('${escapeHtml(r.id)}')">Khôi phục bản này</button>
+          </div>`).join('');
+      } catch (e) {
+        showSettingsFeedback('Không đọc được danh sách lịch sử: ' + (e.message || e), 'error');
+      }
+    }
+
+    function toggleCloudAutoSync(enabled) {
+      if (!cloudCfg()) {
+        document.getElementById('cloud-autosync-checkbox').checked = false;
+        showSettingsFeedback('Hãy nhập và lưu Supabase URL + Anon Key trước khi bật tự động đồng bộ.', 'error');
+        return;
+      }
+      appState.settings.supabase.autoSync = enabled;
+      persistState(true);
+      showSettingsFeedback(enabled ? 'Đã bật tự động đẩy dữ liệu lên Supabase.' : 'Đã tắt tự động đồng bộ.', 'info');
+      if (enabled) pushBackupToCloud({ silent: false });
+    }
+
+    function scheduleAutoCloudSync() {
+      if (cloudBusy) return;
+      const sb = appState.settings.supabase;
+      if (!sb || !sb.autoSync || !sb.url || !sb.anonKey) return;
+      if (!currentUser || currentUser.role !== 'admin') return;
+      clearTimeout(cloudTimer);
+      cloudTimer = setTimeout(() => pushBackupToCloud({ silent: true }), 5000);
+    }
+
+    async function checkCloudNewer() {
+      const sb = cloudCfg();
+      if (!sb || !currentUser || currentUser.role !== 'admin') return;
+      try {
+        const meta = await fetchCloudMeta(sb);
+        if (!meta) return;
+        if (!sb.lastCloudAt || new Date(meta.updated_at) > new Date(sb.lastCloudAt)) {
+          if (confirm(`Trên Supabase có bản dữ liệu mới hơn (${new Date(meta.updated_at).toLocaleString('vi-VN')}, ${meta.user_count} hồ sơ).\nKéo về máy này ngay?`)) {
+            await pullBackupFromCloud('main');
+          }
+        }
+      } catch (e) { /* mất mạng hoặc chưa tạo bảng: bỏ qua */ }
     }
 
     function escapeHtml(str) {
