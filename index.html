@@ -1348,7 +1348,9 @@
             <label class="form-label" for="login-password">Mật khẩu</label>
             <input class="form-input" id="login-password" type="password" placeholder="Nhập mật khẩu..." required />
           </div>
-          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:4px;">Vào lớp học</button>
+          <button type="submit" id="login-submit-btn" class="btn btn-primary" style="width:100%; margin-top:4px;">Vào lớp học</button>
+          <button type="button" id="login-refresh-btn" class="btn btn-outline" style="width:100%; margin-top:8px;" onclick="manualRefreshFromCloud()">Cập nhật dữ liệu mới nhất</button>
+          <div id="login-sync-status" style="font-size:0.8rem; color:var(--ink-muted); margin-top:6px; text-align:center; min-height:1.1em;"></div>
 
           <div class="divider-text"><span>hoặc tiếp tục với</span></div>
 
@@ -2189,6 +2191,10 @@ create policy "anon_all_app_backups" on public.app_backups
     const STORAGE_KEY = 'thayhieugenz_edu_db_v1';
     const BACKUP_KEY = 'thayhieugenz_edu_backup_v1';
 
+    /* Điền sẵn Project URL và Anon Key của Supabase vào đây để MỌI máy (học sinh, tab ẩn danh...)
+       tự kết nối và tải dữ liệu mới nhất khi bấm "Vào lớp học". Chỉ dùng khóa anon, KHÔNG dùng service_role. */
+    const CLOUD_DEFAULT = { url: '', anonKey: '' };
+
     const ADMIN_ACCOUNT = {
       id: 'admin-thayhieugenz',
       username: 'thayhieugenz',
@@ -2535,11 +2541,20 @@ create policy "anon_all_app_backups" on public.app_backups
       }
     }
 
-    function handleLogin(event) {
+    async function handleLogin(event) {
       event.preventDefault();
       clearAuthAlert();
       const identity = document.getElementById('login-identity').value.trim().toLowerCase();
       const password = document.getElementById('login-password').value;
+
+      // Tự tải dữ liệu mới nhất từ Supabase trước khi kiểm tra đăng nhập (admin dùng hộp thoại hỏi riêng sau khi vào)
+      if (identity !== ADMIN_ACCOUNT.username) {
+        const btn = document.getElementById('login-submit-btn');
+        const oldText = btn ? btn.textContent : '';
+        if (btn) { btn.disabled = true; btn.textContent = 'Đang tải dữ liệu mới nhất...'; }
+        await refreshFromCloudSilent(true);
+        if (btn) { btn.disabled = false; btn.textContent = oldText; }
+      }
 
       if (identity === ADMIN_ACCOUNT.username && password === ADMIN_ACCOUNT.password) {
         enterApp(ADMIN_ACCOUNT);
@@ -3773,8 +3788,10 @@ create policy "anon_all_app_backups" on public.app_backups
 
     function cloudCfg() {
       const sb = appState.settings.supabase || {};
-      if (!sb.url || !sb.anonKey) return null;
-      return sb;
+      const url = (sb.url || CLOUD_DEFAULT.url || '').trim().replace(/\/+$/, '');
+      const anonKey = (sb.anonKey || CLOUD_DEFAULT.anonKey || '').trim();
+      if (!url || !anonKey) return null;
+      return { ...sb, url, anonKey };
     }
 
     function cloudHeaders(sb, extra = {}) {
@@ -3944,6 +3961,70 @@ create policy "anon_all_app_backups" on public.app_backups
         }
       } catch (e) { /* mất mạng hoặc chưa tạo bảng: bỏ qua */ }
     }
+
+    /* ================= TỰ TẢI DỮ LIỆU MỚI NHẤT KHI VÀO LỚP ================= */
+    function setLoginSyncStatus(text, isError = false) {
+      const el = document.getElementById('login-sync-status');
+      if (!el) return;
+      el.textContent = text || '';
+      el.style.color = isError ? '#B3261E' : 'var(--ink-muted)';
+    }
+
+    async function refreshFromCloudSilent(showStatus = false) {
+      const sb = cloudCfg();
+      if (!sb) return false;
+      if (showStatus) setLoginSyncStatus('Đang tải dữ liệu mới nhất...');
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 7000);
+      try {
+        const res = await fetch(`${sb.url}/rest/v1/${CLOUD_TABLE}?id=eq.main&select=data,updated_at`, { headers: cloudHeaders(sb), signal: ctrl.signal });
+        if (!res.ok) throw new Error(String(res.status));
+        const rows = await res.json();
+        if (!rows.length || !rows[0].data || !Array.isArray(rows[0].data.users)) {
+          if (showStatus) setLoginSyncStatus('Chưa có bản sao lưu trên Supabase, dùng dữ liệu trên máy.');
+          return false;
+        }
+        const row = rows[0];
+        const d = row.data;
+        // Giữ lại tài khoản mới đăng ký trên máy này (đang chờ duyệt) mà bản đám mây chưa có
+        const cloudIds = new Set(d.users.map(u => u.id));
+        const cloudUsernames = new Set(d.users.map(u => String(u.username).toLowerCase()));
+        const localPending = appState.users.filter(u => u.status === 'pending' && !cloudIds.has(u.id) && !cloudUsernames.has(String(u.username).toLowerCase()));
+        const keepSb = appState.settings.supabase || {};
+        appState.users = [...d.users, ...localPending];
+        appState.settings = {
+          ...appState.settings,
+          ...(d.settings || {}),
+          welcomePopup: { ...appState.settings.welcomePopup, ...((d.settings || {}).welcomePopup || {}) },
+          featureFlags: { ...appState.settings.featureFlags, ...((d.settings || {}).featureFlags || {}) },
+          supabase: { ...keepSb, lastCloudAt: row.updated_at }
+        };
+        cloudBusy = true;
+        try { persistState(true); } finally { cloudBusy = false; }
+        if (typeof applyFeatureVisibility === 'function') applyFeatureVisibility();
+        if (showStatus) setLoginSyncStatus('Đã cập nhật dữ liệu lúc ' + new Date().toLocaleTimeString('vi-VN') + '.');
+        return true;
+      } catch (e) {
+        if (showStatus) setLoginSyncStatus(e.name === 'AbortError' ? 'Mạng chậm, tạm dùng dữ liệu đã lưu trên máy.' : 'Không tải được dữ liệu mới (mã lỗi ' + (e.message || '?') + '), tạm dùng dữ liệu trên máy.', true);
+        return false;
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    async function manualRefreshFromCloud() {
+      if (!cloudCfg()) {
+        setLoginSyncStatus('Chưa cấu hình Supabase. Quản trị viên cần điền URL + Anon Key.', true);
+        return;
+      }
+      const btn = document.getElementById('login-refresh-btn');
+      if (btn) btn.disabled = true;
+      await refreshFromCloudSilent(true);
+      if (btn) btn.disabled = false;
+    }
+
+    // Tự tải khi vừa mở trang (nếu đã có cấu hình)
+    window.addEventListener('load', () => { if (!currentUser) refreshFromCloudSilent(true); });
 
     function escapeHtml(str) {
       return String(str || '')
