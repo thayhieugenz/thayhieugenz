@@ -1822,6 +1822,20 @@
                 <input class="form-input" id="prof-fullname" type="text" required />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div id="prof-username-wrap" class="form-group hidden" style="margin-bottom:10px;">
+                  <label class="form-label" for="prof-username">ID đăng nhập</label>
+                  <input class="form-input" id="prof-username" type="text" autocapitalize="none" />
+                </div>
+                <div class="form-group" style="margin-bottom:10px;">
+                  <label class="form-label" for="prof-email">Email</label>
+                  <input class="form-input" id="prof-email" type="email" />
+                </div>
+                <div class="form-group" style="margin-bottom:10px;">
+                  <label class="form-label" for="prof-dob">Ngày sinh</label>
+                  <input class="form-input" id="prof-dob" type="date" />
+                </div>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                 <div class="form-group" style="margin-bottom:10px;">
                   <label class="form-label" for="prof-phone">Số điện thoại</label>
                   <input class="form-input" id="prof-phone" type="tel" />
@@ -2328,6 +2342,17 @@ grant select, insert, update, delete on public.app_backups to anon;
       status: 'approved',
       createdAt: '2026-01-01 08:00'
     };
+    /* Hồ sơ Quản trị viên được lưu riêng trên thiết bị này (không đẩy lên Supabase để không lộ mật khẩu) */
+    const ADMIN_KEY = 'thayhieugenz_admin_v1';
+    const ADMIN_FIELDS = ['username', 'password', 'fullName', 'email', 'phone', 'grade', 'dob', 'note'];
+    try {
+      const sv = JSON.parse(localStorage.getItem(ADMIN_KEY) || 'null');
+      if (sv && typeof sv === 'object') ADMIN_FIELDS.forEach(k => { if (typeof sv[k] === 'string' && (sv[k] || k === 'phone' || k === 'note' || k === 'grade' || k === 'dob' || k === 'email')) ADMIN_ACCOUNT[k] = sv[k]; });
+    } catch (e) { /* bỏ qua */ }
+    function saveAdminProfile() {
+      const o = {}; ADMIN_FIELDS.forEach(k => { o[k] = ADMIN_ACCOUNT[k] || ''; });
+      try { localStorage.setItem(ADMIN_KEY, JSON.stringify(o)); } catch (e) { alert('Không lưu được hồ sơ quản trị trên thiết bị này.'); }
+    }
 
     /* ===== PHÂN QUYỀN: 4 CHỨC VỤ ===== */
     const ROLE_RANK = { student: 0, moderator: 1, assistant: 2, admin: 3 };
@@ -2348,7 +2373,7 @@ grant select, insert, update, delete on public.app_backups to anon;
       if (r === 1) return u.status === 'pending' && rankOf(u) === 0;
       return false;
     }
-    function canChangeOwnPassword() { return !!currentUser && currentUser.id !== ADMIN_ACCOUNT.id && currentUser.provider !== 'google'; }
+    function canChangeOwnPassword() { return !!currentUser && currentUser.provider !== 'google'; }
     // Quản trị viên hệ thống nằm trong mã nguồn (không nằm trong appState.users) nên cần ghép vào danh sách xem
     function allAccounts() { return [ADMIN_ACCOUNT, ...appState.users.filter(u => u.id !== ADMIN_ACCOUNT.id)]; }
     function findAccount(id) { return id === ADMIN_ACCOUNT.id ? ADMIN_ACCOUNT : appState.users.find(u => u.id === id); }
@@ -3002,6 +3027,7 @@ grant select, insert, update, delete on public.app_backups to anon;
         <div class="profile-row"><span>Tên đăng nhập</span><strong>${escapeHtml(currentUser.username)}</strong></div>
         <div class="profile-row"><span>Email</span><strong>${escapeHtml(currentUser.email)}</strong></div>
         <div class="profile-row"><span>Số điện thoại</span><strong>${escapeHtml(currentUser.phone || 'Chưa cập nhật')}</strong></div>
+        <div class="profile-row"><span>Ngày sinh</span><strong>${escapeHtml(currentUser.dob ? currentUser.dob.split('-').reverse().join('/') : 'Chưa cập nhật')}</strong></div>
         <div class="profile-row"><span>Chức vụ</span><strong>${escapeHtml(roleLabelOf(currentUser))}</strong></div>
         <div class="profile-row"><span>Lớp</span><strong>${escapeHtml(currentUser.grade || 'Chưa xếp lớp')}</strong></div>
         <div class="profile-row"><span>Mục tiêu / Ghi chú</span><strong>${escapeHtml(currentUser.note || 'Chưa cập nhật')}</strong></div>
@@ -3018,6 +3044,13 @@ grant select, insert, update, delete on public.app_backups to anon;
       if (editing) {
         document.getElementById('prof-fullname').value = currentUser.fullName || '';
         document.getElementById('prof-phone').value = currentUser.phone || '';
+        const isAd = currentUser.id === ADMIN_ACCOUNT.id;
+        document.getElementById('prof-username-wrap').classList.toggle('hidden', !isAd);
+        document.getElementById('prof-username').value = currentUser.username || '';
+        const em = document.getElementById('prof-email');
+        em.value = currentUser.email || '';
+        em.disabled = currentUser.provider === 'google';
+        document.getElementById('prof-dob').value = currentUser.dob || '';
         const gi = document.getElementById('prof-grade');
         gi.value = currentUser.grade || '';
         gi.disabled = myRank() < 2; // chỉ Trợ lý quản trị viên trở lên đổi được lớp
@@ -3043,6 +3076,15 @@ grant select, insert, update, delete on public.app_backups to anon;
       const phone = document.getElementById('prof-phone').value.trim();
       const grade = myRank() >= 2 ? document.getElementById('prof-grade').value.trim() : (currentUser.grade || '');
       const note = document.getElementById('prof-note').value.trim();
+      const isAd = currentUser.id === ADMIN_ACCOUNT.id;
+      const email = currentUser.provider === 'google' ? (currentUser.email || '') : document.getElementById('prof-email').value.trim();
+      const dob = document.getElementById('prof-dob').value;
+      const username = isAd ? document.getElementById('prof-username').value.trim().toLowerCase() : currentUser.username;
+      if (isAd) {
+        if (!username) { alert('ID đăng nhập không được để trống.'); return; }
+        if (appState.users.some(u => String(u.username).toLowerCase() === username)) { alert('ID này đã được dùng cho tài khoản khác.'); return; }
+      }
+      if (email && allAccounts().some(x => x.id !== currentUser.id && x.email && x.email.toLowerCase() === email.toLowerCase())) { alert('Email này đã được dùng cho tài khoản khác.'); return; }
       const curPass = document.getElementById('prof-curpass').value;
       const newPass = document.getElementById('prof-newpass').value;
       if (newPass) {
@@ -3055,16 +3097,16 @@ grant select, insert, update, delete on public.app_backups to anon;
       currentUser.phone = phone;
       currentUser.grade = grade;
       currentUser.note = note;
+      currentUser.email = email;
+      currentUser.dob = dob;
+      if (isAd) currentUser.username = username;
       if (newPass) currentUser.password = newPass;
 
       const idx = appState.users.findIndex(u => u.id === currentUser.id);
       if (idx !== -1) {
-        appState.users[idx] = { ...appState.users[idx], fullName, phone, grade, note, ...(newPass ? { password: newPass } : {}) };
-      } else if (currentUser.role === 'admin') {
-        ADMIN_ACCOUNT.fullName = fullName;
-        ADMIN_ACCOUNT.phone = phone;
-        ADMIN_ACCOUNT.grade = grade;
-        ADMIN_ACCOUNT.note = note;
+        appState.users[idx] = { ...appState.users[idx], fullName, phone, grade, note, email, dob, ...(newPass ? { password: newPass } : {}) };
+      } else if (isAd) {
+        saveAdminProfile();
       }
 
       document.getElementById('topbar-username').textContent = fullName;
