@@ -2929,54 +2929,95 @@ grant select, insert, update, delete on public.notifications to anon;
       enterApp(found);
     }
 
+    /* ===== GỬI HỒ SƠ ĐĂNG KÝ LÊN SUPABASE NGAY (chờ kết quả thật, không chạy ngầm) ===== */
+    async function submitNewProfileToCloud(u) {
+      await configReady;
+      const sb = cloudCfg();
+      if (!sb) return { ok: false, code: 'nocfg', error: 'Trang chưa kết nối Supabase (không đọc được saoluu.json hoặc chưa điền URL/Anon Key).' };
+      for (let i = 0; i < 12 && profSyncing; i++) await new Promise(r => setTimeout(r, 500)); // đợi đợt đồng bộ đang chạy
+      try {
+        const res = await fetchT(`${sb.url}/rest/v1/profiles?on_conflict=id`, {
+          method: 'POST',
+          headers: cloudHeaders(sb, { Prefer: 'resolution=merge-duplicates,return=minimal' }),
+          body: JSON.stringify([userToRow(u)])
+        }, 10000);
+        if (res.ok) { pushedMap[u.id] = userSig(u); savePushed(); return { ok: true }; }
+        const txt = await res.text();
+        if (res.status === 409 || /23505/.test(txt)) {
+          if (/email/i.test(txt)) return { ok: false, code: 'schema', error: 'Bảng profiles trên Supabase còn ràng buộc unique ở cột email. Quản trị viên cần chạy lại SQL (dòng drop constraint profiles_email_key).' };
+          return { ok: false, code: 'dup', error: 'ID này đã có người sử dụng. Vui lòng chọn ID khác.' };
+        }
+        if (/42703|column/i.test(txt)) return { ok: false, code: 'schema', error: 'Bảng profiles trên Supabase thiếu cột (password / class_position / updated_at). Quản trị viên cần chạy lại SQL khởi tạo.' };
+        if (res.status === 401 || res.status === 403 || /42501|row-level security|permission/i.test(txt)) return { ok: false, code: 'perm', error: 'Supabase từ chối ghi vào bảng profiles (thiếu policy hoặc grant cho anon). Quản trị viên cần chạy lại SQL phân quyền.' };
+        if (res.status === 404 || /42P01/.test(txt)) return { ok: false, code: 'schema', error: 'Chưa có bảng profiles trên Supabase. Quản trị viên cần chạy SQL khởi tạo.' };
+        return { ok: false, code: 'http', error: 'Máy chủ trả lỗi ' + res.status + ': ' + txt.slice(0, 160) };
+      } catch (e) {
+        return { ok: false, code: 'net', error: e && e.name === 'AbortError' ? 'Mạng quá chậm, chưa gửi được đăng ký. Vui lòng thử lại.' : 'Không kết nối được máy chủ. Hãy kiểm tra mạng rồi thử lại.' };
+      }
+    }
+
+    // Tạo hồ sơ chờ duyệt: chỉ khi hồ sơ ĐÃ lên máy chủ mới báo thành công và gửi thông báo cho ban quản lý
+    async function createPendingAccount(u, staffTitle, staffBody) {
+      const r = await submitNewProfileToCloud(u);
+      if (!r.ok && r.code !== 'nocfg') return r;   // thất bại thật: không lưu hồ sơ tạm trên máy này
+      markOwn(u.id);
+      if (!appState.users.some(x => x.id === u.id)) appState.users.unshift(u);
+      persistState(true);
+      notifyStaff({ id: u.id, name: u.fullName, role: 'student' }, 'info', staffTitle, staffBody);
+      return r;
+    }
+
+    let registering = false;
     async function handleRegister(event) {
       event.preventDefault();
+      if (registering) return;
       clearAuthAlert();
-      await syncProfiles(); // lấy danh sách mới nhất để kiểm tra trùng ID giữa các máy
+      const form = event.target;
+      const btn = form.querySelector('button[type="submit"]');
+      registering = true;
+      if (btn) { btn.disabled = true; btn.textContent = 'Đang gửi đăng ký...'; }
+      try {
+        await syncProfiles(); // lấy danh sách mới nhất để kiểm tra trùng ID giữa các máy
 
-      const fullName = document.getElementById('reg-fullname').value.trim();
-      const username = document.getElementById('reg-username').value.trim();
-      const grade = document.getElementById('reg-grade').value.trim();
-      const password = document.getElementById('reg-password').value;
+        const fullName = document.getElementById('reg-fullname').value.trim();
+        const username = document.getElementById('reg-username').value.trim();
+        const grade = document.getElementById('reg-grade').value.trim();
+        const password = document.getElementById('reg-password').value;
 
-      if (!fullName || !username || !password) {
-        showAuthAlert('Vui lòng nhập Họ và tên, ID và Pass.', 'error');
-        return;
+        if (!fullName || !username || !password) {
+          showAuthAlert('Vui lòng nhập Họ và tên, ID và Pass.', 'error');
+          return;
+        }
+        if (username.toLowerCase() === ADMIN_ACCOUNT.username) {
+          showAuthAlert('ID này đã được hệ thống sử dụng.', 'error');
+          return;
+        }
+        if (appState.users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+          showAuthAlert('ID này đã tồn tại. Vui lòng chọn ID khác.', 'error');
+          return;
+        }
+
+        const newUser = {
+          id: 'u-' + Date.now(),
+          username, password, fullName,
+          email: '', phone: '', grade, dob: '', note: '',
+          provider: 'form', role: 'student', classPosition: '',
+          status: 'pending', rejectReason: '',
+          createdAt: new Date().toLocaleString('vi-VN')
+        };
+        const r = await createPendingAccount(newUser, 'Có đăng ký mới chờ duyệt', fullName + ' (ID: ' + username + (grade ? ', lớp ' + grade : '') + ') vừa đăng ký tài khoản và đang chờ được phê duyệt.');
+        if (!r.ok && r.code !== 'nocfg') {
+          showAuthAlert('Chưa đăng ký được: ' + r.error, 'error'); // giữ nguyên nội dung form để thử lại
+          return;
+        }
+        form.reset();
+        switchAuthTab('login');
+        if (r.ok) showAuthAlert('Đăng ký thành công! Hồ sơ đã được gửi tới ban quản lý và đang chờ thầy Hiếu phê duyệt.', 'success');
+        else showAuthAlert('Đã lưu đăng ký trên máy này, nhưng trang chưa kết nối máy chủ nên ban quản lý ở máy khác chưa nhìn thấy hồ sơ. Hãy báo thầy Hiếu kiểm tra kết nối Supabase.', 'info');
+      } finally {
+        registering = false;
+        if (btn) { btn.disabled = false; btn.textContent = 'Đăng ký'; }
       }
-      if (username.toLowerCase() === ADMIN_ACCOUNT.username) {
-        showAuthAlert('ID này đã được hệ thống sử dụng.', 'error');
-        return;
-      }
-      if (appState.users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-        showAuthAlert('ID này đã tồn tại. Vui lòng chọn ID khác.', 'error');
-        return;
-      }
-
-      const newRegId = 'u-' + Date.now();
-      markOwn(newRegId);
-      appState.users.unshift({
-        id: newRegId,
-        username,
-        password,
-        fullName,
-        email: '',
-        phone: '',
-        grade,
-        dob: '',
-        note: '',
-        provider: 'form',
-        role: 'student',
-        classPosition: '',
-        status: 'pending',
-        rejectReason: '',
-        createdAt: new Date().toLocaleString('vi-VN')
-      });
-
-      notifyStaff({ id: newRegId, name: fullName, role: 'student' }, 'info', 'Có đăng ký mới chờ duyệt', fullName + ' (ID: ' + username + (grade ? ', lớp ' + grade : '') + ') vừa đăng ký tài khoản và đang chờ được phê duyệt.');
-      persistState();
-      event.target.reset();
-      switchAuthTab('login');
-      showAuthAlert('Đăng ký thành công! Tài khoản của bạn đang chờ thầy Hiếu phê duyệt.', 'success');
     }
 
     function openGoogleModal() {
@@ -3014,12 +3055,12 @@ grant select, insert, update, delete on public.notifications to anon;
         return;
       }
       const newId = 'gg-' + Date.now();
-      markOwn(newId);
-      appState.users.unshift({
+      const gName = name || email.split('@')[0];
+      const gUser = {
         id: newId,
         username: email,
         password: '',
-        fullName: name || email.split('@')[0],
+        fullName: gName,
         email,
         phone: '',
         grade: '',
@@ -3031,10 +3072,11 @@ grant select, insert, update, delete on public.notifications to anon;
         status: 'pending',
         rejectReason: '',
         createdAt: new Date().toLocaleString('vi-VN')
-      });
-      notifyStaff({ id: newId, name: name || email.split('@')[0], role: 'student' }, 'info', 'Có đăng ký mới chờ duyệt', (name || email.split('@')[0]) + ' (' + email + ') vừa đăng ký bằng Google và đang chờ được phê duyệt.');
-      persistState();
-      showAuthAlert('Đã đăng ký tài khoản theo email ' + email + '. Vui lòng chờ thầy Hiếu phê duyệt.', 'success');
+      };
+      const r = await createPendingAccount(gUser, 'Có đăng ký mới chờ duyệt', gName + ' (' + email + ') vừa đăng ký bằng Google và đang chờ được phê duyệt.');
+      if (!r.ok && r.code !== 'nocfg') { showAuthAlert('Chưa đăng ký được: ' + r.error, 'error'); return; }
+      if (r.ok) showAuthAlert('Đã đăng ký tài khoản theo email ' + email + '. Hồ sơ đã gửi tới ban quản lý, vui lòng chờ thầy Hiếu phê duyệt.', 'success');
+      else showAuthAlert('Đã lưu đăng ký trên máy này, nhưng trang chưa kết nối máy chủ nên ban quản lý ở máy khác chưa nhìn thấy hồ sơ.', 'info');
     }
 
     // Đăng nhập Google thật qua Supabase Auth (nếu đã bật Google provider); nếu chưa thì dùng khung nhập Gmail
@@ -4652,7 +4694,8 @@ grant select, insert, update, delete on public.notifications to anon;
                 welcomePopup: { ...appState.settings.welcomePopup, ...(d.settings.welcomePopup || {}) },
                 featureFlags: { ...appState.settings.featureFlags, ...(d.settings.featureFlags || {}) },
                 homeOverview: newerOverview(prevOv, d.settings.homeOverview),
-                supabase: { ...keepSb, lastCloudAt: row.updated_at }
+                supabase: { ...keepSb, lastCloudAt: row.updated_at },
+                autoSave: appState.settings.autoSave   // cài đặt riêng từng máy, không lấy từ bản của admin
               };
               cloudBusy = true;
               try { persistState(true); } finally { cloudBusy = false; }
@@ -4769,6 +4812,7 @@ grant select, insert, update, delete on public.notifications to anon;
         if (res.ok) { pushedMap[u.id] = userSig(u); pushed++; continue; }
         const txt = await res.text();
         if (res.status === 409 || /23505/.test(txt)) {
+          if (/email/i.test(txt)) throw new Error('23505 profiles_email_key: bảng profiles còn ràng buộc unique ở cột email — hãy chạy lại SQL');
           if (!isAdmin && pushedMap[u.id] === undefined) {
             // Trùng tên đăng nhập/email với tài khoản đã có trên hệ thống: hủy hồ sơ vừa tạo trên máy này
             appState.users = appState.users.filter(x => x.id !== u.id);
@@ -4897,9 +4941,9 @@ grant select, insert, update, delete on public.notifications to anon;
     }
 
     function scheduleProfileSync() {
-      if (profSyncing || !cloudCfg()) return;
+      if (!cloudCfg()) return;
       clearTimeout(profTimer);
-      profTimer = setTimeout(() => syncProfiles(), 2000);
+      profTimer = setTimeout(() => { if (profSyncing) scheduleProfileSync(); else syncProfiles(); }, 2000);
     }
 
     async function manualRefreshFromCloud() {
