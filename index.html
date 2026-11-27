@@ -1370,77 +1370,13 @@
       flex-shrink: 0;
     }
 
-
-    /* ================= TRANG CHỦ GỌN: LỜI CHÀO + TỔNG QUAN + THẺ THÀNH VIÊN ================= */
-    .home-welcome { padding: 18px 24px; margin-bottom: 18px; background: linear-gradient(135deg, #F8FCFF 0%, #DCEEFB 100%); }
-    .home-welcome h1 { font-size: 1.55rem; color: var(--blue-deep); line-height: 1.25; margin: 0; }
-    .home-grid { display: grid; grid-template-columns: 1.7fr 1fr; gap: 24px; align-items: start; }
-    .ov-block + .ov-block { margin-top: 20px; padding-top: 18px; border-top: 1px dashed var(--border-vintage); }
-    .ov-teacher { display: grid; grid-template-columns: 120px 1fr; gap: 18px; align-items: start; }
-    .ov-photo { width: 120px; height: 120px; border-radius: 16px; overflow: hidden; border: 2px solid var(--border-blue); background: var(--blue-pale); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 800; color: var(--blue-primary); }
-    .ov-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .ov-block h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--blue-deep); margin-bottom: 2px; }
-    .ov-sub { font-size: 0.88rem; font-weight: 600; color: var(--gold-vintage); margin-bottom: 8px; }
-    .ov-text { font-size: 0.94rem; color: var(--ink-muted); white-space: pre-line; margin-bottom: 10px; }
-    .ov-list { list-style: none; display: grid; gap: 5px; margin: 0 0 10px; }
-    .ov-list li { position: relative; padding-left: 18px; font-size: 0.9rem; color: var(--ink-dark); }
-    .ov-list li::before { content: ''; position: absolute; left: 3px; top: 0.62em; width: 7px; height: 7px; border-radius: 50%; background: var(--blue-mid); }
-    .ov-contact { display: flex; gap: 8px 16px; flex-wrap: wrap; font-size: 0.86rem; color: var(--blue-deep); font-weight: 600; }
-    .ov-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 6px; }
-    .ov-cols h4 { font-size: 0.82rem; letter-spacing: 0.5px; text-transform: uppercase; color: var(--blue-primary); margin-bottom: 6px; }
-    .ov-stat { display: inline-flex; align-items: center; gap: 8px; background: var(--teal-soft); color: var(--teal-accent); border: 1px solid #B9DFDA; border-radius: 999px; padding: 5px 14px; font-size: 0.86rem; font-weight: 700; margin-top: 12px; }
-    .ov-empty { font-size: 0.9rem; color: var(--ink-muted); padding: 8px 0; }
-    .ov-edit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
-    .ov-preview { background: var(--bg-card-tint); border: 1px solid var(--border-vintage); border-radius: var(--radius-md); padding: 16px; }
-    .ov-photo-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
-    .ov-photo-row .ov-photo { width: 84px; height: 84px; font-size: 1.7rem; border-radius: 12px; }
-
-    /* ================= NÚT THÔNG BÁO (CHUÔNG) ================= */
-    .notif-wrap { position: relative; }
-    .bell-btn { padding: 8px 11px; position: relative; }
-    .bell-badge { position: absolute; top: -6px; right: -6px; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 999px; background: #D93025; color: #fff; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #E6F3FD; }
-    .bell-btn.ring svg { animation: bellRing 0.9s ease-in-out 2; transform-origin: 50% 8%; }
-    @keyframes bellRing { 0%,100% { transform: rotate(0); } 20% { transform: rotate(16deg); } 40% { transform: rotate(-14deg); } 60% { transform: rotate(9deg); } 80% { transform: rotate(-6deg); } }
-    .notif-panel { position: absolute; right: 0; top: calc(100% + 10px); width: 400px; max-width: calc(100vw - 24px); background: var(--bg-card); border: 1px solid var(--border-blue); border-radius: var(--radius-lg); box-shadow: 0 18px 44px rgba(24, 54, 84, 0.22); z-index: 70; overflow: hidden; }
-    .notif-head { padding: 12px 14px 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-    .notif-head h4 { font-family: 'Playfair Display', serif; font-size: 1.12rem; color: var(--blue-deep); }
-    .notif-tabs { display: flex; gap: 6px; padding: 0 14px 8px; border-bottom: 1px solid var(--border-vintage); }
-    .notif-tab { border: 1px solid var(--border-vintage); background: #fff; color: var(--ink-muted); border-radius: 999px; padding: 4px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: inherit; }
-    .notif-tab.active { background: var(--blue-primary); color: #fff; border-color: var(--blue-deep); }
-    .notif-list { max-height: min(60vh, 440px); overflow-y: auto; }
-    .notif-item { display: flex; gap: 10px; padding: 11px 14px; border-bottom: 1px solid #E4EEF6; cursor: pointer; transition: background 0.15s; }
-    .notif-item:hover { background: var(--bg-card-tint); }
-    .notif-item.unread { background: #EEF6FD; }
-    .notif-item.unread .notif-title::after { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #D93025; margin-left: 7px; vertical-align: middle; }
-    .notif-ico { flex: 0 0 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--blue-pale); color: var(--blue-primary); }
-    .notif-ico svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .notif-ico.k-success { background: var(--success-bg); color: var(--success-text); }
-    .notif-ico.k-danger { background: var(--danger-bg); color: var(--danger-text); }
-    .notif-ico.k-message { background: var(--gold-soft); color: var(--warn-text); }
-    .notif-main { min-width: 0; flex: 1; }
-    .notif-title { font-weight: 700; font-size: 0.9rem; color: var(--blue-deep); }
-    .notif-body { font-size: 0.84rem; color: var(--ink-dark); white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 2px; }
-    .notif-item.open .notif-body { -webkit-line-clamp: unset; display: block; }
-    .notif-meta { font-size: 0.74rem; color: var(--ink-muted); margin-top: 4px; }
-    .notif-actions { margin-top: 6px; display: none; }
-    .notif-item.open .notif-actions { display: block; }
-    .notif-empty { padding: 30px 16px; text-align: center; font-size: 0.88rem; color: var(--ink-muted); }
-    .notif-foot { padding: 8px 14px; font-size: 0.76rem; color: var(--warn-text); background: var(--warn-bg); border-top: 1px solid #F0DDB0; }
-    .toast-wrap { position: fixed; right: 18px; bottom: calc(var(--footer-height) + 16px); z-index: 90; display: grid; gap: 10px; max-width: min(360px, calc(100vw - 32px)); }
-    .toast-item { background: var(--blue-deep); color: #fff; border-radius: var(--radius-md); padding: 11px 14px; box-shadow: 0 12px 30px rgba(0,0,0,0.25); cursor: pointer; animation: toastIn 0.25s ease-out; }
-    .toast-item strong { display: block; font-size: 0.9rem; }
-    .toast-item span { display: block; font-size: 0.82rem; opacity: 0.9; margin-top: 2px; }
-    @keyframes toastIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-
     @media (max-width: 1100px) {
-      .auth-shell, .hero-edu, .edu-bottom-grid, .home-grid, .admin-layout, .settings-grid { grid-template-columns: 1fr; }
+      .auth-shell, .hero-edu, .edu-bottom-grid, .admin-layout, .settings-grid { grid-template-columns: 1fr; }
       .stats-row { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 600px) {
-      .edu-grid-4, .stats-row, .ov-cols { grid-template-columns: 1fr; }
-      .ov-teacher { grid-template-columns: 1fr; }
-      .notif-panel { position: fixed; left: 12px; right: 12px; top: 70px; width: auto; max-width: none; }
+      .edu-grid-4, .stats-row { grid-template-columns: 1fr; }
       .topbar-inner, .main-container { padding: 14px; }
       .main-container { padding-bottom: 12px; }
       .auth-card { padding: 24px 18px; }
@@ -1744,39 +1680,6 @@
     </div>
   </div>
 
-  <!-- ==================== SOẠN THÔNG BÁO ==================== -->
-  <div id="notif-compose-modal" class="modal-backdrop hidden" style="z-index:80;">
-    <div class="vintage-card vintage-double-border modal-card" style="max-width:520px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--border-vintage);">
-        <h3 id="nc-heading" class="serif-title" style="color:var(--blue-deep); font-size:1.25rem;">Soạn thông báo</h3>
-        <button type="button" class="btn btn-outline btn-sm" onclick="closeNotifCompose()">✕</button>
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="nc-to">Gửi đến</label>
-        <select class="form-select" id="nc-to" onchange="onNotifToChange()"></select>
-      </div>
-      <div id="nc-user-wrap" class="form-group hidden">
-        <label class="form-label" for="nc-user">Chọn thành viên</label>
-        <select class="form-select" id="nc-user"></select>
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="nc-title">Tiêu đề</label>
-        <input class="form-input" id="nc-title" type="text" maxlength="120" placeholder="Ví dụ: Nhắc lịch học tuần này" />
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="nc-body">Nội dung *</label>
-        <textarea class="form-textarea" id="nc-body" rows="5" maxlength="1500"></textarea>
-      </div>
-      <div id="nc-feedback" class="alert-box alert-error hidden"></div>
-      <div style="display:flex; justify-content:flex-end; gap:10px;">
-        <button type="button" class="btn btn-outline" onclick="closeNotifCompose()">Hủy</button>
-        <button type="button" id="nc-send-btn" class="btn btn-primary" onclick="sendNotifFromCompose()">Gửi thông báo</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="toast-wrap" class="toast-wrap"></div>
-
   <!-- ==================== 2. KHÔNG GIAN CHÍNH SAU KHI ĐĂNG NHẬP ==================== -->
   <div id="app-view" class="hidden">
     <header class="topbar">
@@ -1823,14 +1726,6 @@
             <span id="nav-pending-badge" class="badge-count hidden">0</span>
           </button>
 
-          <div id="notif-wrap" class="notif-wrap">
-            <button type="button" id="nav-bell" class="nav-btn bell-btn" onclick="toggleNotifPanel(event)" title="Thông báo" aria-label="Thông báo">
-              <svg class="lux-svg-sm" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-              <span id="bell-badge" class="bell-badge hidden">0</span>
-            </button>
-            <div id="notif-panel" class="notif-panel hidden" onclick="event.stopPropagation()"></div>
-          </div>
-
           <div class="user-chip">
             <span id="topbar-username" style="font-weight:600;">Học viên</span>
             <span id="topbar-role" class="role-badge role-student">Học viên</span>
@@ -1844,27 +1739,138 @@
     <main class="main-container">
       <!-- ===== TRANG CHỦ GIÁO DỤC ===== -->
       <section id="view-home">
-        <div class="vintage-card vintage-double-border home-welcome">
-          <span class="hero-tag">
-            <svg class="lux-svg-sm" viewBox="0 0 24 24">
-              <path d="M12 3l1.9 4.2L18 9.1l-4.1 1.9L12 15.2l-1.9-4.2L6 9.1l4.1-1.9L12 3z"/>
-            </svg>
-            <span>KHÔNG GIAN HỌC TẬP NGỮ VĂN • NIÊN KHÓA 2026</span>
-          </span>
-          <h1>Chào mừng <span id="welcome-name" style="color:var(--blue-primary);">bạn</span> đến với Lớp văn thầy Hiếu</h1>
+        <div class="vintage-card vintage-double-border hero-edu">
+          <div>
+            <span class="hero-tag">
+              <svg class="lux-svg-sm" viewBox="0 0 24 24">
+                <path d="M12 3l1.9 4.2L18 9.1l-4.1 1.9L12 15.2l-1.9-4.2L6 9.1l4.1-1.9L12 3z"/>
+                <path d="M19 15l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9.9-2z"/>
+              </svg>
+              <span>KHÔNG GIAN HỌC TẬP NGỮ VĂN • NIÊN KHÓA 2026</span>
+            </span>
+            <h1>Chào mừng <span id="welcome-name" style="color:var(--blue-primary);">bạn</span> đến với Lớp văn thầy Hiếu</h1>
+            <p>
+              Nơi mỗi trang văn không chỉ là những dòng chữ trên giấy thi, mà là hành trình thấu cảm cuộc sống, rèn tư duy phản biện sắc bén và nuôi dưỡng tâm hồn hạnh phúc theo cách gần gũi của thế hệ GenZ.
+            </p>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-primary" onclick="openModuleView('references')">
+                Khám phá kho học liệu
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="openModuleView('assignments')">
+                Lộ trình luyện viết
+              </button>
+            </div>
+          </div>
+
+          <div class="quote-vintage">
+            <blockquote>
+              “Văn học là nhân học. Khi viết bằng sự chân thành và tư duy mạch lạc, mỗi bài làm của các em đều mang một thanh âm không thể trộn lẫn.”
+            </blockquote>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.86rem; color:var(--ink-muted);">
+              <span>— <strong>Thầy Hiếu GenZ</strong></span>
+              <span style="color:var(--gold-vintage); font-weight:600;">Lớp học hạnh phúc</span>
+            </div>
+          </div>
         </div>
 
-        <div class="home-grid">
-          <!-- Tổng quan về giáo viên & lớp học (nội dung chỉnh ở Quản lý chung → Tổng quan trang chủ) -->
-          <div id="home-overview-panel" class="vintage-card section-panel">
-            <div class="panel-header">
-              <div>
-                <h2>Tổng quan về giáo viên &amp; lớp học</h2>
-                <span id="ov-updated-note" style="font-size:0.8rem; color:var(--ink-muted);"></span>
-              </div>
-              <button type="button" id="ov-edit-shortcut" class="btn btn-secondary btn-sm hidden" onclick="openOverviewEditor()">Chỉnh sửa nội dung</button>
+        <!-- Trung tâm điều hướng nhanh các chuyên mục lớp học -->
+        <div id="home-hub-panel" class="vintage-card section-panel" style="margin-bottom:18px;">
+          <div class="panel-header" style="margin-bottom:12px;">
+            <div>
+              <h2>Trung tâm tổng hợp &amp; Điều hướng chuyên mục</h2>
+              <p style="font-size:0.84rem; color:var(--ink-muted);">Chọn nhanh phân khu học tập, rèn luyện và quản lý lớp học bên dưới</p>
             </div>
-            <div id="home-overview-body"></div>
+            <span class="hero-tag" style="margin-bottom:0;">10 CHUYÊN MỤC MỞ RỘNG</span>
+          </div>
+          <div id="home-hub-grid" class="hub-sections-grid"></div>
+        </div>
+
+        <!-- 4 Chuyên mục giáo dục đặc trưng -->
+        <div class="edu-grid-4">
+          <div class="vintage-card module-card">
+            <div>
+              <div class="module-icon">
+                <svg class="lux-svg" viewBox="0 0 24 24">
+                  <path d="M12 6.5C9.6 4.8 6.4 4.8 3.5 6v12.5c2.9-1.2 6.1-1.2 8.5.5 2.4-1.7 5.6-1.7 8.5-.5V6c-2.9-1.2-6.1-1.2-8.5.5z"/>
+                  <line x1="12" y1="6.5" x2="12" y2="19"/>
+                </svg>
+              </div>
+              <h3>Đọc hiểu & Cảm thụ văn học</h3>
+              <p>Phân tích chuyên sâu các tác phẩm thơ, truyện hiện đại và trung đại theo sơ đồ tư duy trực quan, dễ nhớ.</p>
+            </div>
+            <span style="font-size:0.8rem; font-weight:700; color:var(--blue-primary);">Chuyên đề nền tảng →</span>
+          </div>
+
+          <div class="vintage-card module-card">
+            <div>
+              <div class="module-icon">
+                <svg class="lux-svg" viewBox="0 0 24 24">
+                  <path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                  <line x1="14.5" y1="5.5" x2="18.5" y2="9.5"/>
+                </svg>
+              </div>
+              <h3>Nghị luận xã hội GenZ</h3>
+              <p>Hệ thống dẫn chứng thời sự mới mẻ, cách mở bài ấn tượng và lập luận sắc sảo cho mọi vấn đề đời sống.</p>
+            </div>
+            <span style="font-size:0.8rem; font-weight:700; color:var(--blue-primary);">Kỹ năng viết sâu →</span>
+          </div>
+
+          <div class="vintage-card module-card">
+            <div>
+              <div class="module-icon">
+                <svg class="lux-svg" viewBox="0 0 24 24">
+                  <path d="M3 9l9-5 9 5"/>
+                  <line x1="5" y1="10" x2="5" y2="18"/>
+                  <line x1="9.5" y1="10" x2="9.5" y2="18"/>
+                  <line x1="14.5" y1="10" x2="14.5" y2="18"/>
+                  <line x1="19" y1="10" x2="19" y2="18"/>
+                  <line x1="3" y1="18" x2="21" y2="18"/>
+                  <line x1="2" y1="21" x2="22" y2="21"/>
+                </svg>
+              </div>
+              <h3>Phòng luyện đề & Chấm chữa</h3>
+              <p>Kho đề thi thử chuẩn cấu trúc mới, kèm nhận xét chi tiết từng luận điểm và diễn đạt từ thầy Hiếu.</p>
+            </div>
+            <span style="font-size:0.8rem; font-weight:700; color:var(--blue-primary);">Thực chiến phòng thi →</span>
+          </div>
+
+          <div class="vintage-card module-card">
+            <div>
+              <div class="module-icon">
+                <svg class="lux-svg" viewBox="0 0 24 24">
+                  <path d="M12 21c-4.5-3.4-8-6.4-8-10.3A4.2 4.2 0 0 1 8.2 6.5c1.6 0 3 .7 3.8 1.9.8-1.2 2.2-1.9 3.8-1.9A4.2 4.2 0 0 1 20 10.7c0 3.9-3.5 6.9-8 10.3z"/>
+                </svg>
+              </div>
+              <h3>Góc Sách hay & Tâm tình</h3>
+              <p>Không gian chia sẻ những cuốn sách đẹp, câu chuyện truyền cảm hứng để giữ lửa yêu văn mỗi ngày.</p>
+            </div>
+            <span style="font-size:0.8rem; font-weight:700; color:var(--blue-primary);">Lớp học hạnh phúc →</span>
+          </div>
+        </div>
+
+        <!-- Bảng tin lớp học & Thẻ hồ sơ học viên -->
+        <div class="edu-bottom-grid">
+          <div id="home-bulletin-panel" class="vintage-card section-panel">
+            <div class="panel-header">
+              <h2>Bảng tin Lớp văn thầy Hiếu</h2>
+              <span style="font-size:0.82rem; color:var(--ink-muted);">Cập nhật mới nhất</span>
+            </div>
+
+            <div class="bulletin-item">
+              <div class="bulletin-meta">THÔNG BÁO KHAI GIẢNG • HỆ THỐNG LỚP HỌC</div>
+              <div style="font-weight:600; color:var(--blue-deep); margin-bottom:4px;">Hoàn thiện cổng xác thực thành viên & hồ sơ lớp học</div>
+              <p style="font-size:0.88rem; color:var(--ink-muted);">
+                Chào mừng các bạn học viên đã đăng ký tài khoản. Các chuyên mục bài giảng video, tài liệu PDF và nộp bài chấm chữa sẽ lần lượt được thầy cập nhật ngay sau giai đoạn ổn định danh sách lớp.
+              </p>
+            </div>
+
+            <div class="bulletin-item">
+              <div class="bulletin-meta">GÓC DẶN DÒ • PHƯƠNG PHÁP HỌC VĂN</div>
+              <div style="font-weight:600; color:var(--blue-deep); margin-bottom:4px;">Chuẩn bị một cuốn sổ tay ghi chép ý tưởng & dẫn chứng</div>
+              <p style="font-size:0.88rem; color:var(--ink-muted);">
+                Mỗi tuần thầy sẽ gửi một chủ đề nghị luận mở để cả lớp cùng trao đổi quan điểm, rèn thói quen viết ngắn gọn mà giàu sức gợi.
+              </p>
+            </div>
           </div>
 
           <div id="home-profile-panel" class="vintage-card section-panel">
@@ -1961,9 +1967,6 @@
             </button>
             <button type="button" id="subtab-features-btn" class="admin-menu-btn hidden" onclick="switchAdminSubtab('features')">
               <span>Bật / tắt chức năng</span>
-            </button>
-            <button type="button" id="subtab-overview-btn" class="admin-menu-btn hidden" onclick="switchAdminSubtab('overview')">
-              <span>Tổng quan trang chủ</span>
             </button>
             <button type="button" id="subtab-settings-btn" class="admin-menu-btn" onclick="switchAdminSubtab('settings')">
               <span>Cài đặt & Đồng bộ dữ liệu</span>
@@ -2169,71 +2172,6 @@
               </div>
             </div>
 
-            <!-- SUBTAB 1C: SOẠN "TỔNG QUAN VỀ GIÁO VIÊN & LỚP HỌC" (Trợ lý quản trị viên & Quản trị viên) -->
-            <div id="admin-subtab-overview" class="vintage-card section-panel hidden">
-              <div class="panel-header">
-                <div>
-                  <h2>Tổng quan về giáo viên &amp; lớp học</h2>
-                  <p style="font-size:0.86rem; color:var(--ink-muted);">Nội dung này hiển thị trên Trang chủ của mọi thành viên. Mục nào để trống sẽ tự ẩn.</p>
-                </div>
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                  <button type="button" class="btn btn-outline btn-sm" onclick="resetOverviewForm()">Hoàn tác thay đổi</button>
-                  <button type="button" class="btn btn-primary btn-sm" onclick="saveOverview()">Lưu &amp; đăng lên Trang chủ</button>
-                </div>
-              </div>
-              <div id="ov-feedback" class="alert-box hidden"></div>
-              <div id="ov-meta-line" style="font-size:0.82rem; color:var(--ink-muted); margin-bottom:12px;"></div>
-
-              <div class="setting-card" style="margin-bottom:16px;">
-                <h3>Giáo viên</h3>
-                <div class="ov-photo-row">
-                  <div id="ov-t-photo-preview" class="ov-photo"></div>
-                  <div style="display:grid; gap:8px; flex:1; min-width:220px;">
-                    <input class="form-input" id="ov-t-photo" type="text" placeholder="Dán URL ảnh (https://...) hoặc tải ảnh từ máy bên dưới" oninput="ovFormChanged()" />
-                    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-                      <input class="form-input" id="ov-t-photo-file" type="file" accept="image/*" onchange="handleOverviewPhoto(event)" style="max-width:280px;" />
-                      <button type="button" class="btn btn-outline btn-sm" onclick="clearOverviewPhoto()">Xóa ảnh</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="ov-edit-grid">
-                  <div class="form-group"><label class="form-label" for="ov-t-name">Họ tên / Danh xưng</label><input class="form-input" id="ov-t-name" type="text" maxlength="80" oninput="ovFormChanged()" /></div>
-                  <div class="form-group"><label class="form-label" for="ov-t-title">Chức danh</label><input class="form-input" id="ov-t-title" type="text" maxlength="120" placeholder="Ví dụ: Giáo viên Ngữ văn" oninput="ovFormChanged()" /></div>
-                  <div class="form-group"><label class="form-label" for="ov-t-email">Email liên hệ</label><input class="form-input" id="ov-t-email" type="text" maxlength="120" oninput="ovFormChanged()" /></div>
-                  <div class="form-group"><label class="form-label" for="ov-t-phone">Số điện thoại / Zalo</label><input class="form-input" id="ov-t-phone" type="text" maxlength="40" oninput="ovFormChanged()" /></div>
-                </div>
-                <div class="form-group"><label class="form-label" for="ov-t-intro">Giới thiệu ngắn</label><textarea class="form-textarea" id="ov-t-intro" rows="4" maxlength="1200" oninput="ovFormChanged()"></textarea></div>
-                <div class="form-group" style="margin-bottom:0;"><label class="form-label" for="ov-t-highlights">Điểm nổi bật <span style="font-weight:400; color:var(--ink-muted);">(mỗi dòng một ý)</span></label><textarea class="form-textarea" id="ov-t-highlights" rows="3" maxlength="1000" oninput="ovFormChanged()"></textarea></div>
-              </div>
-
-              <div class="setting-card" style="margin-bottom:16px;">
-                <h3>Lớp học</h3>
-                <div class="ov-edit-grid">
-                  <div class="form-group"><label class="form-label" for="ov-c-name">Tên lớp</label><input class="form-input" id="ov-c-name" type="text" maxlength="100" oninput="ovFormChanged()" /></div>
-                  <div class="form-group"><label class="form-label" for="ov-c-slogan">Khẩu hiệu</label><input class="form-input" id="ov-c-slogan" type="text" maxlength="120" oninput="ovFormChanged()" /></div>
-                </div>
-                <div class="form-group"><label class="form-label" for="ov-c-desc">Giới thiệu lớp</label><textarea class="form-textarea" id="ov-c-desc" rows="4" maxlength="1500" oninput="ovFormChanged()"></textarea></div>
-                <div class="ov-edit-grid">
-                  <div class="form-group"><label class="form-label" for="ov-c-schedule">Lịch học <span style="font-weight:400; color:var(--ink-muted);">(mỗi dòng một buổi)</span></label><textarea class="form-textarea" id="ov-c-schedule" rows="4" maxlength="800" oninput="ovFormChanged()"></textarea></div>
-                  <div class="form-group"><label class="form-label" for="ov-c-rules">Nội quy &amp; lưu ý <span style="font-weight:400; color:var(--ink-muted);">(mỗi dòng một ý)</span></label><textarea class="form-textarea" id="ov-c-rules" rows="4" maxlength="1200" oninput="ovFormChanged()"></textarea></div>
-                </div>
-                <label style="display:inline-flex; align-items:center; gap:8px; font-size:0.88rem; cursor:pointer;">
-                  <input type="checkbox" id="ov-c-stats" onchange="ovFormChanged()" />
-                  <span>Hiển thị số học sinh đang theo học (tự đếm từ danh sách tài khoản đã duyệt)</span>
-                </label>
-              </div>
-
-              <label style="display:inline-flex; align-items:center; gap:8px; font-size:0.88rem; cursor:pointer; margin-bottom:16px;">
-                <input type="checkbox" id="ov-notify" />
-                <span>Gửi thông báo tới toàn bộ thành viên khi lưu</span>
-              </label>
-
-              <div class="setting-card" style="margin-bottom:0;">
-                <h3>Xem trước trên Trang chủ</h3>
-                <div id="ov-live-preview" class="ov-preview"></div>
-              </div>
-            </div>
-
             <!-- SUBTAB 2: CÀI ĐẶT, SAO LƯU, XUẤT/NHẬP FILE & ĐỒNG BỘ SUPABASE -->
             <div id="admin-subtab-settings" class="vintage-card section-panel hidden">
               <div class="panel-header">
@@ -2337,7 +2275,7 @@
                   </div>
 
                   <details style="background:var(--bg-card-tint); border:1px solid var(--border-vintage); border-radius:var(--radius-sm); padding:10px 14px;">
-                    <summary style="cursor:pointer; font-weight:700; color:var(--blue-deep); font-size:0.88rem;">Xem mẫu SQL khởi tạo bảng trên Supabase (profiles + app_backups + notifications)</summary>
+                    <summary style="cursor:pointer; font-weight:700; color:var(--blue-deep); font-size:0.88rem;">Xem mẫu SQL khởi tạo bảng trên Supabase (profiles + app_backups)</summary>
                     <pre id="supabase-sql-code" style="margin-top:10px; font-size:0.8rem; overflow-x:auto; color:var(--ink-dark); line-height:1.45;">-- Bảng 1: danh sách hồ sơ (xem nhanh trên Supabase)
 create table if not exists public.profiles (
   id text primary key,
@@ -2387,25 +2325,6 @@ create policy "anon_all_app_backups" on public.app_backups
 grant usage on schema public to anon;
 grant select, insert, update, delete on public.profiles to anon;
 grant select, insert, update, delete on public.app_backups to anon;
-
--- Bảng 3: thông báo hai chiều giữa ban quản lý và thành viên
-create table if not exists public.notifications (
-  id text primary key,
-  to_user text default '',        -- id người nhận cụ thể (để trống nếu gửi theo nhóm)
-  to_group text default '',       -- 'all' = mọi thành viên; 'staff' = ban quản lý; 'class:<tên lớp>'
-  from_user text default '',
-  from_name text default '',
-  from_role text default '',
-  kind text default 'info',
-  title text default '',
-  body text default '',
-  created_at timestamptz default now()
-);
-alter table public.notifications enable row level security;
-drop policy if exists "anon_all_notifications" on public.notifications;
-create policy "anon_all_notifications" on public.notifications
-  for all to anon using (true) with check (true);
-grant select, insert, update, delete on public.notifications to anon;
 </pre>
                   </details>
                 </div>
@@ -2545,8 +2464,6 @@ grant select, insert, update, delete on public.notifications to anon;
         'homeHubGrid': `<svg class="${sizeClass}" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>`,
         'moreMenuDropdown': `<svg class="${sizeClass}" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="14" y2="17"/></svg>`,
         'coreTopicsGrid': `<svg class="${sizeClass}" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.5 22 9.3 17 14.1 18.2 21 12 17.6 5.8 21 7 14.1 2 9.3 8.9 8.5 12 2"/></svg>`,
-        'notifications': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
-        'homeOverview': `<svg class="${sizeClass}" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M6 16c.6-1.6 1.7-2.4 3-2.4s2.4.8 3 2.4"/><line x1="14" y1="9" x2="18" y2="9"/><line x1="14" y1="13" x2="18" y2="13"/></svg>`,
         'bulletinBoard': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
         'personalProfile': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
         'editPersonalProfile': `<svg class="${sizeClass}" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`
@@ -2669,39 +2586,17 @@ grant select, insert, update, delete on public.notifications to anon;
 
     const FEATURE_DEFINITIONS = [
       { key: 'welcomePopup', label: 'Pop-up chào mừng khi đăng nhập', desc: 'Hiển thị thông báo chào mừng bằng bảng chữ LED chạy hoặc hình ảnh' },
-      { key: 'homeOverview', label: 'Tổng quan giáo viên & lớp học', desc: 'Khung giới thiệu giáo viên và lớp học trên Trang chủ (nội dung do Trợ lý / Quản trị viên soạn)' },
-      { key: 'notifications', label: 'Nút thông báo (chuông)', desc: 'Thông báo hai chiều giữa ban quản lý và thành viên' },
+      { key: 'homeHubGrid', label: 'Lưới chuyên mục trên Trang chủ', desc: 'Hiển thị các thẻ điều hướng nhanh 10 chuyên mục trên Trang chủ' },
       { key: 'moreMenuDropdown', label: 'Menu thả xuống Chuyên mục lớp', desc: 'Hiển thị nút & menu điều hướng nhanh các chuyên mục trên thanh trên' },
+      { key: 'coreTopicsGrid', label: '4 Chuyên mục giáo dục đặc trưng', desc: 'Đọc hiểu, Nghị luận xã hội, Phòng luyện đề & Góc Sách hay' },
+      { key: 'bulletinBoard', label: 'Bảng tin lớp học', desc: 'Hiển thị thông báo & dặn dò từ thầy Hiếu trên Trang chủ' },
       { key: 'personalProfile', label: 'Thẻ thành viên', desc: 'Hiển thị thẻ thành viên (họ tên, chức vụ, lớp) trên Trang chủ' },
       { key: 'editPersonalProfile', label: 'Chức năng chỉnh sửa hồ sơ cá nhân', desc: 'Cho phép người dùng tự chỉnh sửa thông tin cá nhân của mình' },
       ...CLASS_MODULES.map(m => ({ key: m.id, label: `Chuyên mục: ${m.title}`, desc: m.shortDesc }))
     ];
 
-    const DEFAULT_OVERVIEW = {
-      updatedAt: '',
-      updatedBy: '',
-      teacher: {
-        name: 'Thầy Hiếu GenZ',
-        title: 'Giáo viên Ngữ văn',
-        photoUrl: '',
-        intro: 'Văn học là nhân học. Khi viết bằng sự chân thành và tư duy mạch lạc, mỗi bài làm của các em đều mang một thanh âm không thể trộn lẫn.',
-        highlights: [],
-        email: '',
-        phone: ''
-      },
-      classInfo: {
-        name: 'Lớp văn thầy Hiếu',
-        slogan: 'Lớp học hạnh phúc',
-        description: 'Nơi mỗi trang văn không chỉ là những dòng chữ trên giấy thi, mà là hành trình thấu cảm cuộc sống, rèn tư duy phản biện sắc bén và nuôi dưỡng tâm hồn hạnh phúc theo cách gần gũi của thế hệ GenZ.',
-        schedule: [],
-        rules: [],
-        showStats: true
-      }
-    };
-
     const DEFAULT_STATE = {
       settings: {
-        homeOverview: JSON.parse(JSON.stringify(DEFAULT_OVERVIEW)),
         autoSave: true,
         lastSavedAt: new Date().toLocaleString('vi-VN'),
         supabaseReadySchema: 'public.profiles',
@@ -2725,9 +2620,10 @@ grant select, insert, update, delete on public.notifications to anon;
         },
         featureFlags: {
           welcomePopup: true,
-          homeOverview: true,
-          notifications: true,
+          homeHubGrid: true,
           moreMenuDropdown: true,
+          coreTopicsGrid: true,
+          bulletinBoard: true,
           personalProfile: true,
           editPersonalProfile: true,
           'teaching-tools': true,
@@ -2929,95 +2825,53 @@ grant select, insert, update, delete on public.notifications to anon;
       enterApp(found);
     }
 
-    /* ===== GỬI HỒ SƠ ĐĂNG KÝ LÊN SUPABASE NGAY (chờ kết quả thật, không chạy ngầm) ===== */
-    async function submitNewProfileToCloud(u) {
-      await configReady;
-      const sb = cloudCfg();
-      if (!sb) return { ok: false, code: 'nocfg', error: 'Trang chưa kết nối Supabase (không đọc được saoluu.json hoặc chưa điền URL/Anon Key).' };
-      for (let i = 0; i < 12 && profSyncing; i++) await new Promise(r => setTimeout(r, 500)); // đợi đợt đồng bộ đang chạy
-      try {
-        const res = await fetchT(`${sb.url}/rest/v1/profiles?on_conflict=id`, {
-          method: 'POST',
-          headers: cloudHeaders(sb, { Prefer: 'resolution=merge-duplicates,return=minimal' }),
-          body: JSON.stringify([userToRow(u)])
-        }, 10000);
-        if (res.ok) { pushedMap[u.id] = userSig(u); savePushed(); return { ok: true }; }
-        const txt = await res.text();
-        if (res.status === 409 || /23505/.test(txt)) {
-          if (/email/i.test(txt)) return { ok: false, code: 'schema', error: 'Bảng profiles trên Supabase còn ràng buộc unique ở cột email. Quản trị viên cần chạy lại SQL (dòng drop constraint profiles_email_key).' };
-          return { ok: false, code: 'dup', error: 'ID này đã có người sử dụng. Vui lòng chọn ID khác.' };
-        }
-        if (/42703|column/i.test(txt)) return { ok: false, code: 'schema', error: 'Bảng profiles trên Supabase thiếu cột (password / class_position / updated_at). Quản trị viên cần chạy lại SQL khởi tạo.' };
-        if (res.status === 401 || res.status === 403 || /42501|row-level security|permission/i.test(txt)) return { ok: false, code: 'perm', error: 'Supabase từ chối ghi vào bảng profiles (thiếu policy hoặc grant cho anon). Quản trị viên cần chạy lại SQL phân quyền.' };
-        if (res.status === 404 || /42P01/.test(txt)) return { ok: false, code: 'schema', error: 'Chưa có bảng profiles trên Supabase. Quản trị viên cần chạy SQL khởi tạo.' };
-        return { ok: false, code: 'http', error: 'Máy chủ trả lỗi ' + res.status + ': ' + txt.slice(0, 160) };
-      } catch (e) {
-        return { ok: false, code: 'net', error: e && e.name === 'AbortError' ? 'Mạng quá chậm, chưa gửi được đăng ký. Vui lòng thử lại.' : 'Không kết nối được máy chủ. Hãy kiểm tra mạng rồi thử lại.' };
-      }
-    }
-
-    // Tạo hồ sơ chờ duyệt: chỉ khi hồ sơ ĐÃ lên máy chủ mới báo thành công và gửi thông báo cho ban quản lý
-    async function createPendingAccount(u, staffTitle, staffBody) {
-      const r = await submitNewProfileToCloud(u);
-      if (!r.ok && r.code !== 'nocfg') return r;   // thất bại thật: không lưu hồ sơ tạm trên máy này
-      markOwn(u.id);
-      if (!appState.users.some(x => x.id === u.id)) appState.users.unshift(u);
-      persistState(true);
-      notifyStaff({ id: u.id, name: u.fullName, role: 'student' }, 'info', staffTitle, staffBody);
-      return r;
-    }
-
-    let registering = false;
     async function handleRegister(event) {
       event.preventDefault();
-      if (registering) return;
       clearAuthAlert();
-      const form = event.target;
-      const btn = form.querySelector('button[type="submit"]');
-      registering = true;
-      if (btn) { btn.disabled = true; btn.textContent = 'Đang gửi đăng ký...'; }
-      try {
-        await syncProfiles(); // lấy danh sách mới nhất để kiểm tra trùng ID giữa các máy
+      await syncProfiles(); // lấy danh sách mới nhất để kiểm tra trùng ID giữa các máy
 
-        const fullName = document.getElementById('reg-fullname').value.trim();
-        const username = document.getElementById('reg-username').value.trim();
-        const grade = document.getElementById('reg-grade').value.trim();
-        const password = document.getElementById('reg-password').value;
+      const fullName = document.getElementById('reg-fullname').value.trim();
+      const username = document.getElementById('reg-username').value.trim();
+      const grade = document.getElementById('reg-grade').value.trim();
+      const password = document.getElementById('reg-password').value;
 
-        if (!fullName || !username || !password) {
-          showAuthAlert('Vui lòng nhập Họ và tên, ID và Pass.', 'error');
-          return;
-        }
-        if (username.toLowerCase() === ADMIN_ACCOUNT.username) {
-          showAuthAlert('ID này đã được hệ thống sử dụng.', 'error');
-          return;
-        }
-        if (appState.users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-          showAuthAlert('ID này đã tồn tại. Vui lòng chọn ID khác.', 'error');
-          return;
-        }
-
-        const newUser = {
-          id: 'u-' + Date.now(),
-          username, password, fullName,
-          email: '', phone: '', grade, dob: '', note: '',
-          provider: 'form', role: 'student', classPosition: '',
-          status: 'pending', rejectReason: '',
-          createdAt: new Date().toLocaleString('vi-VN')
-        };
-        const r = await createPendingAccount(newUser, 'Có đăng ký mới chờ duyệt', fullName + ' (ID: ' + username + (grade ? ', lớp ' + grade : '') + ') vừa đăng ký tài khoản và đang chờ được phê duyệt.');
-        if (!r.ok && r.code !== 'nocfg') {
-          showAuthAlert('Chưa đăng ký được: ' + r.error, 'error'); // giữ nguyên nội dung form để thử lại
-          return;
-        }
-        form.reset();
-        switchAuthTab('login');
-        if (r.ok) showAuthAlert('Đăng ký thành công! Hồ sơ đã được gửi tới ban quản lý và đang chờ thầy Hiếu phê duyệt.', 'success');
-        else showAuthAlert('Đã lưu đăng ký trên máy này, nhưng trang chưa kết nối máy chủ nên ban quản lý ở máy khác chưa nhìn thấy hồ sơ. Hãy báo thầy Hiếu kiểm tra kết nối Supabase.', 'info');
-      } finally {
-        registering = false;
-        if (btn) { btn.disabled = false; btn.textContent = 'Đăng ký'; }
+      if (!fullName || !username || !password) {
+        showAuthAlert('Vui lòng nhập Họ và tên, ID và Pass.', 'error');
+        return;
       }
+      if (username.toLowerCase() === ADMIN_ACCOUNT.username) {
+        showAuthAlert('ID này đã được hệ thống sử dụng.', 'error');
+        return;
+      }
+      if (appState.users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+        showAuthAlert('ID này đã tồn tại. Vui lòng chọn ID khác.', 'error');
+        return;
+      }
+
+      const newRegId = 'u-' + Date.now();
+      markOwn(newRegId);
+      appState.users.unshift({
+        id: newRegId,
+        username,
+        password,
+        fullName,
+        email: '',
+        phone: '',
+        grade,
+        dob: '',
+        note: '',
+        provider: 'form',
+        role: 'student',
+        classPosition: '',
+        status: 'pending',
+        rejectReason: '',
+        createdAt: new Date().toLocaleString('vi-VN')
+      });
+
+      persistState();
+      event.target.reset();
+      switchAuthTab('login');
+      showAuthAlert('Đăng ký thành công! Tài khoản của bạn đang chờ thầy Hiếu phê duyệt.', 'success');
     }
 
     function openGoogleModal() {
@@ -3055,12 +2909,12 @@ grant select, insert, update, delete on public.notifications to anon;
         return;
       }
       const newId = 'gg-' + Date.now();
-      const gName = name || email.split('@')[0];
-      const gUser = {
+      markOwn(newId);
+      appState.users.unshift({
         id: newId,
         username: email,
         password: '',
-        fullName: gName,
+        fullName: name || email.split('@')[0],
         email,
         phone: '',
         grade: '',
@@ -3072,11 +2926,9 @@ grant select, insert, update, delete on public.notifications to anon;
         status: 'pending',
         rejectReason: '',
         createdAt: new Date().toLocaleString('vi-VN')
-      };
-      const r = await createPendingAccount(gUser, 'Có đăng ký mới chờ duyệt', gName + ' (' + email + ') vừa đăng ký bằng Google và đang chờ được phê duyệt.');
-      if (!r.ok && r.code !== 'nocfg') { showAuthAlert('Chưa đăng ký được: ' + r.error, 'error'); return; }
-      if (r.ok) showAuthAlert('Đã đăng ký tài khoản theo email ' + email + '. Hồ sơ đã gửi tới ban quản lý, vui lòng chờ thầy Hiếu phê duyệt.', 'success');
-      else showAuthAlert('Đã lưu đăng ký trên máy này, nhưng trang chưa kết nối máy chủ nên ban quản lý ở máy khác chưa nhìn thấy hồ sơ.', 'info');
+      });
+      persistState();
+      showAuthAlert('Đã đăng ký tài khoản theo email ' + email + '. Vui lòng chờ thầy Hiếu phê duyệt.', 'success');
     }
 
     // Đăng nhập Google thật qua Supabase Auth (nếu đã bật Google provider); nếu chưa thì dùng khung nhập Gmail
@@ -3169,8 +3021,6 @@ grant select, insert, update, delete on public.notifications to anon;
       renderMemberProfile();
       refreshAdminViews();
       switchMainView('home');
-      renderHomeOverview();
-      notifOnLogin();
       maybeShowWelcomePopup();
     }
 
@@ -3178,7 +3028,6 @@ grant select, insert, update, delete on public.notifications to anon;
       currentUser = null;
       skipPopupInSession = false;
       closeWelcomePopup();
-      notifOnLogout();
       document.getElementById('login-form').reset();
       clearAuthAlert();
       document.getElementById('app-view').classList.add('hidden');
@@ -3217,16 +3066,18 @@ grant select, insert, update, delete on public.notifications to anon;
     }
 
     function applyFeatureVisibility() {
+      const hubPanel = document.getElementById('home-hub-panel');
       const moreWrap = document.getElementById('nav-more-wrap');
-      const overviewPanel = document.getElementById('home-overview-panel');
+      const coreGrid = document.querySelector('.edu-grid-4');
+      const bulletinPanel = document.getElementById('home-bulletin-panel');
       const profilePanel = document.getElementById('home-profile-panel');
       const editBtn = document.getElementById('btn-edit-profile');
-      const bell = document.getElementById('notif-wrap');
 
+      if (hubPanel) hubPanel.classList.toggle('hidden', !isFeatureEnabled('homeHubGrid'));
       if (moreWrap) moreWrap.classList.toggle('hidden', !isFeatureEnabled('moreMenuDropdown'));
-      if (overviewPanel) overviewPanel.classList.toggle('hidden', !isFeatureEnabled('homeOverview'));
+      if (coreGrid) coreGrid.classList.toggle('hidden', !isFeatureEnabled('coreTopicsGrid'));
+      if (bulletinPanel) bulletinPanel.classList.toggle('hidden', !isFeatureEnabled('bulletinBoard'));
       if (profilePanel) profilePanel.classList.toggle('hidden', !isFeatureEnabled('personalProfile'));
-      if (bell) bell.classList.toggle('hidden', !isFeatureEnabled('notifications'));
       if (!isFeatureEnabled('editPersonalProfile')) {
         toggleEditProfile(false);
         if (editBtn) editBtn.classList.add('hidden');
@@ -3350,7 +3201,6 @@ grant select, insert, update, delete on public.notifications to anon;
         if (newPass.length < 4) { alert('Mật khẩu mới cần có ít nhất 4 ký tự.'); return; }
       }
 
-      const __oldProf = { 'Họ và tên': currentUser.fullName, 'Số điện thoại': currentUser.phone, 'Email': currentUser.email, 'Ngày sinh': currentUser.dob, 'Giới thiệu / mục tiêu': currentUser.note };
       currentUser.fullName = fullName;
       currentUser.phone = phone;
       currentUser.grade = grade;
@@ -3370,7 +3220,6 @@ grant select, insert, update, delete on public.notifications to anon;
 
       document.getElementById('topbar-username').textContent = fullName;
       document.getElementById('welcome-name').textContent = fullName;
-      notifyOwnProfileEdit(__oldProf, { 'Họ và tên': fullName, 'Số điện thoại': phone, 'Email': email, 'Ngày sinh': dob, 'Giới thiệu / mục tiêu': note }, !!newPass);
       persistState(true);
       renderClassModulesUI();
       renderMemberProfile();
@@ -3385,8 +3234,7 @@ grant select, insert, update, delete on public.notifications to anon;
         subtab = 'accounts';
       }
       if ((subtab === 'accounts' || subtab === 'users') && myRank() < 1) subtab = 'users';
-      if (subtab === 'overview' && myRank() < 2) subtab = myRank() >= 1 ? 'accounts' : 'users';
-      const ids = ['accounts', 'users', 'overview', 'features', 'settings'];
+      const ids = ['accounts', 'users', 'features', 'settings'];
       ids.forEach(k => {
         const tab = document.getElementById('admin-subtab-' + k);
         const btn = document.getElementById('subtab-' + k + '-btn');
@@ -3395,7 +3243,6 @@ grant select, insert, update, delete on public.notifications to anon;
       });
       if (subtab === 'settings') { updateAutoSaveUI(); loadSupabaseConfigUI(); }
       else if (subtab === 'features') { renderFeaturesTabUI(); }
-      else if (subtab === 'overview') { renderOverviewEditor(); }
       else if (subtab === 'accounts') { renderAccountsManager(); }
       else { refreshAdminViews(); }
     }
@@ -3412,8 +3259,6 @@ grant select, insert, update, delete on public.notifications to anon;
         if (currentUser && currentUser.role === 'admin') btnFeaturesSub.classList.remove('hidden');
         else btnFeaturesSub.classList.add('hidden');
       }
-      const btnOverviewSub = document.getElementById('subtab-overview-btn');
-      if (btnOverviewSub) btnOverviewSub.classList.toggle('hidden', myRank() < 2);
 
       const createBtn = document.getElementById('btn-open-create-user');
       if (createBtn) createBtn.classList.toggle('hidden', !canCreateAccounts());
@@ -3526,7 +3371,6 @@ grant select, insert, update, delete on public.notifications to anon;
       if (!user || !canModerateStatus(user)) { alert('Bạn không có quyền duyệt tài khoản này.'); return; }
       user.status = 'approved';
       user.rejectReason = '';
-      notifyUser(user, 'success', 'Tài khoản của bạn đã được duyệt', actorLabel() + ' đã duyệt tài khoản. Chào mừng bạn vào Lớp văn thầy Hiếu!');
       persistState();
       refreshAdminViews();
     }
@@ -3538,7 +3382,6 @@ grant select, insert, update, delete on public.notifications to anon;
       if (reason === null) return;
       user.status = 'rejected';
       user.rejectReason = reason.trim();
-      notifyUser(user, 'danger', 'Tài khoản bị từ chối / tạm khóa', actorLabel() + ' đã từ chối hoặc tạm khóa tài khoản của bạn.' + (user.rejectReason ? '\nLý do: ' + user.rejectReason : '') + '\nBạn có thể nhắn cho ban quản lý để được hỗ trợ.');
       persistState();
       refreshAdminViews();
     }
@@ -3605,8 +3448,6 @@ grant select, insert, update, delete on public.notifications to anon;
         role: document.getElementById('new-u-role').value
       });
       if (err) { alert(err); return; }
-      const createdUser = appState.users[0];
-      if (createdUser) notifyUser(createdUser, 'success', 'Tài khoản của bạn đã được tạo', actorLabel() + ' đã tạo tài khoản cho bạn. Hãy vào Thẻ thành viên để kiểm tra và cập nhật thông tin cá nhân.');
       persistState();
       event.target.reset();
       document.getElementById('new-u-password').value = '123456';
@@ -3677,7 +3518,6 @@ grant select, insert, update, delete on public.notifications to anon;
       }
       if (email && allAccounts().some(x => x.id !== u.id && x.email && x.email.toLowerCase() === email.toLowerCase())) { alert('Email này đã được dùng cho tài khoản khác.'); return; }
       if (isSysAdmin && username !== ADMIN_ACCOUNT.username && appState.users.some(x => String(x.username).toLowerCase() === username)) { alert('ID này đã được dùng cho tài khoản khác.'); return; }
-      const __old = { fullName: u.fullName, username: u.username, grade: u.grade, phone: u.phone, email: u.email, dob: u.dob, note: u.note, role: normRole(u.role), status: u.status, password: u.password };
       u.fullName = document.getElementById('det-fullname').value.trim() || u.fullName;
       u.username = username;
       u.dob = document.getElementById('det-dob').value;
@@ -3694,7 +3534,6 @@ grant select, insert, update, delete on public.notifications to anon;
       const newPass = document.getElementById('det-password').value;
       if (newPass && !isSysAdmin && canEditSensitive(u) && u.provider !== 'google') u.password = newPass;
       if (isSysAdmin) saveAdminProfile();
-      notifyAccountChanges(u, __old);
       persistState();
       closeUserDetailModal();
       refreshAdminViews();
@@ -4152,8 +3991,30 @@ grant select, insert, update, delete on public.notifications to anon;
 
     /* ================= CHUYÊN MỤC LỚP HỌC ================= */
     function renderClassModulesUI() {
+      const hubGrid = document.getElementById('home-hub-grid');
       const moreMenu = document.getElementById('nav-more-menu');
       const enabledModules = CLASS_MODULES.filter(m => isFeatureEnabled(m.id));
+
+      if (hubGrid) {
+        if (enabledModules.length === 0) {
+          hubGrid.innerHTML = `<div class="alert-box alert-info" style="grid-column:1/-1; margin-bottom:0;">Hiện tại tất cả chuyên mục mở rộng đang được Quản trị viên tạm ẩn.</div>`;
+        } else {
+          hubGrid.innerHTML = enabledModules.map(m => `
+            <div class="hub-tile">
+              <div>
+                <div class="hub-tile-top">
+                  <div class="hub-tile-icon">${renderLuxuryIcon(m.id, 'lux-svg')}</div>
+                  <h4>${escapeHtml(m.title)}</h4>
+                </div>
+                <p style="margin-top:8px;">${escapeHtml(m.shortDesc)}</p>
+              </div>
+              <div>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="openModuleView('${m.id}')">Mở chuyên mục →</button>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
 
       if (moreMenu) {
         if (enabledModules.length === 0) {
@@ -4218,7 +4079,7 @@ grant select, insert, update, delete on public.notifications to anon;
       } else {
         interactiveArea.innerHTML = `
           <div class="alert-box alert-info" style="margin-bottom:0;">
-            Chuyên mục <strong>${escapeHtml(mod.title)}</strong> đã được kích hoạt. Thầy Hiếu có thể bổ sung học liệu, đề bài và hoạt động chi tiết vào từng mục ở các bước tiếp theo.
+            Chuyên mục <strong>${escapeHtml(mod.title)}</strong> đã được kích hoạt trên Trang chủ tổng hợp. Thầy Hiếu có thể bổ sung học liệu, đề bài và hoạt động chi tiết vào từng mục ở các bước tiếp theo.
           </div>
         `;
       }
@@ -4687,28 +4548,21 @@ grant select, insert, update, delete on public.notifications to anon;
             if (!onlyIfNewer || isNew) {
               const d = row.data;
               const keepSb = appState.settings.supabase || {};
-              const prevOv = appState.settings.homeOverview;
               appState.settings = {
                 ...appState.settings,
                 ...d.settings,
                 welcomePopup: { ...appState.settings.welcomePopup, ...(d.settings.welcomePopup || {}) },
                 featureFlags: { ...appState.settings.featureFlags, ...(d.settings.featureFlags || {}) },
-                homeOverview: newerOverview(prevOv, d.settings.homeOverview),
-                supabase: { ...keepSb, lastCloudAt: row.updated_at },
-                autoSave: appState.settings.autoSave   // cài đặt riêng từng máy, không lấy từ bản của admin
+                supabase: { ...keepSb, lastCloudAt: row.updated_at }
               };
               cloudBusy = true;
               try { persistState(true); } finally { cloudBusy = false; }
             }
           }
         }
-        // 1b) Nội dung Tổng quan giáo viên & lớp học (Trợ lý cũng soạn được nên lưu ở hàng riêng 'overview')
-        await pullOverview(sb);
         // 2) Hồ sơ người dùng (hai chiều)
         const r = await syncProfiles();
         if (typeof applyFeatureVisibility === 'function') applyFeatureVisibility();
-        if (typeof renderHomeOverview === 'function') renderHomeOverview();
-        if (currentUser) pullNotifications();
         if (typeof renderClassModulesUI === 'function') { try { renderClassModulesUI(); } catch (e) {} }
         if (myRank() >= 1 && typeof refreshAdminViews === 'function') { try { refreshAdminViews(); } catch (e) {} }
         if (showStatus) setLoginSyncStatus(r.ok ? 'Đã cập nhật dữ liệu lúc ' + new Date().toLocaleTimeString('vi-VN') + '.' : 'Đã tải cài đặt mới; hồ sơ chưa đồng bộ được (' + r.error + ').', !r.ok);
@@ -4812,7 +4666,6 @@ grant select, insert, update, delete on public.notifications to anon;
         if (res.ok) { pushedMap[u.id] = userSig(u); pushed++; continue; }
         const txt = await res.text();
         if (res.status === 409 || /23505/.test(txt)) {
-          if (/email/i.test(txt)) throw new Error('23505 profiles_email_key: bảng profiles còn ràng buộc unique ở cột email — hãy chạy lại SQL');
           if (!isAdmin && pushedMap[u.id] === undefined) {
             // Trùng tên đăng nhập/email với tài khoản đã có trên hệ thống: hủy hồ sơ vừa tạo trên máy này
             appState.users = appState.users.filter(x => x.id !== u.id);
@@ -4919,8 +4772,6 @@ grant select, insert, update, delete on public.notifications to anon;
       if (navAdmin) navAdmin.classList.toggle('hidden', rk < 1);
       if (rk < 1 && document.getElementById('view-admin') && !document.getElementById('view-admin').classList.contains('hidden')) switchMainView('home');
       renderMemberProfile();
-      renderHomeOverview();
-      updateNotifBadge();
     }
 
     // Báo kết quả đồng bộ ngay dưới thẻ thành viên
@@ -4941,9 +4792,9 @@ grant select, insert, update, delete on public.notifications to anon;
     }
 
     function scheduleProfileSync() {
-      if (!cloudCfg()) return;
+      if (profSyncing || !cloudCfg()) return;
       clearTimeout(profTimer);
-      profTimer = setTimeout(() => { if (profSyncing) scheduleProfileSync(); else syncProfiles(); }, 2000);
+      profTimer = setTimeout(() => syncProfiles(), 2000);
     }
 
     async function manualRefreshFromCloud() {
@@ -4964,608 +4815,11 @@ grant select, insert, update, delete on public.notifications to anon;
     // Người dùng đang mở trang: cứ 30 giây (và khi quay lại tab) kiểm tra, có bản mới thì tự cập nhật
     function pollCloudUpdates() {
       if (document.hidden || !cloudCfg()) return;
-      if (myRank() >= 1) { syncProfiles(); pullOverview(cloudCfg()); return; } // ban quản lý: nhận đăng ký mới của học sinh
+      if (myRank() >= 1) { syncProfiles(); return; } // ban quản lý: nhận đăng ký mới của học sinh
       refreshFromCloudSilent(false, true);
     }
     setInterval(pollCloudUpdates, 30000);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) pollCloudUpdates(); });
-
-
-    /* ================= TỔNG QUAN VỀ GIÁO VIÊN & LỚP HỌC ================= */
-    let ovPhoto = '';
-
-    function newerOverview(a, b) {
-      if (!b) return a;
-      if (!a) return b;
-      return String(b.updatedAt || '') > String(a.updatedAt || '') ? b : a;
-    }
-
-    function getOverview() {
-      const src = (appState.settings && appState.settings.homeOverview) || {};
-      const d = DEFAULT_OVERVIEW;
-      const arr = v => Array.isArray(v) ? v.map(x => String(x || '').trim()).filter(Boolean) : [];
-      return {
-        updatedAt: src.updatedAt || '',
-        updatedBy: src.updatedBy || '',
-        teacher: { ...d.teacher, ...(src.teacher || {}), highlights: arr((src.teacher || {}).highlights) },
-        classInfo: { ...d.classInfo, ...(src.classInfo || {}), schedule: arr((src.classInfo || {}).schedule), rules: arr((src.classInfo || {}).rules) }
-      };
-    }
-
-    function safeImgUrl(u) { return /^(https?:\/\/|data:image\/)/i.test(String(u || '').trim()); }
-
-    function overviewHTML(ov) {
-      const t = ov.teacher, c = ov.classInfo;
-      const ul = list => list.length ? `<ul class="ov-list">${list.map(x => `<li>${escapeHtml(x)}</li>`).join('')}</ul>` : '';
-      const hasTeacher = t.name || t.title || t.intro || t.highlights.length || t.email || t.phone || safeImgUrl(t.photoUrl);
-      const hasClass = c.name || c.slogan || c.description || c.schedule.length || c.rules.length || c.showStats;
-      let html = '';
-      if (hasTeacher) {
-        const initial = escapeHtml((givenName(t.name) || 'T').charAt(0).toUpperCase());
-        const photo = safeImgUrl(t.photoUrl) ? `<img src="${escapeHtml(t.photoUrl.trim())}" alt="Ảnh giáo viên" />` : initial;
-        const contact = [t.email ? `<span>✉ ${escapeHtml(t.email)}</span>` : '', t.phone ? `<span>☎ ${escapeHtml(t.phone)}</span>` : ''].join('');
-        html += `
-          <div class="ov-block">
-            <div class="ov-teacher">
-              <div class="ov-photo">${photo}</div>
-              <div>
-                <span class="hero-tag" style="margin-bottom:8px;">GIÁO VIÊN PHỤ TRÁCH</span>
-                ${t.name ? `<h3>${escapeHtml(t.name)}</h3>` : ''}
-                ${t.title ? `<div class="ov-sub">${escapeHtml(t.title)}</div>` : ''}
-                ${t.intro ? `<p class="ov-text">${escapeHtml(t.intro)}</p>` : ''}
-                ${ul(t.highlights)}
-                ${contact ? `<div class="ov-contact">${contact}</div>` : ''}
-              </div>
-            </div>
-          </div>`;
-      }
-      if (hasClass) {
-        const students = appState.users.filter(u => rankOf(u) === 0 && u.status === 'approved').length;
-        html += `
-          <div class="ov-block">
-            <span class="hero-tag" style="margin-bottom:8px;">LỚP HỌC</span>
-            ${c.name ? `<h3>${escapeHtml(c.name)}</h3>` : ''}
-            ${c.slogan ? `<div class="ov-sub">${escapeHtml(c.slogan)}</div>` : ''}
-            ${c.description ? `<p class="ov-text">${escapeHtml(c.description)}</p>` : ''}
-            ${(c.schedule.length || c.rules.length) ? `<div class="ov-cols">
-              ${c.schedule.length ? `<div><h4>Lịch học</h4>${ul(c.schedule)}</div>` : ''}
-              ${c.rules.length ? `<div><h4>Nội quy &amp; lưu ý</h4>${ul(c.rules)}</div>` : ''}
-            </div>` : ''}
-            ${c.showStats ? `<div class="ov-stat">Số học sinh đang theo học: ${students}</div>` : ''}
-          </div>`;
-      }
-      return html || '<div class="ov-empty">Giáo viên chưa cập nhật nội dung tổng quan.</div>';
-    }
-
-    function renderHomeOverview() {
-      const body = document.getElementById('home-overview-body');
-      if (!body) return;
-      const ov = getOverview();
-      body.innerHTML = overviewHTML(ov);
-      const note = document.getElementById('ov-updated-note');
-      if (note) note.textContent = ov.updatedAt ? 'Cập nhật ngày ' + new Date(ov.updatedAt).toLocaleDateString('vi-VN') : '';
-      const btn = document.getElementById('ov-edit-shortcut');
-      if (btn) btn.classList.toggle('hidden', myRank() < 2);
-    }
-
-    function openOverviewEditor() {
-      if (myRank() < 2) return;
-      switchMainView('admin');
-      switchAdminSubtab('overview');
-    }
-
-    function ovEl(id) { return document.getElementById(id); }
-
-    function fillOverviewForm(ov) {
-      const set = (id, v) => { const e = ovEl(id); if (e) e.value = v || ''; };
-      set('ov-t-name', ov.teacher.name); set('ov-t-title', ov.teacher.title);
-      set('ov-t-email', ov.teacher.email); set('ov-t-phone', ov.teacher.phone);
-      set('ov-t-intro', ov.teacher.intro); set('ov-t-highlights', ov.teacher.highlights.join('\n'));
-      set('ov-c-name', ov.classInfo.name); set('ov-c-slogan', ov.classInfo.slogan);
-      set('ov-c-desc', ov.classInfo.description);
-      set('ov-c-schedule', ov.classInfo.schedule.join('\n')); set('ov-c-rules', ov.classInfo.rules.join('\n'));
-      ovEl('ov-c-stats').checked = !!ov.classInfo.showStats;
-      ovPhoto = ov.teacher.photoUrl || '';
-      ovEl('ov-t-photo').value = /^data:/i.test(ovPhoto) ? '' : ovPhoto;
-      ovEl('ov-t-photo-file').value = '';
-      const nt = ovEl('ov-notify'); if (nt) nt.checked = false;
-      ovFormChanged();
-    }
-
-    function readOverviewForm() {
-      const v = id => (ovEl(id).value || '').trim();
-      const lines = id => (ovEl(id).value || '').split('\n').map(s => s.trim()).filter(Boolean);
-      return {
-        teacher: { name: v('ov-t-name'), title: v('ov-t-title'), photoUrl: ovPhoto, intro: v('ov-t-intro'), highlights: lines('ov-t-highlights'), email: v('ov-t-email'), phone: v('ov-t-phone') },
-        classInfo: { name: v('ov-c-name'), slogan: v('ov-c-slogan'), description: v('ov-c-desc'), schedule: lines('ov-c-schedule'), rules: lines('ov-c-rules'), showStats: ovEl('ov-c-stats').checked }
-      };
-    }
-
-    function ovFormChanged() {
-      const pi = ovEl('ov-t-photo');
-      if (pi && document.activeElement === pi) ovPhoto = pi.value.trim();
-      const form = readOverviewForm();
-      const prev = ovEl('ov-live-preview');
-      if (prev) prev.innerHTML = overviewHTML({ updatedAt: '', updatedBy: '', ...form });
-      const pp = ovEl('ov-t-photo-preview');
-      if (pp) pp.innerHTML = safeImgUrl(ovPhoto) ? `<img src="${escapeHtml(ovPhoto)}" alt="" />` : escapeHtml((givenName(form.teacher.name) || 'T').charAt(0).toUpperCase());
-    }
-
-    function handleOverviewPhoto(event) {
-      const file = event.target.files && event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = e => {
-        const img = new Image();
-        img.onload = () => {
-          const max = 480, k = Math.min(1, max / Math.max(img.width, img.height));
-          const cv = document.createElement('canvas');
-          cv.width = Math.round(img.width * k); cv.height = Math.round(img.height * k);
-          cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
-          ovPhoto = cv.toDataURL('image/jpeg', 0.85);
-          ovEl('ov-t-photo').value = '';
-          ovFormChanged();
-        };
-        img.onerror = () => setOvFeedback('Không đọc được tệp ảnh này. Hãy thử ảnh JPG hoặc PNG khác.', 'error');
-        img.src = String(e.target.result || '');
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function clearOverviewPhoto() {
-      ovPhoto = '';
-      ovEl('ov-t-photo').value = '';
-      ovEl('ov-t-photo-file').value = '';
-      ovFormChanged();
-    }
-
-    function setOvFeedback(msg, type) {
-      const el = ovEl('ov-feedback');
-      if (!el) return;
-      if (!msg) { el.classList.add('hidden'); return; }
-      el.className = 'alert-box ' + (type === 'success' ? 'alert-success' : type === 'info' ? 'alert-info' : 'alert-error');
-      el.textContent = msg;
-    }
-
-    function updateOvMeta() {
-      const ov = getOverview(), el = ovEl('ov-meta-line');
-      if (!el) return;
-      el.textContent = ov.updatedAt
-        ? 'Lần cập nhật gần nhất: ' + new Date(ov.updatedAt).toLocaleString('vi-VN') + (ov.updatedBy ? ' • ' + ov.updatedBy : '')
-        : 'Chưa có chỉnh sửa nào, Trang chủ đang dùng nội dung mặc định.';
-    }
-
-    function renderOverviewEditor() {
-      if (myRank() < 2) return;
-      setOvFeedback('');
-      fillOverviewForm(getOverview());
-      updateOvMeta();
-    }
-
-    function resetOverviewForm() { fillOverviewForm(getOverview()); setOvFeedback('Đã hoàn tác về nội dung đang đăng trên Trang chủ.', 'info'); }
-
-    async function pushOverview(sb, ov) {
-      const res = await fetchT(`${sb.url}/rest/v1/${CLOUD_TABLE}?on_conflict=id`, {
-        method: 'POST',
-        headers: cloudHeaders(sb, { Prefer: 'resolution=merge-duplicates,return=minimal' }),
-        body: JSON.stringify([{ id: 'overview', data: ov, user_count: 0, device: deviceLabel(), updated_at: ov.updatedAt }])
-      }, 10000);
-      if (!res.ok) throw new Error(res.status + ': ' + await res.text());
-    }
-
-    async function pullOverview(sb) {
-      if (!sb) return false;
-      try {
-        const res = await fetchT(`${sb.url}/rest/v1/${CLOUD_TABLE}?id=eq.overview&select=data`, { headers: cloudHeaders(sb) }, 6000);
-        if (!res.ok) return false;
-        const rows = await res.json();
-        const cd = rows[0] && rows[0].data;
-        if (!cd || !cd.updatedAt) return false;
-        const local = appState.settings.homeOverview;
-        if (local && String(local.updatedAt || '') >= String(cd.updatedAt)) return false;
-        appState.settings.homeOverview = cd;
-        const wasBusy = cloudBusy; cloudBusy = true;
-        try { persistState(true); } finally { cloudBusy = wasBusy; }
-        renderHomeOverview();
-        return true;
-      } catch (e) { return false; }
-    }
-
-    async function saveOverview() {
-      if (myRank() < 2) { alert('Chỉ Trợ lý quản trị viên và Quản trị viên được chỉnh nội dung này.'); return; }
-      const form = readOverviewForm();
-      const local = getOverview();
-      const sb = cloudCfg();
-      if (sb) {
-        try {
-          const res = await fetchT(`${sb.url}/rest/v1/${CLOUD_TABLE}?id=eq.overview&select=data`, { headers: cloudHeaders(sb) }, 6000);
-          if (res.ok) {
-            const rows = await res.json();
-            const cd = rows[0] && rows[0].data;
-            if (cd && String(cd.updatedAt || '') > String(local.updatedAt || '')) {
-              if (!confirm(`Nội dung Tổng quan vừa được ${cd.updatedBy || 'người khác'} cập nhật lúc ${new Date(cd.updatedAt).toLocaleString('vi-VN')}, mới hơn bản trên máy này.\nGhi đè bằng nội dung bạn vừa soạn?`)) return;
-            }
-          }
-        } catch (e) { /* mất mạng: vẫn lưu trên máy */ }
-      }
-      const ov = { updatedAt: new Date().toISOString(), updatedBy: currentUser.fullName, ...form };
-      appState.settings.homeOverview = ov;
-      const wasBusy = cloudBusy; cloudBusy = true;
-      try { persistState(true); } finally { cloudBusy = wasBusy; }
-      renderHomeOverview();
-      updateOvMeta();
-      const wantNotify = ovEl('ov-notify') && ovEl('ov-notify').checked;
-      if (wantNotify) sendNotification({ toGroup: 'all', kind: 'announce', title: 'Trang chủ vừa được cập nhật', body: actorLabel() + ' vừa cập nhật phần Tổng quan về giáo viên & lớp học. Hãy vào Trang chủ để xem nội dung mới.' });
-      if (!sb) { setOvFeedback('Đã lưu và hiển thị trên máy này. Chưa kết nối Supabase nên thành viên ở thiết bị khác chưa thấy nội dung mới.', 'info'); return; }
-      try {
-        await pushOverview(sb, ov);
-        setOvFeedback('Đã lưu và đăng lên Trang chủ cho mọi thành viên.' + (wantNotify ? ' Đã gửi thông báo tới toàn bộ thành viên.' : ''), 'success');
-      } catch (e) {
-        setOvFeedback('Đã lưu trên máy nhưng chưa đăng lên Supabase được: ' + String(e.message || e).slice(0, 140), 'error');
-      }
-    }
-
-    /* ================= THÔNG BÁO HAI CHIỀU (BAN QUẢN LÝ <-> THÀNH VIÊN) ================= */
-    const NOTIF_KEY = 'thayhieugenz_notifs_v1';
-    const NOTIF_ICONS = {
-      info: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><line x1="12" y1="8" x2="12" y2="8.01"/></svg>',
-      success: '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
-      danger: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>',
-      message: '<svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>',
-      announce: '<svg viewBox="0 0 24 24"><path d="M4 10v4h3l6 4V6L7 10H4z"/><path d="M17 9a4 4 0 0 1 0 6"/></svg>'
-    };
-    let notifState = (() => {
-      try { const o = JSON.parse(localStorage.getItem(NOTIF_KEY) || 'null'); if (o && Array.isArray(o.items)) return { items: o.items, readBy: o.readBy || {} }; } catch (e) {}
-      return { items: [], readBy: {} };
-    })();
-    let notifTab = 'inbox';
-    let notifCloudMissing = false;
-    let notifBaselineDone = false;
-    let notifBusy = false;
-    let notifReplyTo = null;
-    let notifLastUnread = 0;
-
-    function saveNotifState() {
-      notifState.items.sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
-      if (notifState.items.length > 300) notifState.items.length = 300;
-      Object.keys(notifState.readBy).forEach(k => { if (notifState.readBy[k].length > 600) notifState.readBy[k] = notifState.readBy[k].slice(-600); });
-      try { localStorage.setItem(NOTIF_KEY, JSON.stringify(notifState)); } catch (e) {}
-    }
-
-    function notifToRow(n) {
-      return { id: n.id, to_user: n.toUser, to_group: n.toGroup, from_user: n.fromUser, from_name: n.fromName, from_role: n.fromRole, kind: n.kind, title: n.title, body: n.body, created_at: n.createdAt };
-    }
-    function rowToNotif(r) {
-      const d = new Date(r.created_at);
-      return { id: r.id, toUser: r.to_user || '', toGroup: r.to_group || '', fromUser: r.from_user || '', fromName: r.from_name || '', fromRole: r.from_role || '', kind: r.kind || 'info', title: r.title || '', body: r.body || '', createdAt: isNaN(d) ? new Date().toISOString() : d.toISOString(), synced: true };
-    }
-
-    // Thông báo này có dành cho người đang đăng nhập không?
-    function notifForMe(n) {
-      if (!currentUser || n.fromUser === currentUser.id) return false;
-      if (n.toUser) return n.toUser === currentUser.id;
-      const g = n.toGroup || '';
-      if (g === 'all') return true;
-      if (g === 'staff') return myRank() >= 1;
-      if (g.indexOf('class:') === 0) return String(currentUser.grade || '').trim().toLowerCase() === g.slice(6).trim().toLowerCase();
-      return false;
-    }
-    function isNotifRead(n) { return !!currentUser && (notifState.readBy[currentUser.id] || []).indexOf(n.id) >= 0; }
-    function markNotifRead(ids) {
-      if (!currentUser) return;
-      const set = new Set(notifState.readBy[currentUser.id] || []);
-      ids.forEach(i => set.add(i));
-      notifState.readBy[currentUser.id] = [...set];
-      saveNotifState();
-    }
-    function inboxItems() { return notifState.items.filter(notifForMe); }
-    function unreadCount() { return inboxItems().filter(n => !isNotifRead(n)).length; }
-
-    function actorLabel() { return currentUser ? currentUser.fullName + ' (' + ROLE_LABEL[normRole(currentUser.role)] + ')' : 'Ban quản lý'; }
-
-    async function pushNotifToCloud(n) {
-      await configReady;
-      const sb = cloudCfg();
-      if (!sb || notifCloudMissing) return false;
-      try {
-        const res = await fetchT(`${sb.url}/rest/v1/notifications?on_conflict=id`, {
-          method: 'POST',
-          headers: cloudHeaders(sb, { Prefer: 'resolution=merge-duplicates,return=minimal' }),
-          body: JSON.stringify([notifToRow(n)])
-        }, 8000);
-        if (res.ok) { n.synced = true; saveNotifState(); return true; }
-        const tx = await res.text();
-        if (res.status === 404 || /42P01|does not exist|schema cache/i.test(tx)) notifCloudMissing = true;
-      } catch (e) { /* mất mạng: sẽ thử lại ở lần đồng bộ sau */ }
-      return false;
-    }
-
-    async function sendNotification(o) {
-      const from = o.from || (currentUser ? { id: currentUser.id, name: currentUser.fullName, role: normRole(currentUser.role) } : { id: '', name: 'Hệ thống', role: '' });
-      const n = {
-        id: 'n-' + Date.now() + '-' + Math.floor(Math.random() * 1e5),
-        toUser: o.toUser || '', toGroup: o.toGroup || '',
-        fromUser: from.id, fromName: from.name, fromRole: from.role || '',
-        kind: o.kind || 'info', title: String(o.title || '').slice(0, 140), body: String(o.body || '').slice(0, 1500),
-        createdAt: new Date().toISOString(), synced: false
-      };
-      notifState.items.unshift(n);
-      saveNotifState();
-      updateNotifBadge();
-      renderNotifPanelIfOpen();
-      await pushNotifToCloud(n);
-      renderNotifPanelIfOpen();
-      return n;
-    }
-    function notifyUser(u, kind, title, body) {
-      if (!u || (currentUser && u.id === currentUser.id)) return;
-      sendNotification({ toUser: u.id, kind, title, body });
-    }
-    function notifyStaff(from, kind, title, body) { sendNotification({ from, toGroup: 'staff', kind, title, body }); }
-
-    const STATUS_LABEL = { approved: 'Đã duyệt', pending: 'Chờ duyệt', rejected: 'Từ chối / Khóa' };
-    function notifyAccountChanges(u, old) {
-      if (!currentUser || u.id === currentUser.id) return;
-      const dash = v => (v === undefined || v === null || v === '') ? '(trống)' : v;
-      const lines = [];
-      let kind = 'info';
-      if (normRole(u.role) !== old.role) lines.push('• Chức vụ: ' + ROLE_LABEL[old.role] + ' → ' + ROLE_LABEL[normRole(u.role)]);
-      if (u.status !== old.status) {
-        lines.push('• Trạng thái: ' + (STATUS_LABEL[old.status] || old.status) + ' → ' + (STATUS_LABEL[u.status] || u.status));
-        if (u.status === 'approved') kind = 'success'; else if (u.status === 'rejected') kind = 'danger';
-      }
-      if ((u.grade || '') !== (old.grade || '')) lines.push('• Lớp: ' + dash(old.grade) + ' → ' + dash(u.grade));
-      if (u.username !== old.username) lines.push('• ID đăng nhập: ' + old.username + ' → ' + u.username);
-      const infoChanged = ['fullName', 'phone', 'email', 'dob', 'note'].some(k => (u[k] || '') !== (old[k] || ''));
-      if (infoChanged) lines.push('• Thông tin cá nhân (họ tên, liên hệ, ngày sinh, ghi chú) đã được chỉnh sửa');
-      if ((u.password || '') !== (old.password || '')) lines.push('• Mật khẩu đã được đặt lại, hãy hỏi ban quản lý nếu bạn chưa biết mật khẩu mới');
-      if (!lines.length) return;
-      sendNotification({ toUser: u.id, kind, title: 'Tài khoản của bạn vừa được cập nhật', body: actorLabel() + ' đã thay đổi:\n' + lines.join('\n') });
-    }
-    function notifyOwnProfileEdit(oldVals, newVals, passChanged) {
-      if (!currentUser || myRank() !== 0) return;
-      const changed = Object.keys(newVals).filter(k => String(oldVals[k] || '') !== String(newVals[k] || ''));
-      if (passChanged) changed.push('Mật khẩu');
-      if (!changed.length) return;
-      sendNotification({ toGroup: 'staff', kind: 'info', title: currentUser.fullName + ' vừa cập nhật hồ sơ', body: 'Các mục thay đổi: ' + changed.join(', ') + '.' + (currentUser.grade ? '\nLớp: ' + currentUser.grade : '') });
-    }
-
-    function timeAgo(iso) {
-      const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
-      if (s < 60) return 'Vừa xong';
-      if (s < 3600) return Math.floor(s / 60) + ' phút trước';
-      if (s < 86400) return Math.floor(s / 3600) + ' giờ trước';
-      if (s < 7 * 86400) return Math.floor(s / 86400) + ' ngày trước';
-      return new Date(iso).toLocaleDateString('vi-VN');
-    }
-    function senderLabel(n) { return n.fromName ? n.fromName + (n.fromRole && ROLE_LABEL[n.fromRole] ? ' (' + ROLE_LABEL[n.fromRole] + ')' : '') : 'Hệ thống'; }
-    function recipientLabel(n) {
-      if (n.toUser) { const u = findAccount(n.toUser); return u ? u.fullName : 'Một thành viên'; }
-      if (n.toGroup === 'all') return 'Toàn bộ thành viên';
-      if (n.toGroup === 'staff') return 'Ban quản lý';
-      if ((n.toGroup || '').indexOf('class:') === 0) return 'Lớp ' + n.toGroup.slice(6);
-      return '';
-    }
-
-    function updateNotifBadge() {
-      const badge = document.getElementById('bell-badge');
-      const bell = document.getElementById('nav-bell');
-      const un = currentUser ? unreadCount() : 0;
-      if (badge) { badge.textContent = un > 99 ? '99+' : String(un); badge.classList.toggle('hidden', un === 0); }
-      if (bell && un > notifLastUnread) { bell.classList.add('ring'); setTimeout(() => bell.classList.remove('ring'), 2000); }
-      notifLastUnread = un;
-      const hd = document.getElementById('notif-unread-text');
-      if (hd) hd.textContent = un ? un + ' chưa đọc' : 'Đã đọc hết';
-    }
-
-    function notifItemHTML(n, sentTab) {
-      const unread = !sentTab && !isNotifRead(n);
-      const meta = sentTab ? 'Gửi đến: ' + escapeHtml(recipientLabel(n)) : 'Từ: ' + escapeHtml(senderLabel(n));
-      const canReply = !sentTab && (n.fromUser || myRank() === 0);
-      return `
-        <div class="notif-item ${unread ? 'unread' : ''}" onclick="onNotifClick('${n.id}', this)">
-          <div class="notif-ico k-${NOTIF_ICONS[n.kind] ? n.kind : 'info'}">${NOTIF_ICONS[n.kind] || NOTIF_ICONS.info}</div>
-          <div class="notif-main">
-            <div class="notif-title">${escapeHtml(n.title || 'Thông báo')}</div>
-            <div class="notif-body">${escapeHtml(n.body)}</div>
-            <div class="notif-meta">${meta} • ${escapeHtml(timeAgo(n.createdAt))}${n.synced ? '' : ' • chưa đồng bộ'}</div>
-            ${canReply ? `<div class="notif-actions"><button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openNotifCompose('${n.id}')">Trả lời</button></div>` : ''}
-          </div>
-        </div>`;
-    }
-
-    function renderNotifPanel() {
-      const p = document.getElementById('notif-panel');
-      if (!p || !currentUser) return;
-      const inbox = inboxItems();
-      const sent = notifState.items.filter(n => n.fromUser === currentUser.id);
-      const sentTab = notifTab === 'sent';
-      const rows = (sentTab ? sent : inbox).slice(0, 60).map(n => notifItemHTML(n, sentTab)).join('');
-      const un = inbox.filter(n => !isNotifRead(n)).length;
-      const warn = (myRank() >= 2 && notifCloudMissing) ? '<div class="notif-foot">Chưa có bảng <code>notifications</code> trên Supabase nên thông báo chỉ hiện trên máy này. Hãy chạy lại SQL mẫu ở Cài đặt &amp; Đồng bộ dữ liệu.</div>' : '';
-      p.innerHTML = `
-        <div class="notif-head">
-          <div><h4>Thông báo</h4><span id="notif-unread-text" style="font-size:0.78rem; color:var(--ink-muted);">${un ? un + ' chưa đọc' : 'Đã đọc hết'}</span></div>
-          <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">
-            <button type="button" class="btn btn-outline btn-sm" onclick="markAllNotifRead()">Đọc tất cả</button>
-            <button type="button" class="btn btn-primary btn-sm" onclick="openNotifCompose()">${myRank() >= 1 ? '+ Soạn' : 'Nhắn ban quản lý'}</button>
-          </div>
-        </div>
-        <div class="notif-tabs">
-          <button type="button" class="notif-tab ${sentTab ? '' : 'active'}" onclick="setNotifTab('inbox')">Hộp thư (${inbox.length})</button>
-          <button type="button" class="notif-tab ${sentTab ? 'active' : ''}" onclick="setNotifTab('sent')">Đã gửi (${sent.length})</button>
-        </div>
-        <div class="notif-list">${rows || `<div class="notif-empty">${sentTab ? 'Bạn chưa gửi thông báo nào.' : 'Chưa có thông báo nào.'}</div>`}</div>
-        ${warn}`;
-    }
-    function renderNotifPanelIfOpen() {
-      const p = document.getElementById('notif-panel');
-      if (p && !p.classList.contains('hidden')) renderNotifPanel();
-    }
-    function setNotifTab(tab) { notifTab = tab; renderNotifPanel(); }
-
-    function toggleNotifPanel(event) {
-      if (event) event.stopPropagation();
-      const p = document.getElementById('notif-panel');
-      if (!p) return;
-      const opening = p.classList.contains('hidden');
-      const mm = document.getElementById('nav-more-menu'); if (mm) mm.classList.add('hidden');
-      p.classList.toggle('hidden', !opening);
-      if (opening) { renderNotifPanel(); pullNotifications(); }
-    }
-    document.addEventListener('click', () => { const p = document.getElementById('notif-panel'); if (p && !p.classList.contains('hidden')) p.classList.add('hidden'); });
-
-    function onNotifClick(id, node) {
-      const n = notifState.items.find(x => x.id === id);
-      if (!n || !node) return;
-      node.classList.toggle('open');
-      if (notifTab === 'inbox' && !isNotifRead(n)) { markNotifRead([id]); node.classList.remove('unread'); updateNotifBadge(); }
-    }
-    function markAllNotifRead() { markNotifRead(inboxItems().map(n => n.id)); updateNotifBadge(); renderNotifPanel(); }
-
-    function showToast(title, body, onClick) {
-      const wrap = document.getElementById('toast-wrap');
-      if (!wrap) return;
-      const d = document.createElement('div');
-      d.className = 'toast-item';
-      d.innerHTML = `<strong>${escapeHtml(title)}</strong>${body ? `<span>${escapeHtml(body)}</span>` : ''}`;
-      d.onclick = () => { d.remove(); if (onClick) onClick(); };
-      wrap.appendChild(d);
-      setTimeout(() => d.remove(), 6500);
-    }
-    function openNotifPanelFromToast() {
-      const p = document.getElementById('notif-panel');
-      if (p && p.classList.contains('hidden')) { p.classList.remove('hidden'); renderNotifPanel(); }
-    }
-
-    async function flushUnsyncedNotifs() {
-      const pending = notifState.items.filter(n => !n.synced);
-      for (const n of pending) { if (notifCloudMissing) break; await pushNotifToCloud(n); }
-    }
-
-    async function pullNotifications() {
-      if (!currentUser || notifBusy) return;
-      await configReady;
-      const sb = cloudCfg();
-      let fresh = [];
-      if (sb && !notifCloudMissing) {
-        notifBusy = true;
-        try {
-          await flushUnsyncedNotifs();
-          const res = await fetchT(`${sb.url}/rest/v1/notifications?select=*&order=created_at.desc&limit=300`, { headers: cloudHeaders(sb) }, 8000);
-          if (!res.ok) {
-            const tx = await res.text();
-            if (res.status === 404 || /42P01|does not exist|schema cache/i.test(tx)) notifCloudMissing = true;
-            throw new Error(res.status);
-          }
-          const incoming = (await res.json()).map(rowToNotif);
-          const before = new Set(notifState.items.map(n => n.id));
-          const cloudIds = new Set(incoming.map(n => n.id));
-          const keepLocal = notifState.items.filter(n => !n.synced && !cloudIds.has(n.id));
-          notifState.items = [...incoming, ...keepLocal];
-          saveNotifState();
-          fresh = incoming.filter(n => !before.has(n.id) && notifForMe(n) && !isNotifRead(n));
-        } catch (e) { /* mạng yếu hoặc chưa tạo bảng: dùng dữ liệu đang có */ }
-        finally { notifBusy = false; }
-      }
-      if (!notifBaselineDone) {
-        notifBaselineDone = true;
-        const un = unreadCount();
-        if (un > 0) showToast('Thông báo', 'Bạn có ' + un + ' thông báo chưa đọc', openNotifPanelFromToast);
-      } else if (fresh.length) {
-        const f = fresh[0];
-        showToast(f.title || 'Thông báo mới', fresh.length > 1 ? 'và ' + (fresh.length - 1) + ' thông báo khác' : String(f.body).slice(0, 90), openNotifPanelFromToast);
-      }
-      updateNotifBadge();
-      renderNotifPanelIfOpen();
-    }
-
-    function notifOnLogin() {
-      notifBaselineDone = false; notifTab = 'inbox'; notifLastUnread = 0;
-      updateNotifBadge();
-      setTimeout(pullNotifications, 400);
-    }
-    function notifOnLogout() {
-      const p = document.getElementById('notif-panel'); if (p) p.classList.add('hidden');
-      closeNotifCompose();
-      const w = document.getElementById('toast-wrap'); if (w) w.innerHTML = '';
-      notifBaselineDone = false;
-    }
-    setInterval(() => { if (currentUser && !document.hidden) pullNotifications(); }, 20000);
-    document.addEventListener('visibilitychange', () => { if (!document.hidden && currentUser) pullNotifications(); });
-
-    /* ----- Soạn / gửi / trả lời ----- */
-    function openNotifCompose(replyId) {
-      if (!currentUser) return;
-      notifReplyTo = null;
-      const to = document.getElementById('nc-to');
-      const uw = document.getElementById('nc-user-wrap');
-      const ncUser = document.getElementById('nc-user');
-      document.getElementById('nc-feedback').classList.add('hidden');
-      document.getElementById('nc-title').value = '';
-      document.getElementById('nc-body').value = '';
-      document.getElementById('nc-heading').textContent = 'Soạn thông báo';
-      uw.classList.add('hidden');
-      const orig = replyId ? notifState.items.find(x => x.id === replyId) : null;
-      if (orig) {
-        notifReplyTo = orig.fromUser ? { toUser: orig.fromUser, toGroup: '' } : { toUser: '', toGroup: 'staff' };
-        to.innerHTML = `<option value="reply">${escapeHtml('Trả lời: ' + (orig.fromName || 'Ban quản lý'))}</option>`;
-        to.disabled = true;
-        document.getElementById('nc-title').value = 'Re: ' + (orig.title || 'Thông báo');
-        document.getElementById('nc-heading').textContent = 'Trả lời thông báo';
-      } else {
-        const opts = [];
-        if (myRank() === 0) {
-          opts.push(['staff', 'Ban quản lý lớp học']);
-          document.getElementById('nc-heading').textContent = 'Nhắn ban quản lý';
-        } else {
-          opts.push(['user', 'Một thành viên cụ thể…']);
-          const classes = [...new Set(appState.users.filter(u => rankOf(u) === 0 && u.status === 'approved' && String(u.grade || '').trim()).map(u => String(u.grade).trim()))].sort((a, b) => a.localeCompare(b, 'vi'));
-          classes.forEach(c => opts.push(['class:' + c, 'Cả lớp: ' + c]));
-          if (myRank() >= 2) opts.push(['all', 'Toàn bộ thành viên']);
-          opts.push(['staff', 'Ban quản lý (nội bộ)']);
-        }
-        to.disabled = false;
-        to.innerHTML = opts.map(o => `<option value="${escapeHtml(o[0])}">${escapeHtml(o[1])}</option>`).join('');
-        const members = allAccounts().filter(u => u.id !== currentUser.id).sort((a, b) => String(a.fullName).localeCompare(String(b.fullName), 'vi'));
-        ncUser.innerHTML = members.map(u => `<option value="${escapeHtml(u.id)}">${escapeHtml(u.fullName)} — ${escapeHtml(rankOf(u) >= 1 ? ROLE_LABEL[normRole(u.role)] : (u.grade || 'chưa xếp lớp'))}</option>`).join('');
-        onNotifToChange();
-      }
-      document.getElementById('nc-send-btn').disabled = false;
-      document.getElementById('notif-compose-modal').classList.remove('hidden');
-      setTimeout(() => document.getElementById('nc-body').focus(), 50);
-    }
-    function onNotifToChange() {
-      const v = document.getElementById('nc-to').value;
-      document.getElementById('nc-user-wrap').classList.toggle('hidden', v !== 'user');
-    }
-    function closeNotifCompose() { const m = document.getElementById('notif-compose-modal'); if (m) m.classList.add('hidden'); }
-
-    async function sendNotifFromCompose() {
-      const fb = document.getElementById('nc-feedback');
-      const body = document.getElementById('nc-body').value.trim();
-      const title = document.getElementById('nc-title').value.trim();
-      const err = msg => { fb.textContent = msg; fb.classList.remove('hidden'); };
-      if (!body) { err('Vui lòng nhập nội dung thông báo.'); return; }
-      let toUser = '', toGroup = '';
-      if (notifReplyTo) { toUser = notifReplyTo.toUser; toGroup = notifReplyTo.toGroup; }
-      else {
-        const v = document.getElementById('nc-to').value;
-        if (v === 'user') { toUser = document.getElementById('nc-user').value; if (!toUser) { err('Hãy chọn thành viên nhận thông báo.'); return; } }
-        else toGroup = v;
-        if (myRank() === 0 && toGroup !== 'staff') { err('Học sinh chỉ gửi được cho ban quản lý.'); return; }
-        if (toGroup === 'all' && myRank() < 2) { err('Chỉ Trợ lý quản trị viên và Quản trị viên mới gửi được cho toàn bộ thành viên.'); return; }
-      }
-      const broadcast = toGroup === 'all' || toGroup.indexOf('class:') === 0;
-      const btn = document.getElementById('nc-send-btn'); btn.disabled = true;
-      await sendNotification({
-        toUser, toGroup, kind: broadcast ? 'announce' : 'message',
-        title: title || ((myRank() >= 1 ? 'Thông báo từ ' : 'Tin nhắn từ ') + currentUser.fullName),
-        body
-      });
-      closeNotifCompose();
-      showToast('Đã gửi', 'Thông báo của bạn đã được gửi đi.');
-    }
 
     function escapeHtml(str) {
       return String(str || '')
