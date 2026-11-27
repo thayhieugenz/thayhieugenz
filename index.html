@@ -1575,6 +1575,16 @@
             <input class="form-input" id="det-email" type="email" />
           </div>
         </div>
+        <div style="display:grid; grid-template-columns:1fr 2fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="det-dob">Ngày sinh</label>
+            <input class="form-input" id="det-dob" type="date" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="det-note">Giới thiệu / Ghi chú</label>
+            <input class="form-input" id="det-note" type="text" />
+          </div>
+        </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <div class="form-group">
             <label class="form-label" for="detail-user-role">Chức vụ</label>
@@ -3203,6 +3213,7 @@ grant select, insert, update, delete on public.app_backups to anon;
       const idx = appState.users.findIndex(u => u.id === currentUser.id);
       if (idx !== -1) {
         appState.users[idx] = { ...appState.users[idx], fullName, phone, grade, note, email, dob, ...(newPass ? { password: newPass } : {}) };
+        currentUser = appState.users[idx];
       } else if (isAd) {
         saveAdminProfile();
       }
@@ -3237,6 +3248,7 @@ grant select, insert, update, delete on public.app_backups to anon;
     }
 
     function refreshAdminViews() {
+      if (typeof refreshSessionUser === 'function') refreshSessionUser(); // thẻ thành viên luôn khớp với danh sách tài khoản
       const total = appState.users.length;
       const pending = appState.users.filter(u => u.status === 'pending').length;
       const approved = appState.users.filter(u => u.status === 'approved').length;
@@ -3403,7 +3415,7 @@ grant select, insert, update, delete on public.app_backups to anon;
 
     function isUsernameTaken(username, ignoreId) {
       const key = String(username).toLowerCase();
-      return key === ADMIN_ACCOUNT.username || appState.users.some(u => u.id !== ignoreId && String(u.username).toLowerCase() === key);
+      return (key === ADMIN_ACCOUNT.username && ignoreId !== ADMIN_ACCOUNT.id) || appState.users.some(u => u.id !== ignoreId && String(u.username).toLowerCase() === key);
     }
 
     // Tạo một tài khoản (dùng chung cho tạo đơn lẻ và hàng loạt). Trả về lỗi (chuỗi) hoặc null.
@@ -3448,7 +3460,7 @@ grant select, insert, update, delete on public.app_backups to anon;
       const u = findAccount(userId);
       if (!u || !canViewAllAccounts()) return;
       const isSysAdmin = u === ADMIN_ACCOUNT;
-      const editInfo = canEditAccountInfo() && !isSysAdmin;
+      const editInfo = canEditAccountInfo();
       const editSens = canEditSensitive(u) && !isSysAdmin;
       document.getElementById('detail-user-id').value = u.id;
       document.getElementById('det-fullname').value = u.fullName || '';
@@ -3456,11 +3468,15 @@ grant select, insert, update, delete on public.app_backups to anon;
       document.getElementById('det-grade').value = u.grade || '';
       document.getElementById('det-phone').value = u.phone || '';
       document.getElementById('det-email').value = u.email || '';
+      document.getElementById('det-dob').value = u.dob || '';
+      document.getElementById('det-note').value = u.note || '';
       document.getElementById('det-status').value = u.status || 'approved';
       document.getElementById('det-password').value = '';
       fillRoleSelect(document.getElementById('detail-user-role'), normRole(u.role));
       // quản trị viên có thể gán mọi chức vụ; người khác chỉ gán chức vụ thấp hơn mình
-      ['det-fullname', 'det-username', 'det-grade', 'det-phone', 'det-email'].forEach(id => { document.getElementById(id).disabled = !editInfo; });
+      ['det-fullname', 'det-username', 'det-grade', 'det-phone', 'det-email', 'det-dob', 'det-note'].forEach(id => { document.getElementById(id).disabled = !editInfo; });
+      if (isSysAdmin && !(currentUser && currentUser.id === ADMIN_ACCOUNT.id)) document.getElementById('det-username').disabled = true; // chỉ Quản trị viên tự đổi ID của mình
+      if (u.provider === 'google') document.getElementById('det-email').disabled = true;
       const isSelf = currentUser && u.id === currentUser.id;
       document.getElementById('detail-user-role').disabled = !editSens || isSelf;
       document.getElementById('det-status').disabled = !editSens || isSelf;
@@ -3469,7 +3485,7 @@ grant select, insert, update, delete on public.app_backups to anon;
       document.getElementById('detail-modal-title').textContent = editInfo ? 'Xem & chỉnh sửa tài khoản' : 'Xem thông tin tài khoản';
       document.getElementById('detail-modal-sub').textContent = roleLabelOf(u) + ' • tạo lúc ' + (u.createdAt || '—');
       let note = '';
-      if (isSysAdmin) note = 'Tài khoản Quản trị viên hệ thống: chỉ xem. Quản trị viên tự chỉnh ở nút Chỉnh sửa trên Thẻ thành viên.';
+      if (isSysAdmin) note = editInfo ? 'Tài khoản Quản trị viên: chỉnh được thông tin chung. Mật khẩu và chức vụ do Quản trị viên tự quản lý.' : 'Tài khoản Quản trị viên: chỉ xem.';
       else if (!editInfo) note = 'Kiểm duyệt viên chỉ được xem, không chỉnh sửa thông tin.';
       else if (!editSens) note = 'Bạn chỉnh được thông tin chung, nhưng không đổi được chức vụ, trạng thái hay mật khẩu của tài khoản cùng cấp hoặc cao hơn.';
       else if (u.provider === 'google') note = 'Tài khoản đăng nhập bằng Google nên không có mật khẩu.';
@@ -3486,9 +3502,11 @@ grant select, insert, update, delete on public.app_backups to anon;
     function saveUserRoleAssignment(event) {
       event.preventDefault();
       if (!canEditAccountInfo()) return;
-      const u = appState.users.find(item => item.id === document.getElementById('detail-user-id').value);
+      const u = findAccount(document.getElementById('detail-user-id').value);
       if (!u) return;
-      const username = document.getElementById('det-username').value.trim();
+      const isSysAdmin = u === ADMIN_ACCOUNT;
+      let username = document.getElementById('det-username').value.trim();
+      if (isSysAdmin) username = username.toLowerCase();
       const email = document.getElementById('det-email').value.trim();
       if (!username) { alert('ID không được để trống.'); return; }
       if (isUsernameTaken(username, u.id)) { alert('ID này đã được dùng cho tài khoản khác.'); return; }
@@ -3498,20 +3516,24 @@ grant select, insert, update, delete on public.app_backups to anon;
           alert('Bạn chỉ cấp được chức vụ thấp hơn chức vụ của mình.'); return;
         }
       }
-      if (email && appState.users.some(x => x.id !== u.id && x.email && x.email.toLowerCase() === email.toLowerCase())) { alert('Email này đã được dùng cho tài khoản khác.'); return; }
+      if (email && allAccounts().some(x => x.id !== u.id && x.email && x.email.toLowerCase() === email.toLowerCase())) { alert('Email này đã được dùng cho tài khoản khác.'); return; }
+      if (isSysAdmin && username !== ADMIN_ACCOUNT.username && appState.users.some(x => String(x.username).toLowerCase() === username)) { alert('ID này đã được dùng cho tài khoản khác.'); return; }
       u.fullName = document.getElementById('det-fullname').value.trim() || u.fullName;
       u.username = username;
+      u.dob = document.getElementById('det-dob').value;
+      u.note = document.getElementById('det-note').value.trim();
       u.grade = document.getElementById('det-grade').value.trim();
       u.phone = document.getElementById('det-phone').value.trim();
       u.email = email;
-      if (canEditSensitive(u) && !(currentUser && u.id === currentUser.id)) {
+      if (!isSysAdmin && canEditSensitive(u) && !(currentUser && u.id === currentUser.id)) {
         const newRole = document.getElementById('detail-user-role').value;
         u.role = newRole;
         u.status = document.getElementById('det-status').value;
         if (u.status === 'approved') u.rejectReason = '';
       }
       const newPass = document.getElementById('det-password').value;
-      if (newPass && canEditSensitive(u) && u.provider !== 'google') u.password = newPass;
+      if (newPass && !isSysAdmin && canEditSensitive(u) && u.provider !== 'google') u.password = newPass;
+      if (isSysAdmin) saveAdminProfile();
       persistState();
       closeUserDetailModal();
       refreshAdminViews();
@@ -3593,7 +3615,7 @@ grant select, insert, update, delete on public.app_backups to anon;
             </summary>
             <div class="table-wrap" style="margin:0;">
               <table>
-                <thead><tr><th>#</th><th>Họ và tên</th><th>ID</th><th>Chức vụ</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+                <thead><tr><th>#</th><th>Họ và tên</th><th>ID</th><th>Liên hệ</th><th>Ngày sinh</th><th>Chức vụ</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
                 <tbody>
                   ${rows.map((u, i) => {
                     const st = u.status === 'approved' ? '<span class="status-pill status-approved">Đã duyệt</span>' : u.status === 'pending' ? '<span class="status-pill status-pending">Chờ duyệt</span>' : '<span class="status-pill status-rejected">Từ chối / Khóa</span>';
@@ -3604,10 +3626,12 @@ grant select, insert, update, delete on public.app_backups to anon;
                       <td style="color:var(--ink-muted);">${i + 1}</td>
                       <td style="font-weight:700; color:var(--blue-deep);">${escapeHtml(u.fullName)}${isMe ? '<span class="acc-self-tag">Bạn</span>' : ''}</td>
                       <td>${escapeHtml(u.username)}</td>
+                      <td style="font-size:0.82rem;"><div>${escapeHtml(u.email || '—')}</div><div style="color:var(--ink-muted);">${escapeHtml(u.phone || '—')}</div></td>
+                      <td style="font-size:0.82rem; white-space:nowrap;">${u.dob ? escapeHtml(u.dob.split('-').reverse().join('/')) : '—'}</td>
                       <td><span class="role-badge role-${normRole(u.role)}">${escapeHtml(ROLE_LABEL[normRole(u.role)])}</span>${pos}</td>
                       <td>${st}</td>
                       <td><div style="display:flex; gap:6px; flex-wrap:wrap;">
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="openUserDetailModal('${u.id}')">${canEdit && !isSys ? 'Xem / Sửa' : 'Xem'}</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="openUserDetailModal('${u.id}')">${canEdit ? 'Xem / Sửa' : 'Xem'}</button>
                         ${canDeleteAccount(u) ? `<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">Xóa</button>` : ''}
                       </div></td>
                     </tr>`;
@@ -4624,7 +4648,7 @@ grant select, insert, update, delete on public.app_backups to anon;
       const isStaff = myRank() >= 1;
       const dirty = appState.users.filter(u => (isAdmin || ownIds.has(u.id) || (isStaff && pushedMap[u.id] !== undefined)) && (force || pushedMap[u.id] !== userSig(u)));
       let pushed = 0;
-      if (isAdmin && (force || localStorage.getItem(ADMIN_SIG_KEY) !== adminSig())) {
+      if (myRank() >= 2 && (force || localStorage.getItem(ADMIN_SIG_KEY) !== adminSig())) {
         const ar = await fetchT(`${sb.url}/rest/v1/profiles?on_conflict=id`, {
           method: 'POST',
           headers: cloudHeaders(sb, { Prefer: 'resolution=merge-duplicates,return=minimal' }),
