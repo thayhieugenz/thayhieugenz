@@ -531,6 +531,8 @@
       font-size: 0.86rem;
     }
 
+    #prof-pass-wrap.hidden { display: none !important; }
+
     .role-badge {
       padding: 2px 8px;
       border-radius: 999px;
@@ -549,6 +551,19 @@
       background: var(--blue-soft);
       color: var(--blue-deep);
     }
+
+    .role-moderator {
+      background: #E3F1E8;
+      color: var(--success-text);
+    }
+
+    .role-assistant {
+      background: var(--blue-primary);
+      color: #FFFDF8;
+    }
+
+    .acc-group-head { cursor: pointer; padding: 10px 14px; font-weight: 700; color: var(--blue-deep); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .acc-self-tag { font-size: 0.7rem; font-weight: 700; color: var(--gold-vintage); border: 1px solid var(--gold-vintage); border-radius: 999px; padding: 0 6px; margin-left: 6px; }
 
     .main-container {
       max-width: 100%;
@@ -1421,7 +1436,7 @@
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--border-vintage);">
         <div>
           <h3 class="serif-title" style="color:var(--blue-deep); font-size:1.3rem;">Tạo tài khoản mới</h3>
-          <p style="font-size:0.84rem; color:var(--ink-muted);">Khởi tạo tài khoản học viên, kiểm duyệt viên hoặc chức vụ lớp</p>
+          <p style="font-size:0.84rem; color:var(--ink-muted);">Chức vụ có thể cấp phụ thuộc cấp bậc của bạn (chỉ cấp được chức vụ thấp hơn mình; Quản trị viên cấp được mọi chức vụ)</p>
         </div>
         <button type="button" class="btn btn-outline btn-sm" onclick="closeCreateUserModal()">✕</button>
       </div>
@@ -1432,41 +1447,33 @@
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <div class="form-group">
-            <label class="form-label" for="new-u-username">Tên đăng nhập *</label>
-            <input class="form-input" id="new-u-username" type="text" required />
+            <label class="form-label" for="new-u-username">ID *</label>
+            <input class="form-input" id="new-u-username" type="text" autocapitalize="none" required />
           </div>
           <div class="form-group">
-            <label class="form-label" for="new-u-password">Mật khẩu *</label>
+            <label class="form-label" for="new-u-password">Pass *</label>
             <input class="form-input" id="new-u-password" type="text" value="123456" required />
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <div class="form-group">
-            <label class="form-label" for="new-u-email">Email *</label>
-            <input class="form-input" id="new-u-email" type="email" required />
+            <label class="form-label" for="new-u-grade">Lớp <span style="font-weight:400; color:var(--ink-muted);">(không bắt buộc)</span></label>
+            <input class="form-input" id="new-u-grade" type="text" placeholder="Ví dụ: 9A1" />
           </div>
           <div class="form-group">
-            <label class="form-label" for="new-u-phone">Số điện thoại</label>
-            <input class="form-input" id="new-u-phone" type="tel" />
+            <label class="form-label" for="new-u-role">Chức vụ *</label>
+            <select class="form-select" id="new-u-role"></select>
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <div class="form-group">
-            <label class="form-label" for="new-u-role">Vai trò / Quyền hỗ trợ *</label>
-            <select class="form-select" id="new-u-role" onchange="toggleCreateRolePosition()">
-              <option value="student">Học viên (User)</option>
-              <option value="moderator">Kiểm duyệt viên</option>
-              <option value="class_role">Chức vụ lớp (Hỗ trợ quản lý)</option>
-            </select>
+            <label class="form-label" for="new-u-phone">Số điện thoại</label>
+            <input class="form-input" id="new-u-phone" type="tel" />
           </div>
           <div class="form-group">
-            <label class="form-label" for="new-u-grade">Khối lớp / Ghi chú</label>
-            <input class="form-input" id="new-u-grade" type="text" placeholder="Ví dụ: Lớp 12A1" />
+            <label class="form-label" for="new-u-email">Email</label>
+            <input class="form-input" id="new-u-email" type="email" />
           </div>
-        </div>
-        <div id="new-u-position-wrap" class="form-group hidden">
-          <label class="form-label" for="new-u-position">Tên chức vụ trong lớp</label>
-          <input class="form-input" id="new-u-position" type="text" placeholder="Ví dụ: Lớp trưởng, Trưởng ban Học tập..." />
         </div>
         <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
           <button type="button" class="btn btn-outline" onclick="closeCreateUserModal()">Hủy</button>
@@ -1481,31 +1488,106 @@
     <div class="vintage-card vintage-double-border modal-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--border-vintage);">
         <div>
-          <h3 class="serif-title" style="color:var(--blue-deep); font-size:1.3rem;">Chi tiết hồ sơ &amp; Cấp chức vụ</h3>
-          <p style="font-size:0.84rem; color:var(--ink-muted);">Kiểm tra đầy đủ thông tin tài khoản và phân quyền hỗ trợ lớp</p>
+          <h3 id="detail-modal-title" class="serif-title" style="color:var(--blue-deep); font-size:1.3rem;">Thông tin tài khoản</h3>
+          <p id="detail-modal-sub" style="font-size:0.84rem; color:var(--ink-muted);"></p>
         </div>
         <button type="button" class="btn btn-outline btn-sm" onclick="closeUserDetailModal()">✕</button>
       </div>
-      <div id="user-detail-info" style="margin-bottom:14px;"></div>
       <form id="user-role-form" onsubmit="saveUserRoleAssignment(event)">
         <input type="hidden" id="detail-user-id" />
         <div class="form-group">
-          <label class="form-label" for="detail-user-role">Cấp vai trò</label>
-          <select class="form-select" id="detail-user-role" onchange="toggleDetailPosition()">
-            <option value="student">Học viên (User)</option>
-            <option value="moderator">Kiểm duyệt viên</option>
-            <option value="class_role">Chức vụ lớp (Hỗ trợ quản lý)</option>
-          </select>
+          <label class="form-label" for="det-fullname">Họ và tên</label>
+          <input class="form-input" id="det-fullname" type="text" required />
         </div>
-        <div id="detail-position-wrap" class="form-group hidden">
-          <label class="form-label" for="detail-user-position">Tên chức vụ lớp</label>
-          <input class="form-input" id="detail-user-position" type="text" placeholder="Ví dụ: Lớp phó học tập, Thủ quỹ lớp..." />
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="det-username">ID</label>
+            <input class="form-input" id="det-username" type="text" autocapitalize="none" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="det-grade">Lớp</label>
+            <input class="form-input" id="det-grade" type="text" />
+          </div>
         </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="det-phone">Số điện thoại</label>
+            <input class="form-input" id="det-phone" type="tel" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="det-email">Email</label>
+            <input class="form-input" id="det-email" type="email" />
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="detail-user-role">Chức vụ</label>
+            <select class="form-select" id="detail-user-role"></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="det-status">Trạng thái</label>
+            <select class="form-select" id="det-status">
+              <option value="approved">Đã duyệt</option>
+              <option value="pending">Chờ duyệt</option>
+              <option value="rejected">Từ chối / Khóa</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="det-password">Đặt lại mật khẩu <span style="font-weight:400; color:var(--ink-muted);">(để trống nếu giữ nguyên)</span></label>
+          <input class="form-input" id="det-password" type="text" placeholder="Mật khẩu mới..." />
+        </div>
+        <div id="det-note" style="font-size:0.82rem; color:var(--ink-muted);"></div>
         <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
           <button type="button" class="btn btn-outline" onclick="closeUserDetailModal()">Đóng</button>
-          <button type="submit" class="btn btn-primary">Lưu phân quyền</button>
+          <button type="submit" id="det-save-btn" class="btn btn-primary">Lưu thay đổi</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL TẠO TÀI KHOẢN HÀNG LOẠT ==================== -->
+  <div id="bulk-modal" class="modal-backdrop hidden">
+    <div class="vintage-card vintage-double-border modal-card" style="max-width:720px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--border-vintage);">
+        <div>
+          <h3 class="serif-title" style="color:var(--blue-deep); font-size:1.3rem;">Tạo tài khoản hàng loạt</h3>
+          <p style="font-size:0.84rem; color:var(--ink-muted);">Dán danh sách tên (mỗi dòng một học sinh), đặt mật khẩu chung rồi bấm Xem trước</p>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeBulkModal()">✕</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bulk-names">Danh sách họ và tên *</label>
+        <textarea class="form-textarea" id="bulk-names" rows="6" placeholder="Nguyễn Minh Anh&#10;Trần Hoàng Nam&#10;Lê Thị Hoa"></textarea>
+        <div style="font-size:0.78rem; color:var(--ink-muted); margin-top:4px;">Có thể dán từ Excel nhiều cột: <strong>Họ tên [Tab] Lớp [Tab] ID [Tab] SĐT [Tab] Email</strong> (chỉ cột Họ tên là bắt buộc). Cột Lớp và ID nếu bỏ trống sẽ lấy theo ô bên dưới / tự tạo. Dòng tiêu đề (&quot;Họ tên&quot;) tự được bỏ qua.</div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:10px;">
+        <div class="form-group">
+          <label class="form-label" for="bulk-grade">Lớp chung</label>
+          <input class="form-input" id="bulk-grade" type="text" placeholder="Ví dụ: 9A1" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="bulk-prefix">Tiền tố ID <span style="font-weight:400; color:var(--ink-muted);">(tùy chọn)</span></label>
+          <input class="form-input" id="bulk-prefix" type="text" placeholder="Ví dụ: 9a1_" autocapitalize="none" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="bulk-password">Mật khẩu chung *</label>
+          <input class="form-input" id="bulk-password" type="text" value="123456" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="bulk-role">Chức vụ</label>
+          <select class="form-select" id="bulk-role"></select>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="previewBulk()">Xem trước</button>
+      </div>
+      <div id="bulk-preview"></div>
+      <div id="bulk-result" class="hidden"></div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
+        <button type="button" class="btn btn-outline" onclick="closeBulkModal()">Đóng</button>
+        <button type="button" id="bulk-confirm-btn" class="btn btn-primary hidden" onclick="confirmBulkCreate()">Tạo tài khoản</button>
+      </div>
     </div>
   </div>
 
@@ -1745,13 +1827,23 @@
                   <input class="form-input" id="prof-phone" type="tel" />
                 </div>
                 <div class="form-group" style="margin-bottom:10px;">
-                  <label class="form-label" for="prof-grade">Khối lớp / Mục tiêu</label>
+                  <label class="form-label" for="prof-grade">Lớp</label>
                   <input class="form-input" id="prof-grade" type="text" />
                 </div>
               </div>
               <div class="form-group" style="margin-bottom:10px;">
                 <label class="form-label" for="prof-note">Giới thiệu / Mục tiêu học tập</label>
                 <input class="form-input" id="prof-note" type="text" />
+              </div>
+              <div id="prof-pass-wrap" class="hidden" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div class="form-group" style="margin-bottom:10px;">
+                  <label class="form-label" for="prof-curpass">Mật khẩu hiện tại <span style="font-weight:400; color:var(--ink-muted);">(chỉ khi đổi mật khẩu)</span></label>
+                  <input class="form-input" id="prof-curpass" type="password" autocomplete="current-password" />
+                </div>
+                <div class="form-group" style="margin-bottom:10px;">
+                  <label class="form-label" for="prof-newpass">Mật khẩu mới <span style="font-weight:400; color:var(--ink-muted);">(để trống nếu giữ nguyên)</span></label>
+                  <input class="form-input" id="prof-newpass" type="password" autocomplete="new-password" />
+                </div>
               </div>
               <div style="display:flex; justify-content:flex-end; gap:8px;">
                 <button type="button" class="btn btn-outline btn-sm" onclick="toggleEditProfile(false)">Hủy</button>
@@ -1785,8 +1877,11 @@
           <!-- Sidebar Quản lý chung -->
           <aside class="vintage-card admin-sidebar">
             <div class="admin-sidebar-title">Quản lý chung</div>
+            <button type="button" id="subtab-accounts-btn" class="admin-menu-btn" onclick="switchAdminSubtab('accounts')">
+              <span>Quản lý tài khoản</span>
+            </button>
             <button type="button" id="subtab-users-btn" class="admin-menu-btn active" onclick="switchAdminSubtab('users')">
-              <span>Quản trị tài khoản</span>
+              <span>Phê duyệt hồ sơ</span>
               <span id="sidebar-pending-count" class="badge-count">0</span>
             </button>
             <button type="button" id="subtab-features-btn" class="admin-menu-btn hidden" onclick="switchAdminSubtab('features')">
@@ -1804,6 +1899,45 @@
 
           <!-- Nội dung Quản lý chung -->
           <div>
+            <!-- SUBTAB 0: QUẢN LÝ TÀI KHOẢN (kiểm duyệt viên trở lên) -->
+            <div id="admin-subtab-accounts" class="vintage-card section-panel hidden">
+              <div class="panel-header">
+                <div>
+                  <h2>Quản lý tài khoản</h2>
+                  <p style="font-size:0.86rem; color:var(--ink-muted);">Danh sách tài khoản sắp xếp theo lớp. <span id="acc-permission-note"></span></p>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <button type="button" id="btn-acc-create" class="btn btn-primary btn-sm hidden" onclick="openCreateUserModal()">+ Tạo tài khoản</button>
+                  <button type="button" id="btn-acc-bulk" class="btn btn-gold btn-sm hidden" onclick="openBulkModal()">+ Tạo hàng loạt</button>
+                </div>
+              </div>
+              <div class="stats-row" id="acc-stats-row"></div>
+              <div class="toolbar-row">
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <select id="acc-role-filter" class="form-select" style="max-width:200px;" onchange="renderAccountsManager()">
+                    <option value="all">Tất cả chức vụ</option>
+                    <option value="admin">Quản trị viên</option>
+                    <option value="assistant">Trợ lý quản trị viên</option>
+                    <option value="moderator">Kiểm duyệt viên</option>
+                    <option value="student">Học sinh</option>
+                  </select>
+                  <select id="acc-class-filter" class="form-select" style="max-width:220px;" onchange="renderAccountsManager()"></select>
+                  <select id="acc-status-filter" class="form-select" style="max-width:170px;" onchange="renderAccountsManager()">
+                    <option value="all">Mọi trạng thái</option>
+                    <option value="approved">Đã duyệt</option>
+                    <option value="pending">Chờ duyệt</option>
+                    <option value="rejected">Từ chối / Khóa</option>
+                  </select>
+                </div>
+                <input type="text" id="acc-search" class="form-input" style="max-width:290px;" placeholder="Tìm tên, ID, lớp..." oninput="renderAccountsManager()" />
+              </div>
+              <div style="display:flex; gap:8px; margin:0 0 10px;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="setAllAccGroups(true)">Mở tất cả lớp</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="setAllAccGroups(false)">Thu gọn tất cả</button>
+              </div>
+              <div id="acc-groups"></div>
+            </div>
+
             <!-- SUBTAB 1: QUẢN TRỊ TÀI KHOẢN -->
             <div id="admin-subtab-users" class="vintage-card section-panel">
               <div class="panel-header">
@@ -2195,6 +2329,32 @@ grant select, insert, update, delete on public.app_backups to anon;
       createdAt: '2026-01-01 08:00'
     };
 
+    /* ===== PHÂN QUYỀN: 4 CHỨC VỤ ===== */
+    const ROLE_RANK = { student: 0, moderator: 1, assistant: 2, admin: 3 };
+    const ROLE_LABEL = { student: 'Học sinh', moderator: 'Kiểm duyệt viên', assistant: 'Trợ lý quản trị viên', admin: 'Quản trị viên' };
+    function normRole(r) { if (r === 'class_role') return 'moderator'; return ROLE_RANK[r] !== undefined ? r : 'student'; }
+    function rankOf(u) { return ROLE_RANK[normRole(u && u.role)] || 0; }
+    function myRank() { return currentUser ? rankOf(currentUser) : 0; }
+    function canViewAllAccounts() { return myRank() >= 1; }   // Kiểm duyệt viên trở lên
+    function canCreateAccounts() { return myRank() >= 1; }    // Kiểm duyệt viên trở lên
+    function canEditAccountInfo() { return myRank() >= 2; }   // Trợ lý quản trị viên trở lên
+    function canEditSensitive(u) { return myRank() >= 2 && (myRank() === 3 || rankOf(u) < myRank()); } // đổi vai trò/mật khẩu/trạng thái
+    function canDeleteAccount(u) { return u !== ADMIN_ACCOUNT && myRank() >= 2 && currentUser && u.id !== currentUser.id && (myRank() === 3 || rankOf(u) < myRank()); }
+    // Duyệt / từ chối / khóa: Trợ lý+ theo quyền nhạy cảm; Kiểm duyệt viên chỉ duyệt hoặc từ chối hồ sơ học sinh đang chờ duyệt
+    function canModerateStatus(u) {
+      if (!u || u === ADMIN_ACCOUNT || !currentUser) return false;
+      const r = myRank();
+      if (r >= 2) return u.id !== currentUser.id && canEditSensitive(u);
+      if (r === 1) return u.status === 'pending' && rankOf(u) === 0;
+      return false;
+    }
+    function canChangeOwnPassword() { return !!currentUser && currentUser.id !== ADMIN_ACCOUNT.id && currentUser.provider !== 'google'; }
+    // Quản trị viên hệ thống nằm trong mã nguồn (không nằm trong appState.users) nên cần ghép vào danh sách xem
+    function allAccounts() { return [ADMIN_ACCOUNT, ...appState.users.filter(u => u.id !== ADMIN_ACCOUNT.id)]; }
+    function findAccount(id) { return id === ADMIN_ACCOUNT.id ? ADMIN_ACCOUNT : appState.users.find(u => u.id === id); }
+    function creatableRoles() { const r = myRank(); return Object.keys(ROLE_RANK).filter(k => r === 3 ? true : ROLE_RANK[k] < r); }
+    function roleLabelOf(u) { return ROLE_LABEL[normRole(u && u.role)] + (u && u.classPosition && normRole(u.role) !== 'student' ? ' • ' + u.classPosition : ''); }
+
     /* Modern minimalist SVG line-art icons for modules and features */
     function renderLuxuryIcon(iconKey, sizeClass = 'lux-svg') {
       const icons = {
@@ -2460,7 +2620,7 @@ grant select, insert, update, delete on public.app_backups to anon;
                 welcomePopup: mergedPopup,
                 featureFlags: mergedFlags
               },
-              users: parsed.users
+              users: parsed.users.map(u => ({ ...u, role: normRole(u.role) }))
             };
           }
         }
@@ -2728,7 +2888,8 @@ grant select, insert, update, delete on public.app_backups to anon;
       currentUser = user;
       if (user.role === 'admin') setTimeout(checkCloudNewer, 1500);
       else markOwn(user.id);
-      if (user.role === 'admin') setTimeout(syncProfiles, 800);
+      window.__adminTabChosen = false;
+      if (rankOf(user) >= 1) setTimeout(syncProfiles, 800);
       document.getElementById('auth-view').classList.add('hidden');
       document.getElementById('app-view').classList.remove('hidden');
 
@@ -2753,12 +2914,12 @@ grant select, insert, update, delete on public.app_backups to anon;
         roleBadge.textContent = 'Quản trị viên';
         roleBadge.className = 'role-badge role-admin';
         navAdmin.classList.remove('hidden');
-      } else if (user.role === 'moderator' || user.role === 'class_role') {
-        roleBadge.textContent = user.role === 'moderator' ? 'Kiểm duyệt viên' : (user.classPosition || 'Chức vụ lớp');
-        roleBadge.className = 'role-badge role-student';
+      } else if (rankOf(user) >= 1) {
+        roleBadge.textContent = ROLE_LABEL[normRole(user.role)];
+        roleBadge.className = 'role-badge role-' + normRole(user.role);
         navAdmin.classList.remove('hidden');
       } else {
-        roleBadge.textContent = 'Học viên';
+        roleBadge.textContent = 'Học sinh';
         roleBadge.className = 'role-badge role-student';
         navAdmin.classList.add('hidden');
       }
@@ -2792,12 +2953,13 @@ grant select, insert, update, delete on public.app_backups to anon;
       if (modSec) modSec.classList.add('hidden');
       if (navMore) navMore.classList.remove('active');
 
-      if (view === 'admin' && currentUser && ['admin', 'moderator', 'class_role'].includes(currentUser.role)) {
+      if (view === 'admin' && currentUser && rankOf(currentUser) >= 1) {
         homeSec.classList.add('hidden');
         adminSec.classList.remove('hidden');
         navHome.classList.remove('active');
         navAdmin.classList.add('active');
         refreshAdminViews();
+        if (!window.__adminTabChosen) { window.__adminTabChosen = true; switchAdminSubtab('accounts'); }
       } else {
         adminSec.classList.add('hidden');
         homeSec.classList.remove('hidden');
@@ -2840,7 +3002,8 @@ grant select, insert, update, delete on public.app_backups to anon;
         <div class="profile-row"><span>Tên đăng nhập</span><strong>${escapeHtml(currentUser.username)}</strong></div>
         <div class="profile-row"><span>Email</span><strong>${escapeHtml(currentUser.email)}</strong></div>
         <div class="profile-row"><span>Số điện thoại</span><strong>${escapeHtml(currentUser.phone || 'Chưa cập nhật')}</strong></div>
-        <div class="profile-row"><span>Khối lớp / Vai trò</span><strong>${escapeHtml(currentUser.grade || 'Thành viên')}</strong></div>
+        <div class="profile-row"><span>Chức vụ</span><strong>${escapeHtml(roleLabelOf(currentUser))}</strong></div>
+        <div class="profile-row"><span>Lớp</span><strong>${escapeHtml(currentUser.grade || 'Chưa xếp lớp')}</strong></div>
         <div class="profile-row"><span>Mục tiêu / Ghi chú</span><strong>${escapeHtml(currentUser.note || 'Chưa cập nhật')}</strong></div>
         <div class="profile-row"><span>Hình thức đăng ký</span><strong>${currentUser.provider === 'google' ? 'Tài khoản Google' : currentUser.provider === 'system' ? 'Quản trị hệ thống' : 'Biểu mẫu lớp học'}</strong></div>
       `;
@@ -2855,8 +3018,14 @@ grant select, insert, update, delete on public.app_backups to anon;
       if (editing) {
         document.getElementById('prof-fullname').value = currentUser.fullName || '';
         document.getElementById('prof-phone').value = currentUser.phone || '';
-        document.getElementById('prof-grade').value = currentUser.grade || '';
+        const gi = document.getElementById('prof-grade');
+        gi.value = currentUser.grade || '';
+        gi.disabled = myRank() < 2; // chỉ Trợ lý quản trị viên trở lên đổi được lớp
+        gi.title = myRank() < 2 ? 'Lớp do Trợ lý quản trị viên / Quản trị viên sắp xếp' : '';
         document.getElementById('prof-note').value = currentUser.note || '';
+        document.getElementById('prof-curpass').value = '';
+        document.getElementById('prof-newpass').value = '';
+        document.getElementById('prof-pass-wrap').classList.toggle('hidden', !canChangeOwnPassword());
         card.classList.add('hidden');
         form.classList.remove('hidden');
         if (btn) btn.classList.add('hidden');
@@ -2872,17 +3041,25 @@ grant select, insert, update, delete on public.app_backups to anon;
       if (!currentUser || !isFeatureEnabled('editPersonalProfile')) return;
       const fullName = document.getElementById('prof-fullname').value.trim();
       const phone = document.getElementById('prof-phone').value.trim();
-      const grade = document.getElementById('prof-grade').value.trim();
+      const grade = myRank() >= 2 ? document.getElementById('prof-grade').value.trim() : (currentUser.grade || '');
       const note = document.getElementById('prof-note').value.trim();
+      const curPass = document.getElementById('prof-curpass').value;
+      const newPass = document.getElementById('prof-newpass').value;
+      if (newPass) {
+        if (!canChangeOwnPassword()) { alert('Tài khoản này không đổi mật khẩu tại đây.'); return; }
+        if (curPass !== currentUser.password) { alert('Mật khẩu hiện tại chưa đúng.'); return; }
+        if (newPass.length < 4) { alert('Mật khẩu mới cần có ít nhất 4 ký tự.'); return; }
+      }
 
       currentUser.fullName = fullName;
       currentUser.phone = phone;
       currentUser.grade = grade;
       currentUser.note = note;
+      if (newPass) currentUser.password = newPass;
 
       const idx = appState.users.findIndex(u => u.id === currentUser.id);
       if (idx !== -1) {
-        appState.users[idx] = { ...appState.users[idx], fullName, phone, grade, note };
+        appState.users[idx] = { ...appState.users[idx], fullName, phone, grade, note, ...(newPass ? { password: newPass } : {}) };
       } else if (currentUser.role === 'admin') {
         ADMIN_ACCOUNT.fullName = fullName;
         ADMIN_ACCOUNT.phone = phone;
@@ -2902,36 +3079,20 @@ grant select, insert, update, delete on public.app_backups to anon;
     /* ================= ADMIN MANAGEMENT ================= */
     function switchAdminSubtab(subtab) {
       if ((subtab === 'settings' || subtab === 'features') && (!currentUser || currentUser.role !== 'admin')) {
-        subtab = 'users';
+        subtab = 'accounts';
       }
-      const usersTab = document.getElementById('admin-subtab-users');
-      const featuresTab = document.getElementById('admin-subtab-features');
-      const settingsTab = document.getElementById('admin-subtab-settings');
-      const btnUsers = document.getElementById('subtab-users-btn');
-      const btnFeatures = document.getElementById('subtab-features-btn');
-      const btnSettings = document.getElementById('subtab-settings-btn');
-
-      usersTab.classList.add('hidden');
-      featuresTab.classList.add('hidden');
-      settingsTab.classList.add('hidden');
-      btnUsers.classList.remove('active');
-      btnFeatures.classList.remove('active');
-      btnSettings.classList.remove('active');
-
-      if (subtab === 'settings') {
-        settingsTab.classList.remove('hidden');
-        btnSettings.classList.add('active');
-        updateAutoSaveUI();
-        loadSupabaseConfigUI();
-      } else if (subtab === 'features') {
-        featuresTab.classList.remove('hidden');
-        btnFeatures.classList.add('active');
-        renderFeaturesTabUI();
-      } else {
-        usersTab.classList.remove('hidden');
-        btnUsers.classList.add('active');
-        refreshAdminViews();
-      }
+      if ((subtab === 'accounts' || subtab === 'users') && myRank() < 1) subtab = 'users';
+      const ids = ['accounts', 'users', 'features', 'settings'];
+      ids.forEach(k => {
+        const tab = document.getElementById('admin-subtab-' + k);
+        const btn = document.getElementById('subtab-' + k + '-btn');
+        if (tab) tab.classList.toggle('hidden', k !== subtab);
+        if (btn) btn.classList.toggle('active', k === subtab);
+      });
+      if (subtab === 'settings') { updateAutoSaveUI(); loadSupabaseConfigUI(); }
+      else if (subtab === 'features') { renderFeaturesTabUI(); }
+      else if (subtab === 'accounts') { renderAccountsManager(); }
+      else { refreshAdminViews(); }
     }
 
     function refreshAdminViews() {
@@ -2947,10 +3108,12 @@ grant select, insert, update, delete on public.app_backups to anon;
       }
 
       const createBtn = document.getElementById('btn-open-create-user');
-      if (createBtn) {
-        if (currentUser && currentUser.role === 'admin') createBtn.classList.remove('hidden');
-        else createBtn.classList.add('hidden');
-      }
+      if (createBtn) createBtn.classList.toggle('hidden', !canCreateAccounts());
+      const b1 = document.getElementById('btn-acc-create'); if (b1) b1.classList.toggle('hidden', !canCreateAccounts());
+      const b2 = document.getElementById('btn-acc-bulk'); if (b2) b2.classList.toggle('hidden', !canCreateAccounts());
+      const note = document.getElementById('acc-permission-note');
+      if (note) note.textContent = myRank() >= 2 ? 'Bạn có thể xem và chỉnh sửa tài khoản.' : 'Bạn chỉ có quyền xem và tạo tài khoản, không chỉnh sửa được.';
+      if (!document.getElementById('admin-subtab-accounts').classList.contains('hidden')) renderAccountsManager();
 
       const navBadge = document.getElementById('nav-pending-badge');
       const sideBadge = document.getElementById('sidebar-pending-count');
@@ -3020,13 +3183,9 @@ grant select, insert, update, delete on public.app_backups to anon;
             ? '<span class="status-pill status-pending">Chờ duyệt</span>'
             : '<span class="status-pill status-rejected">Từ chối / Khóa</span>';
 
-        const roleBadgeText =
-          u.role === 'moderator'
-            ? 'Kiểm duyệt viên'
-            : u.role === 'class_role'
-            ? (u.classPosition || 'Chức vụ lớp')
-            : 'Học viên';
-        const isAdminUser = currentUser && currentUser.role === 'admin';
+        const roleBadgeText = roleLabelOf(u);
+        const isAdminUser = myRank() >= 1;
+        const canDel = canDeleteAccount(u);
 
         return `
           <tr>
@@ -3043,10 +3202,10 @@ grant select, insert, update, delete on public.app_backups to anon;
             <td>${statusHtml}</td>
             <td>
               <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                ${isAdminUser ? `<button type="button" class="btn btn-secondary btn-sm" onclick="openUserDetailModal('${u.id}')">Chi tiết &amp; Chức vụ</button>` : ''}
-                ${u.status !== 'approved' ? `<button type="button" class="btn btn-success btn-sm" onclick="approveUser('${u.id}')">Duyệt</button>` : ''}
-                ${u.status !== 'rejected' ? `<button type="button" class="btn btn-outline btn-sm" onclick="rejectUser('${u.id}')">Từ chối / Khóa</button>` : ''}
-                ${isAdminUser ? `<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">Xóa</button>` : ''}
+                ${isAdminUser ? `<button type="button" class="btn btn-secondary btn-sm" onclick="openUserDetailModal('${u.id}')">${myRank() >= 2 ? 'Xem / Sửa' : 'Xem'}</button>` : ''}
+                ${u.status !== 'approved' && canModerateStatus(u) ? `<button type="button" class="btn btn-success btn-sm" onclick="approveUser('${u.id}')">Duyệt</button>` : ''}
+                ${u.status !== 'rejected' && canModerateStatus(u) ? `<button type="button" class="btn btn-outline btn-sm" onclick="rejectUser('${u.id}')">${u.status === 'pending' ? 'Từ chối' : 'Từ chối / Khóa'}</button>` : ''}
+                ${canDel ? `<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">Xóa</button>` : ''}
               </div>
             </td>
           </tr>
@@ -3056,7 +3215,7 @@ grant select, insert, update, delete on public.app_backups to anon;
 
     function approveUser(id) {
       const user = appState.users.find(u => u.id === id);
-      if (!user) return;
+      if (!user || !canModerateStatus(user)) { alert('Bạn không có quyền duyệt tài khoản này.'); return; }
       user.status = 'approved';
       user.rejectReason = '';
       persistState();
@@ -3065,7 +3224,7 @@ grant select, insert, update, delete on public.app_backups to anon;
 
     function rejectUser(id) {
       const user = appState.users.find(u => u.id === id);
-      if (!user) return;
+      if (!user || !canModerateStatus(user)) { alert('Bạn không có quyền từ chối / khóa tài khoản này.'); return; }
       const reason = prompt('Nhập lý do từ chối hoặc khóa tài khoản (có thể để trống):', user.rejectReason || '');
       if (reason === null) return;
       user.status = 'rejected';
@@ -3075,15 +3234,25 @@ grant select, insert, update, delete on public.app_backups to anon;
     }
 
     function deleteUser(id) {
+      const target = appState.users.find(u => u.id === id);
+      if (!target || !canDeleteAccount(target)) { alert('Bạn không có quyền xóa tài khoản này.'); return; }
       if (!confirm('Bạn có chắc muốn xóa vĩnh viễn hồ sơ tài khoản này không?')) return;
       appState.users = appState.users.filter(u => u.id !== id);
       persistState();
       refreshAdminViews();
     }
 
+    function fillRoleSelect(sel, selected) {
+      if (!sel) return;
+      const roles = creatableRoles();
+      if (selected && !roles.includes(selected)) roles.push(selected);
+      sel.innerHTML = roles.sort((x, y) => ROLE_RANK[x] - ROLE_RANK[y]).map(r => `<option value="${r}">${ROLE_LABEL[r]}</option>`).join('');
+      sel.value = selected && roles.includes(selected) ? selected : 'student';
+    }
+
     function openCreateUserModal() {
-      if (!currentUser || currentUser.role !== 'admin') return;
-      toggleCreateRolePosition();
+      if (!canCreateAccounts()) return;
+      fillRoleSelect(document.getElementById('new-u-role'), 'student');
       document.getElementById('create-user-modal').classList.remove('hidden');
     }
 
@@ -3091,74 +3260,79 @@ grant select, insert, update, delete on public.app_backups to anon;
       document.getElementById('create-user-modal').classList.add('hidden');
     }
 
-    function toggleCreateRolePosition() {
-      const role = document.getElementById('new-u-role')?.value;
-      const wrap = document.getElementById('new-u-position-wrap');
-      if (wrap) {
-        if (role === 'class_role') wrap.classList.remove('hidden');
-        else wrap.classList.add('hidden');
-      }
+    function isUsernameTaken(username, ignoreId) {
+      const key = String(username).toLowerCase();
+      return key === ADMIN_ACCOUNT.username || appState.users.some(u => u.id !== ignoreId && String(u.username).toLowerCase() === key);
+    }
+
+    // Tạo một tài khoản (dùng chung cho tạo đơn lẻ và hàng loạt). Trả về lỗi (chuỗi) hoặc null.
+    function createAccountRecord(f) {
+      const role = normRole(f.role);
+      if (!creatableRoles().includes(role)) return 'Bạn không có quyền tạo tài khoản với chức vụ này.';
+      if (!f.fullName || !f.username || !f.password) return 'Thiếu họ tên, ID hoặc mật khẩu.';
+      if (isUsernameTaken(f.username)) return 'ID "' + f.username + '" đã tồn tại.';
+      if (f.email && appState.users.some(u => u.email && u.email.toLowerCase() === f.email.toLowerCase())) return 'Email "' + f.email + '" đã tồn tại.';
+      const id = 'u-' + Date.now() + '-' + Math.floor(Math.random() * 1e4);
+      markOwn(id);
+      appState.users.unshift({
+        id, username: f.username, password: f.password, fullName: f.fullName, email: f.email || '', phone: f.phone || '',
+        grade: f.grade || '', dob: '', note: 'Tài khoản do ' + ROLE_LABEL[normRole(currentUser.role)] + ' tạo.', provider: 'admin-created',
+        role, classPosition: '', status: 'approved', rejectReason: '', createdAt: new Date().toLocaleString('vi-VN')
+      });
+      return null;
     }
 
     function handleAdminCreateUser(event) {
       event.preventDefault();
-      if (!currentUser || currentUser.role !== 'admin') return;
-      const fullName = document.getElementById('new-u-fullname').value.trim();
-      const username = document.getElementById('new-u-username').value.trim();
-      const password = document.getElementById('new-u-password').value;
-      const email = document.getElementById('new-u-email').value.trim();
-      const phone = document.getElementById('new-u-phone').value.trim();
-      const role = document.getElementById('new-u-role').value;
-      const grade = document.getElementById('new-u-grade').value.trim() || 'Thành viên lớp học';
-      const classPosition = role === 'class_role' ? (document.getElementById('new-u-position').value.trim() || 'Ban cán sự lớp') : '';
-
-      if (username.toLowerCase() === ADMIN_ACCOUNT.username || appState.users.some(u => u.username.toLowerCase() === username.toLowerCase() || (email && u.email && u.email.toLowerCase() === email.toLowerCase()))) {
-        alert('Tên đăng nhập hoặc Email đã tồn tại.');
-        return;
-      }
-
-      appState.users.unshift({
-        id: 'u-' + Date.now(),
-        username,
-        password,
-        fullName,
-        email,
-        phone,
-        grade,
-        dob: '',
-        note: 'Tài khoản do Quản trị viên khởi tạo trực tiếp.',
-        provider: 'admin-created',
-        role,
-        classPosition,
-        status: 'approved',
-        rejectReason: '',
-        createdAt: new Date().toLocaleString('vi-VN')
+      if (!canCreateAccounts()) return;
+      const err = createAccountRecord({
+        fullName: document.getElementById('new-u-fullname').value.trim(),
+        username: document.getElementById('new-u-username').value.trim(),
+        password: document.getElementById('new-u-password').value,
+        email: document.getElementById('new-u-email').value.trim(),
+        phone: document.getElementById('new-u-phone').value.trim(),
+        grade: document.getElementById('new-u-grade').value.trim(),
+        role: document.getElementById('new-u-role').value
       });
-
+      if (err) { alert(err); return; }
       persistState();
       event.target.reset();
+      document.getElementById('new-u-password').value = '123456';
       closeCreateUserModal();
       refreshAdminViews();
     }
 
+    /* ---------- Xem / sửa một tài khoản ---------- */
     function openUserDetailModal(userId) {
-      const u = appState.users.find(item => item.id === userId);
-      if (!u) return;
+      const u = findAccount(userId);
+      if (!u || !canViewAllAccounts()) return;
+      const isSysAdmin = u === ADMIN_ACCOUNT;
+      const editInfo = canEditAccountInfo() && !isSysAdmin;
+      const editSens = canEditSensitive(u) && !isSysAdmin;
       document.getElementById('detail-user-id').value = u.id;
-      document.getElementById('user-detail-info').innerHTML = `
-        <div class="profile-row"><span>Họ và tên</span><strong>${escapeHtml(u.fullName)}</strong></div>
-        <div class="profile-row"><span>Tên đăng nhập</span><strong>${escapeHtml(u.username)}</strong></div>
-        <div class="profile-row"><span>Email</span><strong>${escapeHtml(u.email)}</strong></div>
-        <div class="profile-row"><span>Số điện thoại</span><strong>${escapeHtml(u.phone || '—')}</strong></div>
-        <div class="profile-row"><span>Khối lớp</span><strong>${escapeHtml(u.grade || '—')}</strong></div>
-        <div class="profile-row"><span>Ngày sinh</span><strong>${escapeHtml(u.dob || '—')}</strong></div>
-        <div class="profile-row"><span>Lời nhắn / Mục tiêu</span><strong>${escapeHtml(u.note || '—')}</strong></div>
-      `;
-      const roleSelect = document.getElementById('detail-user-role');
-      const posInput = document.getElementById('detail-user-position');
-      if (roleSelect) roleSelect.value = u.role || 'student';
-      if (posInput) posInput.value = u.classPosition || '';
-      toggleDetailPosition();
+      document.getElementById('det-fullname').value = u.fullName || '';
+      document.getElementById('det-username').value = u.username || '';
+      document.getElementById('det-grade').value = u.grade || '';
+      document.getElementById('det-phone').value = u.phone || '';
+      document.getElementById('det-email').value = u.email || '';
+      document.getElementById('det-status').value = u.status || 'approved';
+      document.getElementById('det-password').value = '';
+      fillRoleSelect(document.getElementById('detail-user-role'), normRole(u.role));
+      // quản trị viên có thể gán mọi chức vụ; người khác chỉ gán chức vụ thấp hơn mình
+      ['det-fullname', 'det-username', 'det-grade', 'det-phone', 'det-email'].forEach(id => { document.getElementById(id).disabled = !editInfo; });
+      const isSelf = currentUser && u.id === currentUser.id;
+      document.getElementById('detail-user-role').disabled = !editSens || isSelf;
+      document.getElementById('det-status').disabled = !editSens || isSelf;
+      document.getElementById('det-password').disabled = !editSens || u.provider === 'google';
+      document.getElementById('det-save-btn').classList.toggle('hidden', !editInfo);
+      document.getElementById('detail-modal-title').textContent = editInfo ? 'Xem & chỉnh sửa tài khoản' : 'Xem thông tin tài khoản';
+      document.getElementById('detail-modal-sub').textContent = roleLabelOf(u) + ' • tạo lúc ' + (u.createdAt || '—');
+      let note = '';
+      if (isSysAdmin) note = 'Tài khoản Quản trị viên hệ thống: chỉ xem. Quản trị viên tự chỉnh trong mục Thông tin cá nhân.';
+      else if (!editInfo) note = 'Kiểm duyệt viên chỉ được xem, không chỉnh sửa thông tin.';
+      else if (!editSens) note = 'Bạn chỉnh được thông tin chung, nhưng không đổi được chức vụ, trạng thái hay mật khẩu của tài khoản cùng cấp hoặc cao hơn.';
+      else if (u.provider === 'google') note = 'Tài khoản đăng nhập bằng Google nên không có mật khẩu.';
+      document.getElementById('det-note').textContent = note;
       document.getElementById('user-detail-modal').classList.remove('hidden');
     }
 
@@ -3166,29 +3340,237 @@ grant select, insert, update, delete on public.app_backups to anon;
       document.getElementById('user-detail-modal').classList.add('hidden');
     }
 
-    function toggleDetailPosition() {
-      const role = document.getElementById('detail-user-role')?.value;
-      const wrap = document.getElementById('detail-position-wrap');
-      if (wrap) {
-        if (role === 'class_role') wrap.classList.remove('hidden');
-        else wrap.classList.add('hidden');
-      }
-    }
+    function toggleDetailPosition() { /* không còn dùng */ }
 
     function saveUserRoleAssignment(event) {
       event.preventDefault();
-      if (!currentUser || currentUser.role !== 'admin') return;
-      const userId = document.getElementById('detail-user-id').value;
-      const role = document.getElementById('detail-user-role').value;
-      const classPosition = role === 'class_role' ? (document.getElementById('detail-user-position').value.trim() || 'Ban cán sự lớp') : '';
-      const u = appState.users.find(item => item.id === userId);
+      if (!canEditAccountInfo()) return;
+      const u = appState.users.find(item => item.id === document.getElementById('detail-user-id').value);
       if (!u) return;
-      u.role = role;
-      u.classPosition = classPosition;
-      u.status = 'approved';
+      const username = document.getElementById('det-username').value.trim();
+      const email = document.getElementById('det-email').value.trim();
+      if (!username) { alert('ID không được để trống.'); return; }
+      if (isUsernameTaken(username, u.id)) { alert('ID này đã được dùng cho tài khoản khác.'); return; }
+      {
+        const wantRole = document.getElementById('detail-user-role').value;
+        if (canEditSensitive(u) && !(currentUser && u.id === currentUser.id) && myRank() < 3 && wantRole !== normRole(u.role) && ROLE_RANK[wantRole] >= myRank()) {
+          alert('Bạn chỉ cấp được chức vụ thấp hơn chức vụ của mình.'); return;
+        }
+      }
+      if (email && appState.users.some(x => x.id !== u.id && x.email && x.email.toLowerCase() === email.toLowerCase())) { alert('Email này đã được dùng cho tài khoản khác.'); return; }
+      u.fullName = document.getElementById('det-fullname').value.trim() || u.fullName;
+      u.username = username;
+      u.grade = document.getElementById('det-grade').value.trim();
+      u.phone = document.getElementById('det-phone').value.trim();
+      u.email = email;
+      if (canEditSensitive(u) && !(currentUser && u.id === currentUser.id)) {
+        const newRole = document.getElementById('detail-user-role').value;
+        u.role = newRole;
+        u.status = document.getElementById('det-status').value;
+        if (u.status === 'approved') u.rejectReason = '';
+      }
+      const newPass = document.getElementById('det-password').value;
+      if (newPass && canEditSensitive(u) && u.provider !== 'google') u.password = newPass;
       persistState();
       closeUserDetailModal();
       refreshAdminViews();
+    }
+
+    /* ---------- Danh sách tài khoản nhóm theo lớp ---------- */
+    function givenName(fullName) { const w = String(fullName).trim().split(/\s+/); return w[w.length - 1] || ''; }
+    const ACC_STAFF = 'Ban quản lý (chưa xếp lớp)';
+    const ACC_NONE = 'Chưa xếp lớp';
+    const accCollapsed = new Set();
+    function toggleAccGroup(key, open) { if (open) accCollapsed.delete(key); else accCollapsed.add(key); }
+    function setAllAccGroups(open) { document.querySelectorAll('#acc-groups details').forEach(d => { d.open = open; }); }
+    function accGroupKey(u) {
+      if (u.id === ADMIN_ACCOUNT.id) return ACC_STAFF;
+      return (u.grade || '').trim() || (rankOf(u) >= 1 ? ACC_STAFF : ACC_NONE);
+    }
+    function accGroupSort(a, b) {
+      const w = k => (k === ACC_STAFF ? 0 : k === ACC_NONE ? 2 : 1);
+      return w(a) - w(b) || a.localeCompare(b, 'vi', { numeric: true });
+    }
+    function renderAccountsManager() {
+      const box = document.getElementById('acc-groups');
+      if (!box) return;
+      if (!canViewAllAccounts()) { box.innerHTML = ''; return; }
+      const everyone = allAccounts();
+      const kw = (document.getElementById('acc-search')?.value || '').trim().toLowerCase();
+      const roleF = document.getElementById('acc-role-filter')?.value || 'all';
+      const statF = document.getElementById('acc-status-filter')?.value || 'all';
+
+      // Bộ lọc lớp: dựng lại danh sách lớp hiện có, giữ lựa chọn cũ nếu còn
+      const classSel = document.getElementById('acc-class-filter');
+      let classF = 'all';
+      if (classSel) {
+        const prev = classSel.value || 'all';
+        const keys = [...new Set(everyone.map(accGroupKey))].sort(accGroupSort);
+        classSel.innerHTML = '<option value="all">Tất cả các lớp</option>' + keys.map(k => `<option value="${escapeHtml(k)}">${escapeHtml(k)}</option>`).join('');
+        classSel.value = (prev === 'all' || keys.includes(prev)) ? prev : 'all';
+        classF = classSel.value;
+      }
+
+      const stats = document.getElementById('acc-stats-row');
+      if (stats) {
+        const cnt = r => everyone.filter(u => normRole(u.role) === r).length;
+        const classCount = new Set(everyone.filter(u => rankOf(u) === 0 && (u.grade || '').trim()).map(u => u.grade.trim())).size;
+        stats.innerHTML = `
+          <div class="stat-box"><div class="stat-label">Tổng tài khoản</div><div class="stat-val">${everyone.length}</div></div>
+          <div class="stat-box"><div class="stat-label">Học sinh</div><div class="stat-val">${cnt('student')}</div></div>
+          <div class="stat-box"><div class="stat-label">Ban quản lý</div><div class="stat-val">${cnt('moderator') + cnt('assistant') + cnt('admin')}</div></div>
+          <div class="stat-box"><div class="stat-label">Số lớp</div><div class="stat-val">${classCount}</div></div>
+          <div class="stat-box"><div class="stat-label">Chờ duyệt</div><div class="stat-val" style="color:var(--warn-text);">${everyone.filter(u => u.status === 'pending').length}</div></div>`;
+      }
+
+      const list = everyone.filter(u => {
+        if (roleF !== 'all' && normRole(u.role) !== roleF) return false;
+        if (statF !== 'all' && u.status !== statF) return false;
+        if (classF !== 'all' && accGroupKey(u) !== classF) return false;
+        if (!kw) return true;
+        return [u.fullName, u.username, u.grade, u.email, u.phone].some(v => String(v || '').toLowerCase().includes(kw));
+      });
+      if (!list.length) { box.innerHTML = '<div style="text-align:center; padding:24px; color:var(--ink-muted);">Không có tài khoản nào phù hợp.</div>'; return; }
+
+      const groups = new Map();
+      list.forEach(u => {
+        const key = accGroupKey(u);
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(u);
+      });
+      const keys = [...groups.keys()].sort(accGroupSort);
+
+      const canEdit = canEditAccountInfo();
+      box.innerHTML = keys.map(k => {
+        const rows = groups.get(k).sort((x, y) => rankOf(y) - rankOf(x) || givenName(x.fullName).localeCompare(givenName(y.fullName), 'vi') || x.fullName.localeCompare(y.fullName, 'vi'));
+        const pend = rows.filter(u => u.status === 'pending').length;
+        return `
+          <details ${accCollapsed.has(k) ? '' : 'open'} data-key="${escapeHtml(k)}" ontoggle="toggleAccGroup(this.dataset.key, this.open)" style="margin-bottom:12px; border:1px solid var(--border-vintage); border-radius:var(--radius-sm); background:var(--bg-card-tint);">
+            <summary class="acc-group-head">
+              <span>${escapeHtml(k)}</span>
+              <span style="font-size:0.82rem; font-weight:600; color:var(--ink-muted);">${rows.length} tài khoản${pend ? ` • <span style="color:var(--warn-text);">${pend} chờ duyệt</span>` : ''}</span>
+            </summary>
+            <div class="table-wrap" style="margin:0;">
+              <table>
+                <thead><tr><th>#</th><th>Họ và tên</th><th>ID</th><th>Chức vụ</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+                <tbody>
+                  ${rows.map((u, i) => {
+                    const st = u.status === 'approved' ? '<span class="status-pill status-approved">Đã duyệt</span>' : u.status === 'pending' ? '<span class="status-pill status-pending">Chờ duyệt</span>' : '<span class="status-pill status-rejected">Từ chối / Khóa</span>';
+                    const isSys = u === ADMIN_ACCOUNT;
+                    const isMe = currentUser && u.id === currentUser.id;
+                    const pos = u.classPosition && rankOf(u) > 0 ? ' • ' + escapeHtml(u.classPosition) : '';
+                    return `<tr>
+                      <td style="color:var(--ink-muted);">${i + 1}</td>
+                      <td style="font-weight:700; color:var(--blue-deep);">${escapeHtml(u.fullName)}${isMe ? '<span class="acc-self-tag">Bạn</span>' : ''}</td>
+                      <td>${escapeHtml(u.username)}</td>
+                      <td><span class="role-badge role-${normRole(u.role)}">${escapeHtml(ROLE_LABEL[normRole(u.role)])}</span>${pos}</td>
+                      <td>${st}</td>
+                      <td><div style="display:flex; gap:6px; flex-wrap:wrap;">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="openUserDetailModal('${u.id}')">${canEdit && !isSys ? 'Xem / Sửa' : 'Xem'}</button>
+                        ${canDeleteAccount(u) ? `<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">Xóa</button>` : ''}
+                      </div></td>
+                    </tr>`;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+          </details>`;
+      }).join('');
+    }
+
+    /* ---------- Tạo hàng loạt ---------- */
+    let bulkPlan = [];
+    function openBulkModal() {
+      if (!canCreateAccounts()) return;
+      fillRoleSelect(document.getElementById('bulk-role'), 'student');
+      document.getElementById('bulk-preview').innerHTML = '';
+      document.getElementById('bulk-result').classList.add('hidden');
+      document.getElementById('bulk-confirm-btn').classList.add('hidden');
+      bulkPlan = [];
+      document.getElementById('bulk-modal').classList.remove('hidden');
+    }
+    function closeBulkModal() { document.getElementById('bulk-modal').classList.add('hidden'); }
+
+    function slugVN(str) {
+      return String(str).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
+    }
+    function autoUsername(fullName) {
+      const w = slugVN(fullName).split(/\s+/).filter(Boolean);
+      if (!w.length) return '';
+      return w[w.length - 1] + w.slice(0, -1).map(x => x[0]).join('');
+    }
+
+    function previewBulk() {
+      const raw = document.getElementById('bulk-names').value.split(/\r?\n/).map(l => l.trim()).filter(Boolean)
+        .filter((l, i) => !(i === 0 && ['ho ten', 'ho va ten', 'hoten', 'stt'].includes(slugVN(l.split(/\t|;|\|/)[0]))));
+      const gradeAll = document.getElementById('bulk-grade').value.trim();
+      const prefix = document.getElementById('bulk-prefix').value.trim();
+      const password = document.getElementById('bulk-password').value;
+      const role = document.getElementById('bulk-role').value;
+      const out = document.getElementById('bulk-preview');
+      document.getElementById('bulk-result').classList.add('hidden');
+      if (!raw.length) { out.innerHTML = '<div class="alert-box alert-error">Hãy dán danh sách họ tên vào ô phía trên.</div>'; return; }
+      if (!password) { out.innerHTML = '<div class="alert-box alert-error">Hãy nhập mật khẩu chung.</div>'; return; }
+
+      const taken = new Set(appState.users.map(u => String(u.username).toLowerCase()));
+      taken.add(ADMIN_ACCOUNT.username);
+      bulkPlan = raw.map(line => {
+        const c = line.split(/\t|;|\|/).map(x => x.trim());
+        const fullName = c[0];
+        const grade = c[1] || gradeAll;
+        const phone = c[3] || '';
+        const email = c[4] || '';
+        let username = (c[2] || '').trim();
+        let auto = false;
+        if (!username) { username = prefix + autoUsername(fullName); auto = true; }
+        let dup = false;
+        let base = username, n = 2;
+        if (taken.has(username.toLowerCase())) {
+          if (auto) { while (taken.has((base + n).toLowerCase())) n++; username = base + n; }
+          else dup = true;
+        }
+        taken.add(username.toLowerCase());
+        return { fullName, grade, username, password, role, phone, email, error: dup ? 'ID đã tồn tại' : (!fullName || !username ? 'Thiếu tên hoặc ID' : '') };
+      });
+      const bad = bulkPlan.filter(x => x.error).length;
+      out.innerHTML = `
+        <div style="font-size:0.85rem; margin-bottom:6px;"><strong>${bulkPlan.length - bad}</strong> tài khoản sẽ được tạo${bad ? ` • <span style="color:var(--danger-text);">${bad} dòng lỗi (sẽ bỏ qua)</span>` : ''}</div>
+        <div class="table-wrap" style="max-height:260px; overflow:auto;">
+          <table><thead><tr><th>#</th><th>Họ và tên</th><th>Lớp</th><th>ID</th><th>Ghi chú</th></tr></thead><tbody>
+          ${bulkPlan.map((x, i) => `<tr><td>${i + 1}</td><td>${escapeHtml(x.fullName)}</td><td>${escapeHtml(x.grade || '—')}</td><td><strong>${escapeHtml(x.username)}</strong></td><td style="color:var(--danger-text);">${escapeHtml(x.error)}</td></tr>`).join('')}
+          </tbody></table>
+        </div>`;
+      document.getElementById('bulk-confirm-btn').classList.toggle('hidden', bulkPlan.length - bad === 0);
+    }
+
+    function confirmBulkCreate() {
+      if (!canCreateAccounts()) return;
+      const ok = [];
+      const failed = [];
+      bulkPlan.filter(x => !x.error).forEach(x => {
+        const err = createAccountRecord({ fullName: x.fullName, username: x.username, password: x.password, grade: x.grade, role: x.role, phone: x.phone, email: x.email });
+        if (!err) ok.push(x); else failed.push(x.fullName + ': ' + err);
+      });
+      if (!ok.length) { alert('Không tạo được tài khoản nào.\n' + failed.join('\n')); return; }
+      persistState();
+      refreshAdminViews();
+      document.getElementById('bulk-preview').innerHTML = '';
+      document.getElementById('bulk-confirm-btn').classList.add('hidden');
+      const res = document.getElementById('bulk-result');
+      res.className = 'alert-box alert-success';
+      res.innerHTML = `Đã tạo <strong>${ok.length}</strong> tài khoản. Hãy tải danh sách ID/mật khẩu để phát cho học sinh. <button type="button" class="btn btn-primary btn-sm" style="margin-left:8px;" onclick="downloadBulkCSV()">Tải danh sách (.CSV)</button>${failed.length ? `<div style="margin-top:8px; color:var(--danger-text);">${failed.length} dòng bị bỏ qua: ${escapeHtml(failed.join(' • '))}</div>` : ''}`;
+      window.__lastBulkCreated = ok;
+      bulkPlan = [];
+    }
+
+    function downloadBulkCSV() {
+      const ok = window.__lastBulkCreated || [];
+      const rows = [['HoTen', 'Lop', 'ID', 'MatKhau', 'ChucVu'], ...ok.map(x => [x.fullName, x.grade || '', x.username, x.password, ROLE_LABEL[normRole(x.role)]])];
+      const csv = '\uFEFF' + rows.map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\n');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+      a.download = 'danh-sach-tai-khoan-' + new Date().toISOString().slice(0, 10) + '.csv';
+      a.click();
     }
 
     /* ================= BẬT / TẮT CHỨC NĂNG & POP-UP CHÀO MỪNG ================= */
@@ -3522,7 +3904,7 @@ grant select, insert, update, delete on public.app_backups to anon;
       document.getElementById('mod-desc').textContent = mod.shortDesc;
 
       const interactiveArea = document.getElementById('mod-interactive-area');
-      if (moduleId === 'class-management' && currentUser && ['admin', 'moderator', 'class_role'].includes(currentUser.role)) {
+      if (moduleId === 'class-management' && currentUser && rankOf(currentUser) >= 1) {
         interactiveArea.innerHTML = `
           <div class="alert-box alert-info" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:0;">
             <span>Bạn có quyền điều hành lớp học. Mở nhanh bảng quản trị tài khoản &amp; phân công chức vụ:</span>
@@ -4017,7 +4399,7 @@ grant select, insert, update, delete on public.app_backups to anon;
         const r = await syncProfiles();
         if (typeof applyFeatureVisibility === 'function') applyFeatureVisibility();
         if (typeof renderClassModulesUI === 'function') { try { renderClassModulesUI(); } catch (e) {} }
-        if (isAdmin && typeof refreshAdminViews === 'function') { try { refreshAdminViews(); } catch (e) {} }
+        if (myRank() >= 1 && typeof refreshAdminViews === 'function') { try { refreshAdminViews(); } catch (e) {} }
         if (showStatus) setLoginSyncStatus(r.ok ? 'Đã cập nhật dữ liệu lúc ' + new Date().toLocaleTimeString('vi-VN') + '.' : 'Đã tải cài đặt mới; hồ sơ chưa đồng bộ được (' + r.error + ').', !r.ok);
         return true;
       } catch (e) {
@@ -4059,7 +4441,7 @@ grant select, insert, update, delete on public.app_backups to anon;
       return {
         id: r.id, username: r.username || '', password: r.password || '', fullName: r.full_name || '', email: r.email || '',
         phone: r.phone || '', grade: r.grade || '', dob: r.dob || '', note: r.note || '', provider: r.provider || 'form',
-        role: r.role || 'student', classPosition: r.class_position || '', status: r.status || 'pending',
+        role: normRole(r.role), classPosition: r.class_position || '', status: r.status || 'pending',
         rejectReason: r.reject_reason || '', createdAt: r.created_at || ''
       };
     }
@@ -4072,7 +4454,8 @@ grant select, insert, update, delete on public.app_backups to anon;
 
     async function pushDirtyProfiles(sb, force = false) {
       const isAdmin = currentUser && currentUser.role === 'admin';
-      const dirty = appState.users.filter(u => (isAdmin || ownIds.has(u.id)) && (force || pushedMap[u.id] !== userSig(u)));
+      const isStaff = myRank() >= 1;
+      const dirty = appState.users.filter(u => (isAdmin || ownIds.has(u.id) || (isStaff && pushedMap[u.id] !== undefined)) && (force || pushedMap[u.id] !== userSig(u)));
       let pushed = 0;
       for (const u of dirty) {
         const res = await fetchT(`${sb.url}/rest/v1/profiles?on_conflict=id`, {
@@ -4093,7 +4476,7 @@ grant select, insert, update, delete on public.app_backups to anon;
         }
         throw new Error(res.status + ': ' + txt);
       }
-      if (isAdmin) {
+      if (myRank() >= 2) {
         const present = new Set(appState.users.map(u => u.id));
         for (const id of Object.keys(pushedMap)) {
           if (present.has(id)) continue;
@@ -4116,7 +4499,7 @@ grant select, insert, update, delete on public.app_backups to anon;
       for (const [id, cu] of cloud) {
         const lu = local.get(id);
         if (!lu) {
-          if (isAdmin && pushedMap[id] !== undefined) continue; // admin vừa xóa hồ sơ này, lần đẩy sau sẽ xóa trên Supabase
+          if (myRank() >= 2 && pushedMap[id] !== undefined) continue; // người có quyền vừa xóa hồ sơ này, lần đẩy sau sẽ xóa trên Supabase
           out.push(cu); pushedMap[id] = userSig(cu); continue;
         }
         const known = pushedMap[id] !== undefined;
@@ -4150,7 +4533,7 @@ grant select, insert, update, delete on public.app_backups to anon;
         const pushed = await pushDirtyProfiles(sb);
         if (changed || pushed) {
           try { localStorage.setItem(STORAGE_KEY, JSON.stringify(appState)); } catch (e) {}
-          if (typeof refreshAdminViews === 'function' && currentUser && currentUser.role === 'admin') { try { refreshAdminViews(); } catch (e) {} }
+          if (typeof refreshAdminViews === 'function' && myRank() >= 1) { try { refreshAdminViews(); } catch (e) {} }
         }
         return { ok: true, changed, pushed };
       } catch (e) {
@@ -4186,7 +4569,7 @@ grant select, insert, update, delete on public.app_backups to anon;
     // Người dùng đang mở trang: cứ 30 giây (và khi quay lại tab) kiểm tra, có bản mới thì tự cập nhật
     function pollCloudUpdates() {
       if (document.hidden || !cloudCfg()) return;
-      if (currentUser && currentUser.role === 'admin') { syncProfiles(); return; } // admin: nhận đăng ký mới của học sinh
+      if (myRank() >= 1) { syncProfiles(); return; } // ban quản lý: nhận đăng ký mới của học sinh
       refreshFromCloudSilent(false, true);
     }
     setInterval(pollCloudUpdates, 30000);
