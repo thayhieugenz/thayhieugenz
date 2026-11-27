@@ -2116,11 +2116,18 @@ create table if not exists public.profiles (
   note text,
   provider text default 'form',
   role text default 'student',
+  password text default '',
   class_position text default '',
   status text default 'pending',
   reject_reason text default '',
-  created_at text
+  created_at text,
+  updated_at timestamptz default now()
 );
+
+-- Nếu bảng profiles đã có từ trước, chạy thêm 3 dòng này:
+alter table public.profiles add column if not exists password text default '';
+alter table public.profiles add column if not exists class_position text default '';
+alter table public.profiles add column if not exists updated_at timestamptz default now();
 
 -- Bảng 2: sao lưu TOÀN BỘ dữ liệu (tài khoản + cài đặt + pop-up + bật/tắt chức năng)
 create table if not exists public.app_backups (
@@ -2139,6 +2146,11 @@ create policy "anon_all_profiles" on public.profiles
   for all to anon using (true) with check (true);
 create policy "anon_all_app_backups" on public.app_backups
   for all to anon using (true) with check (true);
+
+-- Cấp quyền cho vai trò anon (bắt buộc với dự án Supabase mới)
+grant usage on schema public to anon;
+grant select, insert, update, delete on public.profiles to anon;
+grant select, insert, update, delete on public.app_backups to anon;
 </pre>
                   </details>
                 </div>
@@ -2193,7 +2205,7 @@ create policy "anon_all_app_backups" on public.app_backups
 
     /* Điền sẵn Project URL và Anon Key của Supabase vào đây để MỌI máy (học sinh, tab ẩn danh...)
        tự kết nối và tải dữ liệu mới nhất khi bấm "Vào lớp học". Chỉ dùng khóa anon, KHÔNG dùng service_role. */
-    const CLOUD_DEFAULT = { url: '', anonKey: '' };
+    const CLOUD_DEFAULT = { url: 'https://yfbigojtycefklfdubon.supabase.co', anonKey: 'sb_publishable_krPnal7quX36UXcbGzRn1A_0xMtIpIf' };
 
     const ADMIN_ACCOUNT = {
       id: 'admin-thayhieugenz',
@@ -2369,7 +2381,7 @@ create policy "anon_all_app_backups" on public.app_backups
           anonKey: '',
           table: 'profiles',
           lastSyncAt: '',
-          autoSync: false,
+          autoSync: null,
           lastCloudAt: ''
         },
         welcomePopup: {
@@ -2493,6 +2505,7 @@ create policy "anon_all_app_backups" on public.app_backups
       localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
       updateAutoSaveUI();
       scheduleAutoCloudSync();
+      scheduleProfileSync();
     }
 
     function updateAutoSaveUI() {
@@ -2584,9 +2597,10 @@ create policy "anon_all_app_backups" on public.app_backups
       enterApp(found);
     }
 
-    function handleRegister(event) {
+    async function handleRegister(event) {
       event.preventDefault();
       clearAuthAlert();
+      await syncProfiles(); // lấy danh sách mới nhất để kiểm tra trùng tên/email giữa các máy
 
       const fullName = document.getElementById('reg-fullname').value.trim();
       const username = document.getElementById('reg-username').value.trim();
@@ -2609,8 +2623,10 @@ create policy "anon_all_app_backups" on public.app_backups
         return;
       }
 
+      const newRegId = 'u-' + Date.now();
+      markOwn(newRegId);
       appState.users.unshift({
-        id: 'u-' + Date.now(),
+        id: newRegId,
         username,
         password,
         fullName,
@@ -2642,8 +2658,9 @@ create policy "anon_all_app_backups" on public.app_backups
       document.getElementById('google-modal').classList.add('hidden');
     }
 
-    function handleGoogleSubmit(event) {
+    async function handleGoogleSubmit(event) {
       event.preventDefault();
+      await syncProfiles();
       const email = document.getElementById('gg-email').value.trim();
       const fullName = document.getElementById('gg-fullname').value.trim();
       const phone = document.getElementById('gg-phone').value.trim();
@@ -2666,8 +2683,10 @@ create policy "anon_all_app_backups" on public.app_backups
 
       const baseUsername = email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '') + '_' + Math.floor(100 + Math.random() * 900);
 
+      const newGgId = 'gg-' + Date.now();
+      markOwn(newGgId);
       appState.users.unshift({
-        id: 'gg-' + Date.now(),
+        id: newGgId,
         username: baseUsername,
         password: 'google-oauth-user',
         fullName,
@@ -2693,6 +2712,8 @@ create policy "anon_all_app_backups" on public.app_backups
     function enterApp(user) {
       currentUser = user;
       if (user.role === 'admin') setTimeout(checkCloudNewer, 1500);
+      else markOwn(user.id);
+      if (user.role === 'admin') setTimeout(syncProfiles, 800);
       document.getElementById('auth-view').classList.add('hidden');
       document.getElementById('app-view').classList.remove('hidden');
 
@@ -3661,7 +3682,7 @@ create policy "anon_all_app_backups" on public.app_backups
     function loadSupabaseConfigUI() {
       const sb = appState.settings.supabase || {};
       const asEl = document.getElementById('cloud-autosync-checkbox');
-      if (asEl) asEl.checked = !!sb.autoSync;
+      if (asEl) asEl.checked = (sb.autoSync === null || sb.autoSync === undefined) ? !!(CLOUD_DEFAULT.url && CLOUD_DEFAULT.anonKey) : !!sb.autoSync;
       const infoEl = document.getElementById('cloud-last-info');
       if (infoEl && sb.lastCloudAt) infoEl.textContent = 'Lần đồng bộ gần nhất: ' + new Date(sb.lastCloudAt).toLocaleString('vi-VN');
       const urlEl = document.getElementById('sb-url');
@@ -3724,50 +3745,23 @@ create policy "anon_all_app_backups" on public.app_backups
 
     async function syncUsersToSupabase() {
       saveSupabaseConfig();
-      const { url, anonKey, table } = appState.settings.supabase || {};
-      if (!url || !anonKey) {
+      const sb = cloudCfg();
+      if (!sb) {
         showSettingsFeedback('Vui lòng cấu hình Supabase Project URL và Anon Key trước khi đồng bộ.', 'error');
         return;
       }
-      const payload = appState.users.map(u => ({
-        id: u.id,
-        username: u.username,
-        full_name: u.fullName,
-        email: u.email,
-        phone: u.phone || '',
-        grade: u.grade || '',
-        dob: u.dob || '',
-        note: u.note || '',
-        provider: u.provider || 'form',
-        role: u.role || 'student',
-        class_position: u.classPosition || '',
-        status: u.status || 'pending',
-        reject_reason: u.rejectReason || '',
-        created_at: u.createdAt || new Date().toLocaleString('vi-VN')
-      }));
-
       try {
-        const res = await fetch(`${url}/rest/v1/${encodeURIComponent(table)}?on_conflict=id`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            apikey: anonKey,
-            Authorization: `Bearer ${anonKey}`,
-            Prefer: 'resolution=merge-duplicates,return=minimal'
-          },
-          body: JSON.stringify(payload)
-        });
-        if (res.ok) {
-          appState.settings.supabase.lastSyncAt = new Date().toLocaleString('vi-VN');
-          persistState(true);
-          loadSupabaseConfigUI();
-          showSettingsFeedback(`Đã đồng bộ ${payload.length} hồ sơ lên bảng "${table}" trên Supabase!`, 'success');
-        } else {
-          const errText = await res.text();
-          showSettingsFeedback(`Đồng bộ chưa thành công (${res.status}): ${errText}`, 'error');
-        }
+        cloudBusy = true;
+        const n = await pushDirtyProfiles(sb, true);
+        appState.settings.supabase.lastSyncAt = new Date().toLocaleString('vi-VN');
+        cloudBusy = false;
+        persistState(true);
+        loadSupabaseConfigUI();
+        showSettingsFeedback(`Đã đẩy ${n} hồ sơ lên bảng profiles (có cả mật khẩu và chức vụ).`, 'success');
       } catch (e) {
-        showSettingsFeedback('Lỗi mạng khi gửi dữ liệu lên Supabase.', 'error');
+        showSettingsFeedback('Đồng bộ chưa thành công: ' + (e.message || e) + ' — hãy chắc chắn đã chạy SQL cập nhật (thêm cột password, updated_at).', 'error');
+      } finally {
+        cloudBusy = false;
       }
     }
 
@@ -3941,8 +3935,10 @@ create policy "anon_all_app_backups" on public.app_backups
 
     function scheduleAutoCloudSync() {
       if (cloudBusy) return;
-      const sb = appState.settings.supabase;
-      if (!sb || !sb.autoSync || !sb.url || !sb.anonKey) return;
+      const sb = cloudCfg();
+      if (!sb) return;
+      const autoOn = (appState.settings.supabase || {}).autoSync || (CLOUD_DEFAULT.url && CLOUD_DEFAULT.anonKey && (appState.settings.supabase || {}).autoSync !== false);
+      if (!autoOn) return;
       if (!currentUser || currentUser.role !== 'admin') return;
       clearTimeout(cloudTimer);
       cloudTimer = setTimeout(() => pushBackupToCloud({ silent: true }), 5000);
@@ -3970,39 +3966,43 @@ create policy "anon_all_app_backups" on public.app_backups
       el.style.color = isError ? '#B3261E' : 'var(--ink-muted)';
     }
 
-    async function refreshFromCloudSilent(showStatus = false) {
+    async function refreshFromCloudSilent(showStatus = false, onlyIfNewer = false) {
       const sb = cloudCfg();
       if (!sb) return false;
       if (showStatus) setLoginSyncStatus('Đang tải dữ liệu mới nhất...');
+      const isAdmin = currentUser && currentUser.role === 'admin';
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 7000);
       try {
-        const res = await fetch(`${sb.url}/rest/v1/${CLOUD_TABLE}?id=eq.main&select=data,updated_at`, { headers: cloudHeaders(sb), signal: ctrl.signal });
-        if (!res.ok) throw new Error(String(res.status));
-        const rows = await res.json();
-        if (!rows.length || !rows[0].data || !Array.isArray(rows[0].data.users)) {
-          if (showStatus) setLoginSyncStatus('Chưa có bản sao lưu trên Supabase, dùng dữ liệu trên máy.');
-          return false;
+        // 1) Cài đặt chung (pop-up, bật/tắt chức năng...) do admin đẩy lên bản 'main'
+        if (!isAdmin) {
+          const res = await fetch(`${sb.url}/rest/v1/${CLOUD_TABLE}?id=eq.main&select=data,updated_at`, { headers: cloudHeaders(sb), signal: ctrl.signal });
+          if (!res.ok) throw new Error(String(res.status));
+          const rows = await res.json();
+          if (rows.length && rows[0].data && rows[0].data.settings) {
+            const row = rows[0];
+            const isNew = !(appState.settings.supabase || {}).lastCloudAt || new Date(row.updated_at) > new Date(appState.settings.supabase.lastCloudAt);
+            if (!onlyIfNewer || isNew) {
+              const d = row.data;
+              const keepSb = appState.settings.supabase || {};
+              appState.settings = {
+                ...appState.settings,
+                ...d.settings,
+                welcomePopup: { ...appState.settings.welcomePopup, ...(d.settings.welcomePopup || {}) },
+                featureFlags: { ...appState.settings.featureFlags, ...(d.settings.featureFlags || {}) },
+                supabase: { ...keepSb, lastCloudAt: row.updated_at }
+              };
+              cloudBusy = true;
+              try { persistState(true); } finally { cloudBusy = false; }
+            }
+          }
         }
-        const row = rows[0];
-        const d = row.data;
-        // Giữ lại tài khoản mới đăng ký trên máy này (đang chờ duyệt) mà bản đám mây chưa có
-        const cloudIds = new Set(d.users.map(u => u.id));
-        const cloudUsernames = new Set(d.users.map(u => String(u.username).toLowerCase()));
-        const localPending = appState.users.filter(u => u.status === 'pending' && !cloudIds.has(u.id) && !cloudUsernames.has(String(u.username).toLowerCase()));
-        const keepSb = appState.settings.supabase || {};
-        appState.users = [...d.users, ...localPending];
-        appState.settings = {
-          ...appState.settings,
-          ...(d.settings || {}),
-          welcomePopup: { ...appState.settings.welcomePopup, ...((d.settings || {}).welcomePopup || {}) },
-          featureFlags: { ...appState.settings.featureFlags, ...((d.settings || {}).featureFlags || {}) },
-          supabase: { ...keepSb, lastCloudAt: row.updated_at }
-        };
-        cloudBusy = true;
-        try { persistState(true); } finally { cloudBusy = false; }
+        // 2) Hồ sơ người dùng (hai chiều)
+        const r = await syncProfiles();
         if (typeof applyFeatureVisibility === 'function') applyFeatureVisibility();
-        if (showStatus) setLoginSyncStatus('Đã cập nhật dữ liệu lúc ' + new Date().toLocaleTimeString('vi-VN') + '.');
+        if (typeof renderClassModulesUI === 'function') { try { renderClassModulesUI(); } catch (e) {} }
+        if (isAdmin && typeof refreshAdminViews === 'function') { try { refreshAdminViews(); } catch (e) {} }
+        if (showStatus) setLoginSyncStatus(r.ok ? 'Đã cập nhật dữ liệu lúc ' + new Date().toLocaleTimeString('vi-VN') + '.' : 'Đã tải cài đặt mới; hồ sơ chưa đồng bộ được (' + r.error + ').', !r.ok);
         return true;
       } catch (e) {
         if (showStatus) setLoginSyncStatus(e.name === 'AbortError' ? 'Mạng chậm, tạm dùng dữ liệu đã lưu trên máy.' : 'Không tải được dữ liệu mới (mã lỗi ' + (e.message || '?') + '), tạm dùng dữ liệu trên máy.', true);
@@ -4010,6 +4010,145 @@ create policy "anon_all_app_backups" on public.app_backups
       } finally {
         clearTimeout(timer);
       }
+    }
+
+    /* ================= ĐỒNG BỘ HAI CHIỀU HỒ SƠ NGƯỜI DÙNG (bảng profiles) ================= */
+    const PUSHED_KEY = 'thayhieugenz_pushed_v1';
+    const OWN_KEY = 'thayhieugenz_own_v1';
+    const USER_FIELDS = ['id', 'username', 'password', 'fullName', 'email', 'phone', 'grade', 'dob', 'note', 'provider', 'role', 'classPosition', 'status', 'rejectReason', 'createdAt'];
+    let profSyncing = false;
+    let profTimer = null;
+    let pushedMap = (() => { try { return JSON.parse(localStorage.getItem(PUSHED_KEY) || '{}'); } catch (e) { return {}; } })();
+    let ownIds = (() => { try { return new Set(JSON.parse(localStorage.getItem(OWN_KEY) || '[]')); } catch (e) { return new Set(); } })();
+
+    function savePushed() { try { localStorage.setItem(PUSHED_KEY, JSON.stringify(pushedMap)); } catch (e) {} }
+    function markOwn(id) { ownIds.add(id); try { localStorage.setItem(OWN_KEY, JSON.stringify([...ownIds])); } catch (e) {} }
+
+    function canonUser(u) {
+      const o = {};
+      USER_FIELDS.forEach(k => { o[k] = (u[k] === undefined || u[k] === null) ? '' : String(u[k]); });
+      return o;
+    }
+    function userSig(u) { return JSON.stringify(canonUser(u)); }
+    function userToRow(u) {
+      const c = canonUser(u);
+      return {
+        id: c.id, username: c.username, password: c.password, full_name: c.fullName, email: c.email, phone: c.phone,
+        grade: c.grade, dob: c.dob, note: c.note, provider: c.provider || 'form', role: c.role || 'student',
+        class_position: c.classPosition, status: c.status || 'pending', reject_reason: c.rejectReason,
+        created_at: c.createdAt, updated_at: new Date().toISOString()
+      };
+    }
+    function rowToUser(r) {
+      return {
+        id: r.id, username: r.username || '', password: r.password || '', fullName: r.full_name || '', email: r.email || '',
+        phone: r.phone || '', grade: r.grade || '', dob: r.dob || '', note: r.note || '', provider: r.provider || 'form',
+        role: r.role || 'student', classPosition: r.class_position || '', status: r.status || 'pending',
+        rejectReason: r.reject_reason || '', createdAt: r.created_at || ''
+      };
+    }
+
+    function fetchT(url, opts = {}, ms = 8000) {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), ms);
+      return fetch(url, { ...opts, signal: ctrl.signal }).finally(() => clearTimeout(t));
+    }
+
+    async function pushDirtyProfiles(sb, force = false) {
+      const isAdmin = currentUser && currentUser.role === 'admin';
+      const dirty = appState.users.filter(u => (isAdmin || ownIds.has(u.id)) && (force || pushedMap[u.id] !== userSig(u)));
+      let pushed = 0;
+      for (const u of dirty) {
+        const res = await fetchT(`${sb.url}/rest/v1/profiles?on_conflict=id`, {
+          method: 'POST',
+          headers: cloudHeaders(sb, { Prefer: 'resolution=merge-duplicates,return=minimal' }),
+          body: JSON.stringify([userToRow(u)])
+        });
+        if (res.ok) { pushedMap[u.id] = userSig(u); pushed++; continue; }
+        const txt = await res.text();
+        if (res.status === 409 || /23505/.test(txt)) {
+          if (!isAdmin) {
+            // Trùng tên đăng nhập/email với tài khoản đã có trên hệ thống: hủy hồ sơ vừa tạo trên máy này
+            appState.users = appState.users.filter(x => x.id !== u.id);
+            ownIds.delete(u.id);
+            showAuthAlert('Tên đăng nhập hoặc Email này vừa được người khác đăng ký. Vui lòng chọn thông tin khác.', 'error');
+          }
+          continue;
+        }
+        throw new Error(res.status + ': ' + txt);
+      }
+      if (isAdmin) {
+        const present = new Set(appState.users.map(u => u.id));
+        for (const id of Object.keys(pushedMap)) {
+          if (present.has(id)) continue;
+          const res = await fetchT(`${sb.url}/rest/v1/profiles?id=eq.${encodeURIComponent(id)}`, { method: 'DELETE', headers: cloudHeaders(sb) });
+          if (res.ok) delete pushedMap[id];
+        }
+      }
+      savePushed();
+      return pushed;
+    }
+
+    async function pullProfiles(sb) {
+      const isAdmin = currentUser && currentUser.role === 'admin';
+      const res = await fetchT(`${sb.url}/rest/v1/profiles?select=*&limit=5000`, { headers: cloudHeaders(sb) });
+      if (!res.ok) throw new Error(res.status + ': ' + await res.text());
+      const rows = await res.json();
+      const cloud = new Map(rows.map(r => [r.id, rowToUser(r)]));
+      const local = new Map(appState.users.map(u => [u.id, u]));
+      const out = [];
+      for (const [id, cu] of cloud) {
+        const lu = local.get(id);
+        if (!lu) {
+          if (isAdmin && pushedMap[id] !== undefined) continue; // admin vừa xóa hồ sơ này, lần đẩy sau sẽ xóa trên Supabase
+          out.push(cu); pushedMap[id] = userSig(cu); continue;
+        }
+        const known = pushedMap[id] !== undefined;
+        const dirty = known ? pushedMap[id] !== userSig(lu) : (ownIds.has(id) || (isAdmin && !cu.password));
+        if (dirty) out.push(lu);
+        else { out.push({ ...lu, ...cu }); pushedMap[id] = userSig(cu); }
+      }
+      for (const [id, lu] of local) {
+        if (cloud.has(id)) continue;
+        const known = pushedMap[id] !== undefined;
+        if (known && pushedMap[id] === userSig(lu)) { delete pushedMap[id]; continue; } // đã bị admin xóa trên hệ thống
+        if (isAdmin || ownIds.has(id)) out.push(lu);                                    // hồ sơ mới chưa đẩy lên
+      }
+      const num = u => parseInt(String(u.id).replace(/\D/g, ''), 10) || 0;
+      out.sort((a, b) => num(b) - num(a));
+      const before = JSON.stringify(appState.users.map(canonUser));
+      appState.users = out;
+      savePushed();
+      return before !== JSON.stringify(out.map(canonUser));
+    }
+
+    async function syncProfiles() {
+      const sb = cloudCfg();
+      if (!sb) return { ok: false, error: 'chưa cấu hình' };
+      if (profSyncing) return { ok: false, error: 'đang đồng bộ' };
+      profSyncing = true;
+      cloudBusy = true;
+      try {
+        const changed = await pullProfiles(sb);
+        const pushed = await pushDirtyProfiles(sb);
+        if (changed || pushed) {
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(appState)); } catch (e) {}
+          if (typeof refreshAdminViews === 'function' && currentUser && currentUser.role === 'admin') { try { refreshAdminViews(); } catch (e) {} }
+        }
+        return { ok: true, changed, pushed };
+      } catch (e) {
+        const m = String(e.message || e);
+        return { ok: false, error: /42703|column/.test(m) ? 'bảng profiles thiếu cột password/updated_at — hãy chạy lại SQL' : m.slice(0, 120) };
+      } finally {
+        profSyncing = false;
+        cloudBusy = false;
+      }
+    }
+
+    function scheduleProfileSync() {
+      if (profSyncing || !cloudCfg()) return;
+      clearTimeout(profTimer);
+      profTimer = setTimeout(() => syncProfiles(), 2000);
     }
 
     async function manualRefreshFromCloud() {
@@ -4025,6 +4164,15 @@ create policy "anon_all_app_backups" on public.app_backups
 
     // Tự tải khi vừa mở trang (nếu đã có cấu hình)
     window.addEventListener('load', () => { if (!currentUser) refreshFromCloudSilent(true); });
+
+    // Người dùng đang mở trang: cứ 30 giây (và khi quay lại tab) kiểm tra, có bản mới thì tự cập nhật
+    function pollCloudUpdates() {
+      if (document.hidden || !cloudCfg()) return;
+      if (currentUser && currentUser.role === 'admin') { syncProfiles(); return; } // admin: nhận đăng ký mới của học sinh
+      refreshFromCloudSilent(false, true);
+    }
+    setInterval(pollCloudUpdates, 30000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) pollCloudUpdates(); });
 
     function escapeHtml(str) {
       return String(str || '')
